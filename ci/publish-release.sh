@@ -19,7 +19,7 @@ for f in "${FILES[@]}"; do [ -f "$DIR/$f" ] || { echo "Missing $DIR/$f (run ci/r
 
 # The published fingerprints must already be in the repository (ci/publish-fingerprints.py),
 # and the commit being tagged must be the one on GitHub.
-if grep -q NOT_YET_PUBLISHED verify.sh website/js/verify.js; then
+if grep -q '^APK_CERT_SHA256="NOT_YET_PUBLISHED"' verify.sh || grep -q "OFFICIAL_CERT_SHA256 = 'NOT_YET_PUBLISHED'" website/js/verify.js; then
   echo "Fingerprints are not filled in yet: run ci/publish-fingerprints.py, commit and push first."; exit 1
 fi
 HEAD=$(git rev-parse HEAD)
