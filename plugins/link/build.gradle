@@ -1,0 +1,84 @@
+// MeshGRID (package org.meshtrike.link): the single add-on that does Meshtrike's networking, which
+// Meshtrike itself (no INTERNET, no Wi-Fi permission) never can:
+// - Wi-Fi Direct for large files (org.meshtrike.wifilink: plain Java),
+// - the internet route: Nym mixnet behind a VLESS+REALITY bridge
+//   (org.meshtrike.internet). It only ever sees sealed envelopes.
+// Native parts: native/ (Rust, Nym client) and libs/libXray.aar (Xray-core).
+// Signed with the same key as the main app: its signature permission and
+// both apps' checks depend on it.
+plugins {
+    id 'com.android.application' version '8.12.0'
+}
+
+// Release builds (MESHTRIKE_RELEASE=1 in ci/build-android.sh) sign with the
+// private release key passed through the environment; MeshGRID must carry the
+// same key as Meshtrike. Otherwise the local debug key is used, for testing.
+def releaseKey = System.getenv('MESHTRIKE_KEYSTORE')
+def keystore = file(releaseKey ?: findProperty('meshtrike.keystore') ?: '../../app/android/app/debug.keystore')
+
+android {
+    namespace 'org.meshtrike.link'
+    compileSdk 36
+    buildToolsVersion '36.0.0'
+
+    defaultConfig {
+        applicationId 'org.meshtrike.link'
+        minSdk 29
+        targetSdk 36
+        versionCode 8
+        versionName '1.2.0'
+    }
+
+    // The native libraries are stored uncompressed (fast loading), so each
+    // ABI costs about 50 MB: phones install the arm64 APK; the universal one
+    // also runs on x86_64 emulators.
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'arm64-v8a', 'x86_64'
+            universalApk true
+        }
+    }
+
+    signingConfigs {
+        shared {
+            storeFile keystore
+            storePassword releaseKey ? System.getenv('MESHTRIKE_STORE_PASSWORD') : (findProperty('meshtrike.storePassword') ?: 'android')
+            keyAlias releaseKey ? 'meshtrike' : (findProperty('meshtrike.keyAlias') ?: 'androiddebugkey')
+            keyPassword releaseKey ? System.getenv('MESHTRIKE_STORE_PASSWORD') : (findProperty('meshtrike.keyPassword') ?: 'android')
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.shared
+        }
+        release {
+            signingConfig signingConfigs.shared
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging false
+            // libXray ships 32-bit builds too; Meshtrike supports 64-bit only.
+            excludes += ['lib/armeabi-v7a/**', 'lib/x86/**']
+        }
+    }
+
+    lint {
+        abortOnError false
+    }
+}
+
+// The only library: Xray-core, built from vendor/libXray (see build-addon.sh).
+dependencies {
+    implementation files('libs/libXray.aar')
+}

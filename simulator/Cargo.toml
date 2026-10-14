@@ -1,0 +1,18 @@
+[package]
+name = "mesh-simulator"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+mesh-api = { workspace = true }
+mesh-constants = { workspace = true }
+mesh-handoff = { workspace = true }
+
+[dev-dependencies]
+mesh-media = { workspace = true }
+
+[[bin]]
+name = "mesh-sim"
+path = "src/main.rs"

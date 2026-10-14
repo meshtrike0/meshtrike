@@ -1,0 +1,47 @@
+# Supply-chain policy (section 20): licences compatible with Apache-2.0 and
+# App Store distribution (D6), advisories, and bans.
+[graph]
+all-features = true
+
+[advisories]
+version = 2
+yanked = "deny"
+ignore = [
+  # Marvin timing attack needs RSA private-key operations. `rsa` is used only
+  # to verify Google attestation certificate signatures with public keys.
+  { id = "RUSTSEC-2023-0071", reason = "public-key verification only (core/api/src/integrity.rs)" },
+]
+
+[licenses]
+version = 2
+allow = [
+  "Apache-2.0",
+  "Apache-2.0 WITH LLVM-exception",
+  "MIT",
+  "BSD-2-Clause",
+  "BSD-3-Clause",
+  "ISC",
+  "Zlib",
+  "Unicode-3.0",
+  "CC0-1.0",
+  "MPL-2.0",
+  "OpenSSL",
+  "CDLA-Permissive-2.0",
+  # jpeg-encoder: BSD-style; requires the acknowledgement shown in About.
+  "IJG",
+]
+confidence-threshold = 0.9
+
+[bans]
+multiple-versions = "allow"
+# No networking or telemetry stacks in the core (D7, D15).
+deny = [
+  { name = "reqwest" },
+  { name = "hyper" },
+  { name = "sentry" },
+  { name = "opentelemetry" },
+]
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"

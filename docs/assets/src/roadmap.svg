@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 560" width="1400" height="560" role="img" aria-label="Meshtrike roadmap. Now: field testing. Next: first signed release. Then: community servers run by volunteers, then offline maps and a security audit. Later: iPhone app, group calls, disguise bridges.">
+  <defs>
+    <radialGradient id="glow" cx="15%" cy="0%" r="70%">
+      <stop offset="0" stop-color="#CDF25C" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#CDF25C" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1400" height="560" rx="28" fill="#15171C"/>
+  <rect width="1400" height="560" rx="28" fill="url(#glow)"/>
+
+  <!-- title -->
+  <g transform="translate(64 56)">
+    <rect width="52" height="52" rx="16" fill="#CDF25C"/>
+    <g transform="translate(8 8) scale(1.5)" fill="none" stroke="#15171C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="18" r="2.5"/><path d="M10.8 7.2 6.3 15.8M13.2 7.2l4.5 8.6M7.5 18h9"/>
+    </g>
+  </g>
+  <text x="132" y="96" font-family="Bricolage Grotesque" font-size="40" font-weight="800" letter-spacing="-1" fill="#F6F5F1">Meshtrike roadmap</text>
+  <text x="66" y="150" font-family="Geist" font-size="21" fill="#A3A7B0">Where we are, and what we build next.</text>
+
+  <!-- track -->
+  <path d="M100 238 H1180" stroke="#3A3F4A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M100 238 H235" stroke="#CDF25C" stroke-width="4" stroke-linecap="round"/>
+  <path d="M235 238 H1180" stroke="#CDF25C" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 12" opacity=".5"/>
+  <!-- stages -->
+  <g font-family="Geist">
+    <g transform="translate(100 0)">
+      <circle cx="0" cy="238" r="18" fill="#CDF25C"/><circle cx="0" cy="238" r="30" fill="none" stroke="#CDF25C" stroke-opacity=".35" stroke-width="3"/>
+      <text x="-40" y="306" font-size="16" font-weight="600" letter-spacing="2" fill="#CDF25C">NOW</text>
+      <text x="-40" y="340" font-family="Bricolage Grotesque" font-size="25" font-weight="800" fill="#F6F5F1">Field testing</text>
+      <text x="-40" y="372" font-size="16.5" fill="#A3A7B0">Voice notes, nearby calls,</text>
+      <text x="-40" y="396" font-size="16.5" fill="#A3A7B0">replies, MeshGRID add-on</text>
+    </g>
+    <g transform="translate(370 0)">
+      <circle cx="0" cy="238" r="16" fill="#15171C" stroke="#CDF25C" stroke-width="4"/>
+      <text x="-40" y="306" font-size="16" font-weight="600" letter-spacing="2" fill="#CDF25C">NEXT</text>
+      <text x="-40" y="340" font-family="Bricolage Grotesque" font-size="25" font-weight="800" fill="#F6F5F1">Signed release</text>
+      <text x="-40" y="372" font-size="16.5" fill="#A3A7B0">Release keys, browser check,</text>
+      <text x="-40" y="396" font-size="16.5" fill="#A3A7B0">reproducible builds, F-Droid</text>
+    </g>
+    <g transform="translate(640 0)">
+      <circle cx="0" cy="238" r="16" fill="#15171C" stroke="#CDF25C" stroke-width="4"/>
+      <text x="-40" y="306" font-size="16" font-weight="600" letter-spacing="2" fill="#CDF25C">THEN</text>
+      <text x="-40" y="340" font-family="Bricolage Grotesque" font-size="25" font-weight="800" fill="#F6F5F1">Community servers</text>
+      <text x="-40" y="372" font-size="16.5" fill="#A3A7B0">Run by volunteers, like Tor:</text>
+      <text x="-40" y="396" font-size="16.5" fill="#A3A7B0">mailboxes and bridges</text>
+    </g>
+    <g transform="translate(910 0)">
+      <circle cx="0" cy="238" r="16" fill="#15171C" stroke="#CDF25C" stroke-width="4"/>
+      <text x="-40" y="306" font-size="16" font-weight="600" letter-spacing="2" fill="#CDF25C">THEN</text>
+      <text x="-40" y="340" font-family="Bricolage Grotesque" font-size="25" font-weight="800" fill="#F6F5F1">Offline maps</text>
+      <text x="-40" y="372" font-size="16.5" fill="#A3A7B0">Satellite positioning,</text>
+      <text x="-40" y="396" font-size="16.5" fill="#A3A7B0">OSM maps, security audit</text>
+    </g>
+    <g transform="translate(1180 0)">
+      <circle cx="0" cy="238" r="16" fill="#15171C" stroke="#B9A6FF" stroke-width="4"/>
+      <text x="-40" y="306" font-size="16" font-weight="600" letter-spacing="2" fill="#B9A6FF">LATER</text>
+      <text x="-40" y="340" font-family="Bricolage Grotesque" font-size="25" font-weight="800" fill="#F6F5F1">iPhone app</text>
+      <text x="-40" y="372" font-size="16.5" fill="#A3A7B0">iOS, group calls,</text>
+      <text x="-40" y="396" font-size="16.5" fill="#A3A7B0">disguise bridges</text>
+    </g>
+  </g>
+
+  <!-- footer chips -->
+  <g font-family="Geist" font-size="16" font-weight="600">
+    <g transform="translate(64 470)"><rect width="190" height="40" rx="20" fill="#23262E"/><circle cx="22" cy="20" r="6" fill="#CDF25C"/><text x="38" y="26" fill="#F6F5F1">Shipped / testing</text></g>
+    <g transform="translate(266 470)"><rect width="150" height="40" rx="20" fill="#23262E"/><circle cx="22" cy="20" r="6" fill="none" stroke="#CDF25C" stroke-width="3"/><text x="38" y="26" fill="#F6F5F1">Planned</text></g>
+    <g transform="translate(428 470)"><rect width="170" height="40" rx="20" fill="#23262E"/><circle cx="22" cy="20" r="6" fill="none" stroke="#B9A6FF" stroke-width="3"/><text x="38" y="26" fill="#F6F5F1">Exploring</text></g>
+  </g>
+</svg>

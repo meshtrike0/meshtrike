@@ -1,0 +1,96 @@
+[package]
+name = "mesh-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+license = "Apache-2.0"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+mesh-wire = { path = "../core/wire" }
+mesh-identity = { path = "../core/identity" }
+mesh-discovery = { path = "../core/discovery" }
+mesh-handoff = { path = "../core/handoff" }
+mesh-media = { path = "../core/media" }
+mesh-api = { path = "../core/api" }
+mesh-crypto = { path = "../core/crypto" }
+serde_json = "1"
+
+[workspace]
+
+[profile.release]
+debug = 1
+
+[[bin]]
+name = "envelope"
+path = "fuzz_targets/envelope.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "inner"
+path = "fuzz_targets/inner.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "frames"
+path = "fuzz_targets/frames.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "beacon"
+path = "fuzz_targets/beacon.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "card"
+path = "fuzz_targets/card.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "post"
+path = "fuzz_targets/post.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "handoff"
+path = "fuzz_targets/handoff.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "jpeg"
+path = "fuzz_targets/jpeg.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "lora"
+path = "fuzz_targets/lora.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "engine"
+path = "fuzz_targets/engine.rs"
+test = false
+doc = false
+bench = false
+

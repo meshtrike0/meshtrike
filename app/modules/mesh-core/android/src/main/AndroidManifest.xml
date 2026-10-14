@@ -1,0 +1,57 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+  <!-- Section 18. No INTERNET and no Wi-Fi permission is declared here; release
+       builds strip INTERNET. Wi-Fi Direct runs in the separate Meshtrike Link add-on
+       (plugins/link), which this app reaches over a signature-protected
+       Binder service. Defined here too, so install order does not matter. -->
+  <permission android:name="org.meshtrike.permission.WIFI_LINK" android:label="Meshtrike Link (Wi-Fi Direct)" android:protectionLevel="signature" />
+  <uses-permission android:name="org.meshtrike.permission.WIFI_LINK" />
+  <!-- The internet route runs in the separate Meshtrike Internet add-on. -->
+  <permission android:name="org.meshtrike.permission.NET_LINK" android:label="Meshtrike Internet" android:protectionLevel="signature" />
+  <uses-permission android:name="org.meshtrike.permission.NET_LINK" />
+  <queries>
+    <package android:name="org.meshtrike.link" />
+  </queries>
+  <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" tools:targetApi="s" />
+  <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+  <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="32" />
+  <uses-permission android:name="android.permission.CAMERA" />
+  <!-- Voice notes; asked the first time one is recorded. -->
+  <uses-permission android:name="android.permission.RECORD_AUDIO" />
+  <!-- Nearby calls: ringing, the lock-screen call alert, and the microphone
+       kept on during a call when the screen turns off. -->
+  <uses-permission android:name="android.permission.VIBRATE" />
+  <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
+  <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+  <application>
+    <service
+      android:name="expo.modules.meshcore.RelayService"
+      android:exported="false"
+      android:foregroundServiceType="connectedDevice|microphone" />
+    <!-- Share sheet: a photo the user chose to share, as a short-lived copy. -->
+    <provider
+      android:name="androidx.core.content.FileProvider"
+      android:authorities="${applicationId}.meshshare"
+      android:exported="false"
+      android:grantUriPermissions="true">
+      <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/mesh_share_paths" />
+    </provider>
+    <receiver android:name="expo.modules.meshcore.BootReceiver" android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+      </intent-filter>
+    </receiver>
+  </application>
+</manifest>

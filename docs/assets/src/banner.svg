@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" role="img" aria-label="Meshtrike: talk when the network doesn't">
+  <defs>
+    <radialGradient id="glow" cx="78%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#CDF25C" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#CDF25C" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1280" height="400" rx="28" fill="#15171C"/>
+  <rect width="1280" height="400" rx="28" fill="url(#glow)"/>
+
+  <!-- mesh of phones -->
+  <g transform="translate(70 -10)">
+  <g stroke="#CDF25C" stroke-width="3" stroke-linecap="round" fill="none" opacity=".9">
+    <path d="M880 110 L1010 190 L1150 120 M1010 190 L960 300 L1110 310 M1150 120 L1110 310 M880 110 L960 300" stroke-opacity=".35" stroke-dasharray="2 10"/>
+  </g>
+  <g fill="#15171C" stroke="#CDF25C" stroke-width="3">
+    <circle cx="880" cy="110" r="16"/><circle cx="1010" cy="190" r="22"/><circle cx="1150" cy="120" r="16"/>
+    <circle cx="960" cy="300" r="16"/><circle cx="1110" cy="310" r="16"/>
+  </g>
+  <circle cx="1010" cy="190" r="7" fill="#CDF25C"/>
+  </g>
+
+  <!-- logo -->
+  <g transform="translate(80 92)">
+    <rect width="64" height="64" rx="20" fill="#CDF25C"/>
+    <g transform="translate(8 8) scale(2)" fill="none" stroke="#15171C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="18" r="2.5"/><path d="M10.8 7.2 6.3 15.8M13.2 7.2l4.5 8.6M7.5 18h9"/>
+    </g>
+  </g>
+  <text x="164" y="138" fill="#F6F5F1" font-family="Bricolage Grotesque" font-size="46" font-weight="800" letter-spacing="-1">Meshtrike</text>
+
+  <text x="80" y="232" fill="#F6F5F1" font-family="Bricolage Grotesque" font-size="64" font-weight="800" letter-spacing="-2">Talk when the network doesn’t.</text>
+  <text x="82" y="284" fill="#A3A7B0" font-family="Geist" font-size="26">Messages, voice notes and calls, phone to phone. No internet, no server.</text>
+
+  <g font-family="Geist" font-size="19" font-weight="600">
+    <g transform="translate(82 318)"><rect width="122" height="36" rx="18" fill="#23262E"/><text x="61" y="24" fill="#CDF25C" text-anchor="middle">Bluetooth</text></g>
+    <g transform="translate(216 318)"><rect width="134" height="36" rx="18" fill="#23262E"/><text x="67" y="24" fill="#CDF25C" text-anchor="middle">Wi-Fi Direct</text></g>
+    <g transform="translate(362 318)"><rect width="86" height="36" rx="18" fill="#23262E"/><text x="43" y="24" fill="#CDF25C" text-anchor="middle">LoRa</text></g>
+    <g transform="translate(460 318)"><rect width="150" height="36" rx="18" fill="#23262E"/><text x="75" y="24" fill="#CDF25C" text-anchor="middle">QR handoff</text></g>
+    <g transform="translate(622 318)"><rect width="164" height="36" rx="18" fill="#23262E"/><text x="82" y="24" fill="#B9A6FF" text-anchor="middle">Nym mixnet</text></g>
+  </g>
+</svg>

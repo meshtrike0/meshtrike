@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meshtrike Whitepaper · A voice that can’t be switched off</title>
+<meta name="description" content="How Meshtrike works: an offline, end-to-end encrypted messenger for when networks fail or are shut down. Design principles, routes, security model, responsible use and roadmap.">
+<meta name="theme-color" content="#F6F5F1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/whitepaper.css">
+<script src="js/whitepaper.js" defer></script>
+</head>
+<body>
+<nav class="bar" aria-label="Whitepaper">
+  <a class="bar__home" href="index.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Meshtrike</a>
+  <button class="bar__print" type="button" data-print><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="m7 10 5 5 5-5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>Save as PDF</button>
+</nav>
+
+<main class="sheet">
+  <header class="brand">
+    <span class="brand__tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"></circle><circle cx="5" cy="18" r="2.5"></circle><circle cx="19" cy="18" r="2.5"></circle><path d="M10.8 7.2 6.3 15.8"></path><path d="M13.2 7.2l4.5 8.6"></path><path d="M7.5 18h9"></path></svg></span>
+    <span class="brand__txt"><span class="brand__name">Meshtrike</span><span class="brand__eyebrow">WHITEPAPER · BUILD V11 · OCTOBER 2026</span></span>
+  </header>
+
+  <h1>Meshtrike: a voice that can’t be switched off</h1>
+  <p class="lede">An offline, end-to-end encrypted messenger for the moments when networks fail or are shut down. Phones talk directly to each other and carry sealed messages for one another, so people can keep speaking, and be heard, when it matters most.</p>
+
+  <section class="why keep" aria-labelledby="why">
+    <div class="eyebrow eyebrow--lime" id="why">WHY WE BUILT THIS</div>
+    <p class="why__lead">Meshtrike began as an act of solidarity with the people of India, built by one of them: a young citizen of India.</p>
+    <p>When citizens come together peacefully around a common cause, switching off the internet and silencing their voices is not an answer. We stand united in India’s unity and diversity, and we will not accept silence imposed from above. People’s voices, their photos, and the truth of what they witness deserve to reach the public.</p>
+    <p>The voices of young people cannot be ignored or brushed aside. We are the future of India, and our concerns matter as much as anyone else’s. We stand firmly with the democratic values and fundamental rights that belong to every one of our people.</p>
+    <p>We built Meshtrike so that everyone can still be heard when those in power cut the lines people depend on. It was born in India, but it belongs to anyone, anywhere, who faces oppression or the loss of their right to communicate.</p>
+    <p class="why__close">Use it wisely and with good intentions. It exists to protect people and the truth, never to harm them.</p>
+  </section>
+
+  <h2>1. The problem</h2>
+  <p>Almost every messenger people rely on depends on two things they don’t control: cell towers and company servers. Both can be overloaded, damaged or ordered offline. When that happens during a protest, a disaster or a crackdown, people lose the ability to coordinate, check on each other and document what is happening, at exactly the moment they need it most.</p>
+  <p class="gap">Existing offline tools each solve part of this. Some need special radio hardware for every person. Some only sync between people who are already contacts. Some have had serious, publicly reported security flaws. Meshtrike aims to work on the phone people already carry, reach beyond their immediate contacts, and stay honest about what it can and cannot protect.</p>
+
+  <h2>2. Design principles</h2>
+  <ul class="gap">
+    <li><b>Offline first.</b> Phones talk directly over Bluetooth, Wi-Fi Direct and LoRa. The internet is an optional extra, never a requirement.</li>
+    <li><b>No accounts, no servers.</b> No phone number, no email, no Meshtrike server. Identity is a key pair created on the phone.</li>
+    <li><b>The app never touches the internet.</b> A separate, optional add-on, MeshGRID, handles Wi-Fi Direct and the private internet route.</li>
+    <li><b>Honest states.</b> The app never implies a message was sent while it is still on the phone, and every wait comes with a one-line reason.</li>
+    <li><b>Nothing reveals who talks to whom.</b> The app does not know or store message paths or hop counts.</li>
+    <li><b>Private by design.</b> Notifications carry no names or content, screenshots are blocked, and received media is never shown from the original file.</li>
+  </ul>
+
+  <h2>3. How it works</h2>
+  <h3>Identity and trust</h3>
+  <p>Keys are generated on the phone and never leave it. The local database is sealed with a 6-digit PIN, which is deliberately stretched so guessing is slow. An optional duress PIN silently wipes everything and shows a fresh install.</p>
+  <p>Contacts are added in person by scanning each other’s QR code, which expires after two minutes. Every contact carries a trust state shown with an icon and words, never color alone:</p>
+  <table>
+    <thead><tr><th>State</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td class="strong good">Verified</td><td>Met in person and scanned each other’s code.</td></tr>
+      <tr><td class="strong">Not verified</td><td>Met through a public channel. Photos are hidden until tapped.</td></tr>
+      <tr><td class="strong bad">Key changed</td><td>A new key appeared under a known name. Sending pauses until you re-pair in person.</td></tr>
+    </tbody>
+  </table>
+  <p>Each conversation also has a 30-digit safety number, shown in groups of five so two people can read it aloud and confirm nobody sits between them.</p>
+
+  <h3>Routes</h3>
+  <p>Under every contact’s name, a live “route pill” shows how the next message will travel. When several routes work, the higher row wins.</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Route</th><th>Range and speed</th><th>When it’s used</th></tr></thead>
+    <tbody>
+      <tr><td class="strong">Nearby · Bluetooth</td><td>10–30 m · text instant, photos in seconds</td><td>You are close to each other</td></tr>
+      <tr><td class="strong">Nearby · Wi-Fi Direct</td><td>50–100 m · 10–50× Bluetooth</td><td>Large photos and files between nearby phones</td></tr>
+      <tr><td class="strong">Long range · LoRa</td><td>Kilometres · short text only</td><td>A small LoRa radio is paired to the phone</td></tr>
+      <tr><td class="strong">Internet · private route</td><td>Worldwide · text in seconds, files in minutes</td><td>Both people have the route on, through the Nym mixnet</td></tr>
+      <tr><td class="strong">Carried by the mesh</td><td>Grows as people move · minutes to hours</td><td>Other phones are nearby, but not theirs</td></tr>
+      <tr><td class="strong">Camera handoff</td><td>Arm’s length · about 1 MB in 2–3 minutes</td><td>Radio is jammed; phones exchange moving QR codes</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Store and forward</h3>
+  <p>When the recipient isn’t in range, nearby Meshtrike phones carry the message for them. Relays hold only sealed data they can’t read and can’t attribute. Carried messages expire after 24 hours (72 at most) or when delivered, and each phone carries at most 2,000 messages or 50 MB for others.</p>
+
+  <h3>Delivery states</h3>
+  <p>A clock means the message is still on your phone. One tick means it left. Two ticks mean the other phone confirmed it, and a stronger double tick means it was read, if they share read receipts. Messages that expire before arriving are marked “Not delivered” with a Retry option. A delivery timeline shows each step.</p>
+
+  <h3>The internet route and MeshGRID</h3>
+  <p class="gap">Meshtrike itself never connects to the internet. The optional MeshGRID add-on provides Wi-Fi Direct and a route through the Nym mixnet, which hides who talks to whom and when. Anyone watching the network can see that the mixnet is in use, but not who is talking. Bridges can disguise the connection as ordinary web traffic. MeshGRID only ever receives messages that Meshtrike has already sealed.</p>
+
+  <h2>4. What people can do with it</h2>
+  <ul class="gap">
+    <li>One-to-one chats, groups of up to 50, and public channels where each person posts under a different random name.</li>
+    <li>Photos (resized, metadata stripped) and files up to 5 MB, saved but never opened inside the app.</li>
+    <li>Voice notes of up to 5 minutes, at about 120 KB per minute so they travel well over Bluetooth and the mesh.</li>
+    <li>Nearby voice calls over Bluetooth or Wi-Fi Direct, with fresh keys for every call.</li>
+    <li>Swipe to reply, with the quote sealed inside the message.</li>
+    <li>Disappearing messages from 5 minutes to 4 weeks, and “send later” or “hold until I release it”.</li>
+  </ul>
+
+  <h2>5. Security model</h2>
+  <p>Protection is layered so that one failure doesn’t expose everything: on the phone (sealed database, duress PIN, panic wipe, blocked screenshots), in the message (sealed end to end, fresh call keys, disappearing timers), on the network (opaque relays, no stored paths, optional mixnet) and in identity (in-person verification, safety numbers, key-change blocking).</p>
+  <div class="box box--good keep">
+    <div class="box__t">It is built to protect against</div>
+    <p>Network shutdowns and overloaded towers · relays and strangers reading messages · a server being hacked or subpoenaed, because none exists · impersonation of a contact verified in person · being forced to unlock, through the duress PIN.</p>
+  </div>
+  <div class="box box--warn keep">
+    <div class="box__t">What it cannot do</div>
+    <p>It cannot stop malware already on a phone, someone photographing an unlocked screen with another camera, or contacts who choose to share what they receive. Above all, a phone that is transmitting can be located by someone nearby with the right radio equipment. In high-risk situations, plan with that in mind.</p>
+  </div>
+  <p class="gap"><b>High-Risk mode</b> tightens everything with one switch: constant cover traffic, text only, LoRa and Wi-Fi off, no internet route, 24-hour disappearing messages and an instant lock. Calls are disabled in this mode, because a call keeps the radio transmitting the whole time.</p>
+
+  <h2>6. Getting the real app</h2>
+  <p>Meshtrike is meant to spread from phone to phone, often when there is no internet to check anything. That makes fake copies a real risk, so every release can be verified the way Tor Browser’s can, with several independent checks:</p>
+  <ul>
+    <li><b>One signing key.</b> Meshtrike and MeshGRID are signed with a single private release key that never leaves the team and is never stored online. Android refuses any update not signed with it, and Meshtrike refuses a MeshGRID signed with anything else.</li>
+    <li><b>A published fingerprint.</b> The key’s SHA-256 fingerprint is printed below, on the website, in every release and in the source repository. Any genuine copy, however it reached you, shows the same value. The verify page checks an APK right in the browser, on a phone or a computer, without uploading it: it re-checks the signature the way Android does and compares the fingerprint.</li>
+    <li><b>Signed checksums.</b> Each release lists the SHA-256 hash of every APK in a file signed twice, with an OpenPGP key (the format Tor uses) and with an independent minisign key. Forging a release would mean stealing both.</li>
+    <li><b>Open code.</b> The source is public under the Apache-2.0 license, so anyone can check what the app does. Reproducible builds, where anyone can rebuild an identical APK from that code, are planned next.</li>
+  </ul>
+  <div class="box box--good keep">
+    <div class="box__t">Official fingerprints</div>
+    <p>APK signing certificate (SHA-256): <span class="mono" data-fp="android">AB:09:7B:F4:3C:9B:63:0F:06:67:02:E0:61:9A:60:43:05:13:6A:D2:D6:4B:AA:38:E7:62:2F:AF:17:09:AD:3E</span><br>OpenPGP release key: <span class="mono" data-fp="openpgp">79E2 783E D581 74B7 3393 FE0F 79A5 F1F0 4F2D EA99</span><br>minisign public key: <span class="mono" data-fp="minisign">RWSC18AkPYb7l9TWSVy8CzBHwL/ZqkM7aXeAqeLlLHhsKDeoAaiZ463t</span></p>
+  </div>
+  <p class="gap">To check a copy, open meshtrike0.github.io/verify.html and pick the APK; it answers REAL or NOT REAL. On a computer, <span class="mono">sh verify.sh meshtrike.apk</span> does the same in one command. If anything does not match, do not install the app, and do not pass it on.</p>
+
+  <section class="use keep" aria-labelledby="use">
+    <div class="eyebrow eyebrow--olive" id="use">7. RESPONSIBLE USE</div>
+    <p class="use__lead">Meshtrike is a tool for protecting people and the truth.</p>
+    <p>Because there are no servers and no accounts, no one, including us, can read, moderate or remove what people send. That freedom comes with responsibility. Use Meshtrike to stay safe, to stay together and to bear witness.</p>
+    <p class="use__close">Do not use it to harm, harass, deceive or incite violence against anyone.</p>
+  </section>
+
+  <h2>8. Status and roadmap</h2>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Stage</th><th>Includes</th></tr></thead>
+    <tbody>
+      <tr><td class="strong">Shipped · v1.0.0</td><td>Mesh messaging, routes and route pill, delivery states, groups, public channels, photos and files, photo viewer, QR handoff, internet route via MeshGRID, High-Risk mode</td></tr>
+      <tr><td class="strong">Built, in field testing</td><td>Swipe to reply, voice notes, nearby voice calls over Bluetooth and Wi-Fi Direct</td></tr>
+      <tr><td class="strong">Next</td><td>First signed public release, verification in the browser, reproducible builds, F-Droid</td></tr>
+      <tr><td class="strong">Then</td><td>Community servers run by volunteers (below); offline maps with satellite positioning (below); independent security audit</td></tr>
+      <tr><td class="strong">Later</td><td>iPhone app, group calls, disguise bridges</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Roadmap: community servers run by volunteers</h3>
+  <p class="gap">Meshtrike needs no servers, and it always will. But when any phone in a mesh reaches the internet, servers run by volunteers, the way Tor relies on relays run by its community, can carry sealed messages much further: as <b>mailboxes</b> that hold messages for phones that are offline, as <b>bridges</b> between separate meshes in different towns or countries, and later as <b>disguise bridges</b> where the private internet route is blocked. They only ever handle sealed envelopes, so they learn no contents, no contacts and nothing about who talks to whom, and no phone depends on any one server. Running one will take a single small program, with a public list of servers signed by the team.</p>
+
+  <h3>Roadmap: maps that keep working through a shutdown</h3>
+  <p>When the internet is cut, online maps stop working with it: Google Maps and similar apps need servers to draw the map, search places and plan routes. People are left without a way to find each other, a meeting point, a hospital or a safe way out. Meshtrike plans a map that needs none of that.</p>
+  <ul>
+    <li><b>Position straight from the satellites.</b> Phones carry a satellite-navigation receiver that listens directly to several constellations at once: GPS, Galileo, GLONASS, BeiDou and, in India, NavIC. Reception needs no internet, no cell tower and no account. The receiver only listens; it sends nothing. Working out your own position therefore reveals nothing to anyone.</li>
+    <li><b>Open maps, stored on the phone.</b> Map data comes from OpenStreetMap, the open, community-made map of the world. Compact regional extracts are saved on the phone ahead of time and drawn on the device with open-source map rendering. Nothing about where you look is ever requested from a server.</li>
+    <li><b>Maps that travel like messages.</b> A region can be downloaded through MeshGRID while the internet works, or passed from phone to phone over Wi-Fi Direct when it doesn’t, so one prepared phone can equip a whole group.</li>
+    <li><b>Share a place, not a trail.</b> A pin or a meeting point is sent as an ordinary sealed message, with the same disappearing timers. Live location is opt-in, limited in time, and shown to the people you choose. In High-Risk mode, location sharing is off.</li>
+  </ul>
+  <div class="box box--warn keep">
+    <div class="box__t">Honest limits</div>
+    <p>Satellite signals can be jammed or faked in some conflict areas. Meshtrike will compare constellations and show how certain a position is, and warn when signals look wrong. Without internet assistance, the first fix can take a few minutes, and maps must be on the phone before they are needed. A position is also only as private as what you choose to send: sharing it hands it to the people you send it to.</p>
+  </div>
+  <div class="gap"></div>
+
+  <h2>9. Closing</h2>
+  <p>A shutdown can switch off a network. It cannot switch off people standing next to each other. Meshtrike turns that simple fact into a way to keep talking, keep each other safe and keep the record of what happened, wherever voices are being silenced.</p>
+  <p class="sign">From India, for everyone.</p>
+
+  <footer class="foot"><span>Meshtrike Whitepaper</span><span>v1.0.0 · October 2026</span></footer>
+</main>
+</body>
+</html>

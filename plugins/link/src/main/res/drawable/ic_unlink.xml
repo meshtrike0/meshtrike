@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated from the MeshGRID design's icon paths (24-unit grid). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+    <path android:pathData="m18.84 12.25 1.72-1.71h-.02a5 5 0 0 0-7.07-7.07l-1.72 1.71" android:fillColor="#00000000" android:strokeColor="#FF000000"
+        android:strokeWidth="1.9" android:strokeLineCap="round" android:strokeLineJoin="round" />
+    <path android:pathData="m5.17 11.75-1.71 1.71a5 5 0 0 0 7.07 7.07l1.71-1.71" android:fillColor="#00000000" android:strokeColor="#FF000000"
+        android:strokeWidth="1.9" android:strokeLineCap="round" android:strokeLineJoin="round" />
+    <path android:pathData="M8 2v3" android:fillColor="#00000000" android:strokeColor="#FF000000"
+        android:strokeWidth="1.9" android:strokeLineCap="round" android:strokeLineJoin="round" />
+    <path android:pathData="M2 8h3" android:fillColor="#00000000" android:strokeColor="#FF000000"
+        android:strokeWidth="1.9" android:strokeLineCap="round" android:strokeLineJoin="round" />
+    <path android:pathData="M16 22v-3" android:fillColor="#00000000" android:strokeColor="#FF000000"
+        android:strokeWidth="1.9" android:strokeLineCap="round" android:strokeLineJoin="round" />
+    <path android:pathData="M22 16h-3" android:fillColor="#00000000" android:strokeColor="#FF000000"
+        android:strokeWidth="1.9" android:strokeLineCap="round" android:strokeLineJoin="round" />
+</vector>

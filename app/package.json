@@ -1,0 +1,41 @@
+{
+  "name": "meshtrike",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "dependencies": {
+    "@expo-google-fonts/bricolage-grotesque": "^0.4.1",
+    "@expo-google-fonts/geist": "^0.4.2",
+    "@expo-google-fonts/geist-mono": "^0.4.3",
+    "@expo/metro-runtime": "~57.0.16",
+    "expo": "~57.0.27",
+    "expo-build-properties": "~57.0.22",
+    "expo-file-system": "~57.0.7",
+    "expo-image-manipulator": "~57.0.21",
+    "expo-image-picker": "~57.0.20",
+    "expo-status-bar": "~57.0.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-svg": "15.15.4",
+    "react-native-web": "^0.21.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@types/react": "~19.2.2",
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~57.0.2",
+    "typescript": "~6.0.3"
+  },
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "build:core": "cd .. && export PATH=$HOME/.cargo/bin:$PATH && cargo build -p mesh-wasm --target wasm32-unknown-unknown --release && wasm-bindgen --target no-modules --no-typescript --out-dir app/public/mesh-core target/wasm32-unknown-unknown/release/mesh_wasm.wasm",
+    "typecheck": "tsc --noEmit",
+    "lint": "expo lint"
+  },
+  "private": true,
+  "license": "Apache-2.0"
+}

@@ -1,0 +1,42 @@
+This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
+
+## Expo has changed — do not trust your training data
+
+Expo ships breaking changes every SDK release. APIs you remember are likely renamed, moved, or removed. Before writing any code that touches an Expo, EAS, or React Native API:
+
+1. Read the major version of the `expo` package in `package.json`.
+2. Fetch the matching versioned docs: `https://docs.expo.dev/versions/v<major>.0.0/`
+3. For anything else, fetch https://docs.expo.dev/llms.txt — an index of all Expo docs with corrections to common LLM misconceptions. Follow its links to the specific page you need; never answer from memory.
+
+## Commands
+
+Use `bunx` instead of `npx` if the project uses bun (`bun.lock` present).
+
+```bash
+npx expo install <package>  # ALWAYS use instead of npm/yarn/pnpm/bun add — resolves SDK-compatible versions
+npx expo start              # start the dev server
+npx expo lint               # lint
+npx tsc --noEmit            # typecheck
+npx expo-doctor             # diagnose dependency and config issues
+npx expo install --fix      # fix incompatible package versions
+```
+
+Run lint and typecheck before declaring any task done.
+
+## Navigation & Routing (project-specific)
+
+- This app does **not** use Expo Router. The browser harness renders several independent phones on one page, and URL-based routing cannot hold a separate stack per phone. Each phone's navigation is an in-memory stack in `src/ui/state.tsx` (`push` / `pop` / `reset`, `Route` union); screens are switched in `src/ui/MeshApp.tsx`.
+- All core access goes through `CoreClient` (`src/core/client.ts`): WASM in the harness (`src/harness`), the `MeshCore` Expo module on Android (`src/native`).
+- Received images are only ever drawn from raw RGBA (`RgbaView`); never pass received bytes to `<Image>`.
+- No network, analytics or OTA packages (`ci/check-telemetry.sh`); release builds strip INTERNET (`plugins/withMeshtrike.js`). The chat app never gets INTERNET or any Wi-Fi permission and contains no socket code. All networking lives in the single Meshtrike Link add-on (`../plugins/link`): Wi-Fi Direct (group setup and the TCP socket, plain Java) and the internet route (Rust Nym client behind Xray VLESS+REALITY, `native/` plus `libs/libXray.aar`). The app reaches it over signature-protected Binder services that hand back Unix socket pairs (`WifiDirectTransport.kt`, `InternetTransport.kt`). The add-on never discovers peers and never sees keys, plaintext or the core's link auth token. `ci/check-release-manifest.sh` enforces all of this.
+
+## Building with EAS
+
+Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli <command>` in Bun projects, or `npx eas-cli@latest <command>` otherwise; substitute that for bare `eas` in docs examples.
+Docs: https://docs.expo.dev/eas/index.md
+
+## Rules
+
+- If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
+- Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
+- Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md

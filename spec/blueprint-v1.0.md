@@ -1,0 +1,1013 @@
+# Offline Mesh Messenger — Technical Blueprint v1.0
+
+Oct 10, 2026 · @MeshMan
+
+## 1. What we are building
+
+We are building a mobile messaging app for iOS and Android that sends end-to-end encrypted messages between nearby phones with no internet, no cellular service, and no servers. Messages hop phone to phone over Bluetooth, use Wi-Fi peer-to-peer for files, and can optionally reach several kilometres through an external LoRa radio.
+
+This document is the master specification for version 1.0. Every decision in it is locked; where a choice had alternatives, the chosen option and the reason are in the decision log (section 24). Changes require a new entry in that log before code changes. Where this document uses MUST, SHOULD, and MAY, they carry their RFC 2119 meanings.
+
+**Version 1.0 delivers:**
+
+- Account-free onboarding: keys created on the phone, no phone number, email, or internet.
+- Contact pairing in person by QR code (verified) or remotely from a public channel (unverified, upgradeable).
+- One-to-one encrypted chat with text, images (up to 256 KB after re-encoding), and files (up to 5 MB, direct neighbours only above 256 KB).
+- Encrypted groups of up to 50 members.
+- Public local channels anyone nearby can read and post to under a per-channel pseudonym.
+- Multi-hop relay over Bluetooth Low Energy, up to 7 hops, with store-and-forward for up to 72 hours.
+- Wi-Fi peer-to-peer acceleration between iPhones and between Android phones.
+- Short text over an external Meshtastic-compatible LoRa radio.
+- Offline QR handoff: phone-to-phone message transfer by camera when radio is jammed.
+- Countermeasure modes: Community mode (no fixed app fingerprint), Listen-only mode, delayed send, and High-Risk mode with cover traffic.
+- Hardening against spyware: Rust-only media decoding, no link previews, app lock with duress PIN, device integrity warnings.
+- Encrypted local storage, disappearing messages, and panic wipe.
+- Android app with no INTERNET permission; iOS app with no networking code.
+
+**Not in version 1.0 (deferred, see section 24):** voice and video calls, audio and video messages, internet bridging, desktop apps, groups over 50, NFC transfer, post-quantum key exchange, MLS groups, and the external secure-terminal device.
+
+## 2. Threat model
+
+The app fully protects message content and who-talks-to-whom from nearby attackers, and reduces (but cannot eliminate) the reach of area-wide radio surveillance, jamming, and spyware.
+
+| Adversary | Capability | Protection level | Main defences (section) |
+| --- | --- | --- | --- |
+| Passive local observer | Captures all radio traffic within range | Defended | Two-layer encryption, rotating IDs, padding (5, 6, 7) |
+| Active local attacker | Impersonates, intercepts, replays, floods | Defended | Noise handshakes, QR verification, rate limits, proof-of-work (6, 8) |
+| Malicious relay | Runs modified app, drops or inspects relayed packets | Defended for content; drops cause delay | Sealed envelopes, multi-path epidemic routing (7, 8) |
+| Device seizure (locked) | Holds a locked phone | Defended | Hardware-wrapped keys, app lock, duress PIN, panic wipe (10, 12.3) |
+| Internet shutdown | Cuts all infrastructure | Defended | Fully offline design (1) |
+| Area-wide RF surveillance | Sensors across an area locate and fingerprint radios | Reduced | Community mode, Listen-only mode, transmit-power control, delayed send, LoRa off in High-Risk (12.1) |
+| Jamming | Floods radio bands with noise | Reduced | Multi-band transports, store-and-forward, interference detection, QR handoff (12.2) |
+| Compromised OS (spyware) | Code running with OS privileges | Reduced | Rust-only media decoding, minimal storage, authenticated key use, integrity warnings (12.3) |
+| Global correlation over hours | Many sensors plus traffic correlation | Not defended | Documented limitation (23) |
+| Wideband high-power jammer at close range | Blocks all radio bands | Not defended | QR handoff still works; documented (23) |
+| Persistent kernel-level spyware on an unlocked phone | Reads screen and memory | Not defended | Documented limitation (23) |
+
+**Security goals:**
+
+1. Only the intended recipients can read a message.
+2. Relays cannot learn the sender or recipient of a private message.
+3. A passive observer cannot link a phone's broadcasts across ID rotation periods.
+4. Stealing a long-term key does not reveal past messages (forward secrecy).
+5. Sessions heal after a temporary key compromise (post-compromise security).
+6. In Community mode, an observer without the community key cannot tell that a phone runs the app from its Bluetooth advertising.
+7. Messages remain deliverable through temporary jamming, by store-and-forward or QR handoff.
+8. Malformed or hostile message content cannot reach OS media or text-rendering code.
+
+## 3. System architecture
+
+The app has four layers, and only the shared Rust core ever handles keys or plaintext.
+
+&#91;embedded content: system architecture · 4 layers, 8 core modules\]
+
+Sending runs top to bottom; receiving runs the same path in reverse. The native apps only drive the UI and the platform radio APIs.
+
+## 4. Identity and keys
+
+Each user is an Olm account (vodozemac) plus a few extra keys, all created on the phone at first launch from the OS secure random generator (`SecRandomCopyBytes` on iOS, `SecureRandom` on Android, passed into the Rust core). Secret keys never leave the Rust core in plaintext and are zeroised in memory after use (`zeroize` crate).
+
+| Key | Algorithm | Lifetime | Purpose |
+| --- | --- | --- | --- |
+| Identity signing key | Ed25519 (Olm account) | Permanent | User identity; signs contact cards and key bindings |
+| Identity DH key | Curve25519 (Olm account) | Permanent | Olm session establishment |
+| Noise static key | X25519, separate from Olm keys | Permanent | Noise IK/XX contact-exchange handshakes; bound to identity by an Ed25519 signature |
+| One-time keys | Curve25519 (Olm) | Single use; pool of 50 kept generated | First Olm message from a contact |
+| Fallback key | Curve25519 (Olm) | Rotated every 7 days | Used when a contact has no unused one-time key |
+| Presence key | 32 random bytes | Rotated when a contact is removed | Shared with contacts so they recognise your beacon (5) |
+| Tag seed | 32 random bytes | One per pairing | Combined with the contact's seed to derive the pairwise tag key |
+| Pairwise tag key | HKDF-SHA256 of both tag seeds, sorted, info "tag-v1" | Per contact | Computes recipient tags (7) |
+| Community key | 32 random bytes | Until the community is deleted | Derives rotating service UUIDs in Community mode (12.1) |
+| Channel pseudonym key | Ed25519 | Per channel joined | Signs public channel posts |
+| Megolm session keys | Megolm (vodozemac) | Rotated per section 6 | Group encryption |
+| Database keys | 256-bit random, one per store | Permanent, rewrappable | Encrypt the two local databases (10) |
+
+**Safety number.** For a pair of users: SHA-512 over the two Ed25519 identity keys sorted byte-wise, first 30 bytes, each 5-byte chunk rendered as a 5-digit decimal (value mod 100000). Shown as 6 groups of 5 digits; identical on both phones.
+
+**Contact card.** Sent only inside an encrypted Noise handshake, never in a QR code or in the clear. Fixed binary layout:
+
+| Field | Bytes | Contents |
+| --- | --- | --- |
+| Version | 1 | 0x01 |
+| Identity signing key | 32 | Ed25519 public |
+| Identity DH key | 32 | Curve25519 public |
+| Noise static key | 32 | X25519 public |
+| Binding signature | 64 | Ed25519 over (identity DH key ‖ Noise static key) |
+| Fallback key | 32 + 64 | Curve25519 public + Ed25519 signature |
+| One-time keys | 1 + 10 × 32 | Count, then up to 10 Curve25519 public keys |
+| Presence key | 32 | Sender's current presence key |
+| Tag seed | 32 | Random, fresh for this pairing |
+| Nickname | 1 + up to 32 | Length, then UTF-8 |
+| Card signature | 64 | Ed25519 over all preceding bytes |
+
+A receiver MUST verify both signatures and reject the card on failure.
+
+**Trust states.** Every contact is in one state: Verified (paired by QR in person, or safety number confirmed), Unverified (paired remotely), or Key changed (a new identity key appeared for a known nickname or pairing; sending is blocked until the user re-pairs). Pairing flows are specified in section 15.
+
+**Nickname:** 1–32 bytes of UTF-8, chosen by the user, never broadcast in the clear, sent only inside contact cards. Nicknames are not unique; contacts are identified by their identity signing key.
+
+## 5. Private discovery
+
+Phones find each other without broadcasting anything that stays the same for more than 15 minutes; in Community mode even the app's service UUID rotates.
+
+**Advertising modes.** The user selects one radio mode in Settings; High-Risk mode forces Community mode on if at least one community exists.
+
+| Mode | Advertises | Scans for | Who can find you | Use |
+| --- | --- | --- | --- | --- |
+| Public (default) | Fixed app service UUID `6E4D0001-B5A3-4F39-9C2E-0D5A9F1C7B21` | Fixed UUID plus all community UUIDs | Anyone running the app | Meeting strangers, public channels |
+| Community | Current-epoch UUID of each joined community (max 4), rotating every 2 s | Current and next-epoch UUIDs of joined communities | Members of your communities only | Protests, high-risk groups |
+| Listen-only | Nothing | Same as the previous mode | Nobody; you connect out to others | Minimising emissions (12.1) |
+
+**Community UUID derivation:** UUID = first 16 bytes of HMAC-SHA256(community key, "uuid-v1" ‖ epoch as 8-byte big-endian), with the RFC 4122 version nibble set to 4 and variant bits to 10 so it looks like any random UUID.
+
+No name, key, or user identifier is ever advertised. The OS rotates the Bluetooth MAC address on its own schedule (about every 15 minutes); the app cannot control it.
+
+**Beacon exchange.** When two phones connect, each reads the other's beacon characteristic (GATT read, 40 bytes):
+
+| Field | Size | Contents |
+| --- | --- | --- |
+| Ephemeral ID | 16 bytes | Random; regenerated every 15-minute epoch |
+| Presence tag | 16 bytes | HMAC-SHA256(presence key, epoch ‖ ephemeral ID), truncated |
+| Capabilities | 4 bytes | Bit flags: Wi-Fi P2P, LoRa bridge, relay on, protocol version |
+| Reserved | 4 bytes | Zero; future use |
+
+**Recognition.** The receiving phone checks the presence tag against the presence key of every contact for the current epoch and the epochs either side (allows ±15 minutes clock drift). A match means a known contact is in range; no match looks like random bytes. Cost is one HMAC per contact per new neighbour, under 1 ms for 1,000 contacts.
+
+**Epoch:** floor(Unix time ÷ 900). On each new epoch the phone drops its ephemeral ID and reconnects under a fresh one, so the old and new IDs cannot be linked by a continuous connection.
+
+**Removing a contact:** generate a new presence key and send it to remaining contacts inside their encrypted sessions, so the removed contact can no longer recognise the beacon.
+
+## 6. Encryption: two layers
+
+Every message is encrypted twice: end-to-end between users with Olm or Megolm, and hop-by-hop between neighbouring phones with Noise so sniffers cannot read routing headers. Noise is also used once per contact, to exchange contact cards.
+
+| Purpose | Between | Protocol | Library |
+| --- | --- | --- | --- |
+| Link encryption | Two neighbouring phones | Noise\_NN\_25519\_ChaChaPoly\_BLAKE2s, fresh per connection; rekey every 10,000 frames or 1 hour | `snow` |
+| In-person pairing | Scanner and scanned phone | Noise\_IK\_25519\_ChaChaPoly\_BLAKE2s (scanner knows the static key from the QR) | `snow` |
+| Remote pairing | Two users, possibly many hops apart | Noise\_XX\_25519\_ChaChaPoly\_BLAKE2s | `snow` |
+| One-to-one messages | Two contacts | Olm (Double Ratchet, X3DH-style setup from one-time or fallback key) | `vodozemac` |
+| Group messages | Group members | Megolm, session keys shared over each member's Olm session | `vodozemac` |
+| Channel posts | Anyone in the channel | Signed with channel pseudonym key; encrypted with ChaCha20-Poly1305 under a key derived from the channel name (HKDF, info "chan-v1") | RustCrypto |
+
+**Olm session rules.** After pairing, the contact with the byte-wise lower identity signing key creates the outbound Olm session using one of the other's one-time keys (fallback key if none remain) and immediately sends a Session-init control message. If both sides create sessions anyway, each keeps both and sends with the session that most recently decrypted a message, as Matrix clients do. Each side replenishes its one-time keys at a contact by sending new keys in a control message whenever that contact holds fewer than 5 unused ones.
+
+**Megolm session rules.** The sender of each group creates its own outbound Megolm session and shares the session key with every member over Olm. Rotate the outbound session after 100 messages, after 7 days, or immediately when any member is removed. Group tag keys are distributed with the session key.
+
+**Why public channels use a name-derived key.** Anyone who knows the channel name can read it; the encryption only stops casual capture by people who do not. Users are told channels are public.
+
+**Why the link layer is anonymous.** If phones ran Noise XX with every neighbour, any stranger could connect and collect a phone's static key, which is a permanent tracking ID. Neighbours therefore use NN; a user's identity is only sent during a pairing they chose.
+
+**Why Olm and Megolm.** They are audited (Least Authority, 2022), Apache-2.0 licensed, pure Rust, and tolerate out-of-order delivery, which a partitioned mesh needs. MLS (RFC 9420) needs a consistent order of group changes that a mesh cannot guarantee; it is deferred.
+
+**Message protection rules:**
+
+- Inner plaintext (section 7) padded to 256, 512, 1,024, or 4,096 bytes before encryption (128 bytes for LoRa-eligible messages).
+- Replay blocked by Olm ratchet state, a Megolm (session ID, message index) table, and the 10,000-entry seen-message filter.
+- Messages older than their expiry are rejected even if they decrypt.
+- Any decryption or signature failure drops the message silently and increments a local counter; it is never shown to the user as content.
+- Post-quantum hybrid key exchange is deferred to v2 (section 24).
+
+## 7. Packet format
+
+Every transport carries the same 50-byte envelope header plus a padded ciphertext; the envelope has no sender field, and the whole thing travels inside the link-layer encryption.
+
+| Field | Bytes | Contents |
+| --- | --- | --- |
+| Version | 1 | Protocol version, starts at 0x01 |
+| Type | 1 | 0x01 Direct, 0x02 Group, 0x03 Broadcast, 0x04 Handshake, 0x05 Ack, 0x06 Cover; other values dropped |
+| TTL | 1 | Hops remaining; sender picks a random start of 5–7 to hide its distance |
+| Flags | 1 | Priority (verified contact), fragment present, LoRa-eligible |
+| Message ID | 16 | Random; used for deduplication and acks |
+| Recipient tag | 16 | Direct: HMAC(pairwise key, epoch); Group: HMAC(group key, epoch); Broadcast: channel hash |
+| Expiry | 4 | Unix time rounded to the hour; relays drop after this |
+| Proof-of-work nonce | 8 | Required for Broadcast; zero otherwise |
+| Fragment index / count | 2 | 1 byte each; up to 255 fragments |
+| Payload | 256–4,096 | Padded, encrypted message |
+
+**Recipient tag.** Only the sender and recipient can compute the tag, and it changes every epoch, so relays carry messages without knowing who they are for. Recipients check incoming tags against all their contacts and groups, using the same ±1 epoch window as discovery.
+
+**Broadcast signatures.** Public channel messages add a 64-byte Ed25519 signature from a per-channel pseudonym key, so a user's posts in different channels cannot be linked to each other or to their identity key.
+
+**Fragmentation.** BLE negotiates an ATT MTU of up to 512 bytes; the link layer splits envelopes into frames that fit and reassembles them, discarding incomplete sets after 60 seconds. LoRa frames are limited to about 230 bytes, so LoRa-eligible messages use a special 128-byte payload bucket (text only, about 90 characters); with the 50-byte header the envelope fits one 178-byte frame.
+
+**Encoding:** fixed binary layout, big-endian, no JSON or protobuf on the wire, so every packet of a given bucket is byte-length identical.
+
+**Inner plaintext.** After end-to-end decryption, every payload has this layout before padding (padding = zero bytes after the content; the content length field marks the end):
+
+| Field | Bytes | Contents |
+| --- | --- | --- |
+| Inner type | 1 | See table below |
+| Message UUID | 16 | Random; the same in every chunk of one file |
+| Sent time | 8 | Unix milliseconds, sender clock |
+| Expiry seconds | 4 | Disappearing timer; 0 = conversation default |
+| Chunk index / count | 2 + 2 | 0 / 1 for unchunked content |
+| Content length | 2 | Bytes of content that follow |
+| Content | variable | Depends on inner type |
+
+| Inner type | Code | Content |
+| --- | --- | --- |
+| Text | 0x01 | UTF-8, max 3,500 bytes, plain text only |
+| Image chunk | 0x02 | Baseline JPEG bytes, max 3,900 per chunk |
+| File chunk | 0x03 | First chunk starts with name length (1), UTF-8 name (≤ 64), total size (4); then data |
+| Read receipt | 0x10 | Message UUIDs read, up to 50 |
+| Session init | 0x20 | Empty; first Olm message after pairing |
+| One-time keys | 0x21 | Count (1) + Curve25519 keys (32 each, max 20) |
+| Presence key update | 0x22 | New presence key (32) |
+| Group key share | 0x30 | Group ID (16), Megolm session key, group tag key (32), group name (≤ 64) |
+| Group membership | 0x31 | Group ID (16), action (add/remove/leave), then per member: identity signing key, identity DH key, signed fallback key |
+| Delete for everyone | 0x40 | Message UUID to delete |
+
+Unknown inner types MUST be dropped silently for forward compatibility.
+
+## 8. Routing and relay
+
+The mesh uses epidemic store-and-forward: phones swap summaries of what they carry, recipients pull what is theirs, and relays keep copies until delivery is acknowledged or the message expires.
+
+**Broadcast (public channels).** Probabilistic flooding: a relay rebroadcasts each new message once, with probability set by how many neighbours it has, to avoid a storm in dense crowds.
+
+| Neighbours in range | Rebroadcast probability |
+| --- | --- |
+| 0–3 | 100% |
+| 4–8 | 65% |
+| 9 or more | 35% |
+
+**Direct and group messages.**
+
+1. On connecting, two phones exchange summary vectors: up to 500 pairs of (message ID, recipient tag) each is carrying.
+2. Each phone requests messages whose tag matches one of its contacts or groups, plus messages it lacks and has room to carry.
+3. The recipient decrypts, then sends an encrypted Ack carrying the message ID.
+4. Relays that see the Ack delete their copy and pass the Ack on.
+
+**Relay limits:**
+
+- Store up to 2,000 messages or 50 MB, whichever comes first.
+- Hold each message until its expiry (default 24 hours, maximum 72).
+- Evict in order: expired, then unverified-sender traffic, then oldest.
+- Keep a seen-message filter of 10,000 IDs for 30 minutes to drop duplicates.
+
+**Abuse resistance:**
+
+- Per-neighbour rate limit: 20 packets per second and 50 KB per second.
+- Broadcast proof-of-work: SHA-256 hashcash at 20 bits by default (about 0.5 s on a mid-range phone), raised automatically when broadcast volume spikes.
+- Per-tag quota: no more than 200 stored messages for any one recipient tag, so one target cannot fill relays.
+- Messages flagged priority (sender and recipient are verified contacts) are forwarded and stored first.
+- Neighbours that repeatedly send malformed packets are blocked for 10 minutes. Fake identities cannot be fully stopped without a central authority; priority for verified contacts limits their effect.
+
+**Images and files.** Content is split into 4,096-byte-bucket chunk envelopes sharing one message UUID. Content of 256 KB or less is relayed like any message. Content over 256 KB (files only, up to 5 MB) is sent only with TTL 1 when the recipient is directly connected, and is never stored on relays. The receiver reassembles chunks and discards incomplete sets after 24 hours.
+
+## 9. Transports
+
+Bluetooth Low Energy is the always-on baseline; Wi-Fi peer-to-peer and LoRa are add-ons the transport manager uses when available, all carrying the same envelope.
+
+| Transport | Platforms | Typical range | Usable throughput | Used for |
+| --- | --- | --- | --- | --- |
+| BLE (GATT) | iOS ↔ iOS, Android ↔ Android, iOS ↔ Android | 10–30 m | 10–50 KB/s | All messages, discovery |
+| Multipeer Connectivity (AWDL) | iOS ↔ iOS only | 30–60 m | 1–10 MB/s | Chunk envelopes when payload over 64 KB |
+| Wi-Fi Direct | Android ↔ Android | 30–60 m | 1–10 MB/s | Chunk envelopes when payload over 64 KB |
+| External LoRa radio | Any phone with a paired radio | 1–10+ km line of sight | Under 1 KB/s, duty-cycle limited | LoRa-eligible text only; disabled in High-Risk mode |
+| QR handoff (camera) | Any two phones with cameras | Arm's length | 5–8 KB/s, one direction at a time | Moving stored envelopes when radio is jammed (12.2) |
+
+**Platform rules:**
+
+- **iOS:** CoreBluetooth in both central and peripheral roles, with the `bluetooth-central` and `bluetooth-peripheral` background modes. In the background iOS slows scanning and moves the service UUID to an overflow area, so relay performance drops when the app is not in the foreground; this is documented to users.
+- **Android:** a foreground service of type `connectedDevice` keeps BLE relay running with a persistent notification, required on Android 14 and later.
+- **iOS ↔ Android files:** no shared fast link is guaranteed. in v1.0 all iOS ↔ Android traffic uses BLE, and files over 256 KB between them are sent over a direct BLE connection only.
+
+**LoRa bridge.** The app pairs over Bluetooth with an off-the-shelf Meshtastic-compatible radio (for example a Heltec, LilyGo, or RAK board) and sends envelopes as opaque payloads on a private application port. The radio's own encryption is treated as untrusted; our end-to-end layer does the protection. The bridge runs only on licence-free ISM bands (EU 868 MHz, US 915 MHz and regional equivalents), obeys local duty-cycle limits (1% in the EU 868 MHz band), and is disabled on amateur bands, where encryption is prohibited.
+
+**Transport manager.** For each message it picks the fastest link that reaches the next hop: Wi-Fi peer-to-peer if both phones support the same one and the payload exceeds 64 KB, otherwise BLE, and LoRa only for LoRa-eligible text when no BLE route has delivered within 5 minutes.
+
+**Wi-Fi Aware.** Not used in v1.0. Cross-platform (iOS ↔ Android) traffic always uses BLE. Wi-Fi Aware support is a v1.1 evaluation item (section 24).
+
+**Transmit power.** On Android the BLE advertiser and the LoRa radio use adaptive power (section 12.1). iOS exposes no transmit-power control; this is a documented platform limit.
+
+## 10. Local storage
+
+All data lives in two SQLCipher databases whose keys are wrapped by hardware-held keys that never leave the phone.
+
+| Store | Contents | Unlock requirement (iOS / Android) | Why |
+| --- | --- | --- | --- |
+| Relay store | Sealed envelopes (others' and yours, still encrypted), routing state, tag and presence keys | After first unlock / credential-encrypted storage | Relaying must work in the background with the screen locked |
+| Message store | Your chats, contacts, keys | While unlocked, plus the app PIN (12.3) / StrongBox or TEE key, plus the app PIN | Seized or locked phone cannot open your messages |
+
+**Key wrapping.** Each database has a random 256-bit key. That key is encrypted (wrapped) with a P-256 key generated inside the Secure Enclave on iOS or StrongBox (falling back to TEE) on Android. Keychain items use the `ThisDeviceOnly` access classes, so they are excluded from cloud and device-to-device backups.
+
+**Data minimisation:**
+
+- Disappearing messages: per-chat timer from 5 minutes to 4 weeks; default 1 week.
+- Relay store holds only ciphertext and is wiped of anything past expiry every hour.
+- No analytics, crash reporting, or logs containing identifiers.
+
+**Panic wipe.** A long-press action, or a user-set duress PIN, destroys the wrapping keys and deletes both databases. Destroying the hardware key makes any remaining data unreadable even if flash storage is recovered.
+
+**Limitation:** if the phone is unlocked and the OS is compromised, malware can read what the app can read. This is out of scope (section 2).
+
+## 11. Traffic-analysis resistance
+
+Standard mode makes packets look alike and blurs timing at no battery cost; an opt-in High-Risk mode adds cover traffic for users who accept shorter battery life.
+
+| Measure | Standard mode | High-Risk mode |
+| --- | --- | --- |
+| Fixed-size padding buckets | On | On |
+| Random forwarding delay | 50–500 ms per hop | 0.5–5 s per hop |
+| Random initial TTL (5–7) | On | On |
+| Batching | Off | Send in fixed slots every 2 s |
+| Cover traffic | Off | 1 packet per slot when no real data; real packets replace dummies |
+| Cover traffic while charging | Optional | On |
+| Estimated extra battery use | Under 2% per day | 10–20% per day (to be measured) |
+
+**How cover traffic works.** In High-Risk mode the phone sends exactly one 256-byte packet every 2 seconds to each connected neighbour. If it has a real message, that goes in the slot; otherwise a Cover packet of random bytes goes instead. Cover packets are link-encrypted like everything else, so a sniffer sees the same steady rhythm either way. Neighbours discard Cover packets after link decryption.
+
+**What this does and does not achieve.** These measures stop a nearby observer from telling when a user sends a message or reading message sizes. They do not hide that a phone is running the app, and they do not defeat an adversary who places sensors across a whole area and correlates timing over hours. The app must say this in plain words when users switch on High-Risk mode.
+
+## 12. Countermeasures for high-capability adversaries
+
+These measures reduce, not eliminate, area-wide RF surveillance, jamming, and spyware; each subsection states exactly what remains possible for the attacker.
+
+### 12.1 Area-wide RF surveillance
+
+Goal: emit as little as possible, look like any other Bluetooth device, and separate when and where a message was written from when and where it was sent.
+
+1. **Community mode** (section 5): no fixed app UUID on air. A community is created on one phone (32-byte key) and shared by QR code in person (payload: "MQC1" ‖ key ‖ name). Max 4 communities per phone.
+2. **Listen-only mode:** the phone never advertises. It scans continuously (Android `SCAN_MODE_LOW_POWER`, iOS default), and connects out to a discovered peer only when it has queued envelopes for exchange or at most every 5 minutes for a summary exchange. Each such connection closes within 30 seconds. At least one nearby phone must be advertising for Listen-only phones to reach the mesh; the app shows this.
+3. **Adaptive transmit power (Android BLE, LoRa):** start advertising at `ADVERTISE_TX_POWER_ULTRA_LOW`. If no neighbour connects within 60 seconds, step to `LOW`, then `MEDIUM`. `HIGH` is allowed only in Public mode. Every 5 minutes, step down one level if 3 or more neighbours are heard above −70 dBm. LoRa transmit power defaults to 10 dBm and never exceeds the regional limit.
+4. **Delayed send:** every compose screen offers Send now, In 10 minutes, In 30 minutes, In 2 hours, or Hold until I release. Held messages stay encrypted in the message store and enter the relay path only at release. The app never uses GPS or location.
+5. **High-Risk mode forces:** Community mode (if a community exists), LoRa off, Wi-Fi peer-to-peer off, cover traffic on (section 11), random forwarding delay 0.5–5 s, disappearing-message default 24 hours.
+
+**What remains possible for the attacker:** direction-finding equipment can still locate any phone at the moment it transmits, and can see that some Bluetooth device is active. It cannot read content, learn recipients, or (in Community mode) tell that the device runs this app.
+
+### 12.2 Jamming
+
+Goal: detect interference, keep messages alive through it, and move them by a path radio cannot block.
+
+**Detection.** Every 10 seconds the core records A = Bluetooth advertisements received from any device, and F = failed connection attempts over the last 2 minutes. Baseline = median of A over the last 10 minutes. Interference is suspected when either:
+
+- the phone is stationary (accelerometer magnitude variance below 0.05 m/s² for 60 s), the baseline is at least 10, and A stays below 20% of baseline for 6 consecutive samples; or
+- at least 10 connection attempts in 2 minutes and 70% or more failed.
+
+It clears when A returns above 50% of baseline for 60 seconds. On iOS, detection runs only while the app is in the foreground (duplicate advertisement reporting is unavailable in the background).
+
+**Response when suspected:**
+
+1. Show a banner: "Radio interference likely. Your messages are saved and will send when possible."
+2. Extend the expiry of the user's own queued messages to 72 hours.
+3. Try Wi-Fi peer-to-peer and, if paired and not in High-Risk mode, LoRa.
+4. Offer QR handoff and suggest moving at least 100 m.
+
+**QR handoff.** One phone shows an animated QR stream; the other films it. Swap roles for the reverse direction.
+
+1. Sender builds a bundle: "MQH1" magic, envelope count (4 bytes), total length (4), SHA-256 of the body (32), then envelopes each prefixed with a 2-byte length. Order: own queued messages, then priority envelopes, then newest. Cap 1 MB.
+2. The bundle is encoded with RaptorQ (RFC 6330, `raptorq` crate), symbol size 800 bytes, with 20% repair symbols generated continuously.
+3. Each frame is a QR code (version 20, error correction L, byte mode) holding transfer ID (4 bytes) + RaptorQ packet (4-byte payload ID + 800 bytes). Shown full-screen at maximum brightness, 8 frames per second.
+4. The receiver decodes until RaptorQ completes, checks the SHA-256, and passes every envelope into the normal relay path (tag check, store, forward).
+5. Expected throughput 5–8 KB/s: a full 1 MB bundle in about 2–3 minutes.
+
+Envelopes are already end-to-end encrypted. Someone filming the screen learns only the rotating recipient tags, the same information a relay sees.
+
+The app never transmits in order to interfere with other radios.
+
+**What remains possible for the attacker:** a high-power wideband jammer stops all radio transports within its range. Store-and-forward and QR handoff still move messages; real-time chat stops.
+
+### 12.3 Compromised OS and spyware
+
+Goal: give exploit code nothing complex to attack, store little, require the user's PIN to open messages, and warn on untrustworthy devices.
+
+**Media pipeline (receiver never uses OS codecs):**
+
+- Sender: decode the picked photo with the OS, resize the longest side to 1,600 px, discard all metadata, encode baseline JPEG in Rust (`jpeg-encoder`), stepping quality 80 → 40 until it is 256 KB or less.
+- Receiver: decode only in Rust with `zune-jpeg`. Reject anything that is not baseline JPEG or exceeds 1,600 × 1,600. Hand the UI a raw RGBA buffer. Images from verified contacts display automatically; others require a tap.
+- Files: never opened, previewed, or thumbnailed in the app. "Save to Files" shows a warning; filenames are reduced to letters, digits, `.`, `-`, `_`, max 64 characters.
+
+**Text and UI:**
+
+- Plain text only: no Markdown, HTML, link detection, or link previews.
+- Strip Unicode bidirectional controls (U+202A–U+202E, U+2066–U+2069) before display.
+- No WebView anywhere in the app.
+- Android: `FLAG_SECURE` on every window; `IME_FLAG_NO_PERSONALIZED_LEARNING` on every text field.
+- iOS: blur overlay whenever `UIScreen.isCaptured` is true and when the app moves to the background; in High-Risk mode, autocorrection and spell-check off in message fields.
+- Copied text is local-only and expires after 60 seconds (iOS `localOnly` + `expirationDate`; Android marks it sensitive and clears it).
+
+**App lock and PIN-bound database key:**
+
+- A 6-digit app PIN is mandatory at onboarding.
+- Message-store key = HKDF-SHA256(hardware-unwrapped key ‖ Argon2id(PIN, salt, 64 MiB, 3 iterations, 1 lane)). Without the PIN the message store cannot be opened, even on an unlocked phone.
+- Optional biometric unlock stores the Argon2id output in the keystore behind biometric-only access (iOS `.biometryCurrentSet`, Android `BIOMETRIC_STRONG`).
+- The app locks 5 minutes after going to the background (immediately in High-Risk mode).
+- 10 consecutive wrong PINs trigger panic wipe. The attempt counter is stored in the keychain or keystore.
+- An optional duress PIN performs a silent panic wipe, then shows a freshly installed app.
+
+**Device integrity warnings:**
+
+- Android: at first launch and every 7 days, generate a key with attestation and verify the certificate chain offline against Google's hardware attestation root certificates bundled in the app. If the verified boot state is not Verified or the bootloader is unlocked, show a persistent red warning.
+- iOS: check for common jailbreak indicators (known file paths, writable system locations). On a hit, show a yellow warning that states the check can be bypassed.
+- Warnings never block use; the user decides.
+
+**Recovery and guidance:**
+
+- A "Reset my sessions" action creates new Olm sessions with every contact, rotates all outbound Megolm sessions, and rotates the presence key. Use it after removing suspected spyware.
+- High-Risk onboarding recommends iOS Lockdown Mode, GrapheneOS on supported Pixel phones, a dedicated device, and prompt OS updates.
+
+**What remains possible for the attacker:** spyware with kernel privileges on an unlocked phone with the app open can read the screen and process memory. The planned external secure terminal (section 24) addresses this in v2.
+
+## 13. Core API
+
+The native apps talk to the Rust core only through this UniFFI interface; native code never sees secret keys, and never sees plaintext except what it displays.
+
+**Rules:**
+
+- The core runs as a single actor on its own Tokio runtime; every public method is async and safe to call from any thread.
+- Native code implements three callback interfaces (`TransportHost`, `Keystore`, `EventSink`); the core calls them, never the reverse except through the documented methods.
+- All IDs are 16 random bytes, exposed as `[u8; 16]` wrapped in newtypes.
+- Every fallible method returns `Result<T, CoreError>` (section 19).
+
+```rust
+// ===== Lifecycle =====
+async fn core_open(cfg: CoreConfig, ks: Arc<dyn Keystore>, tx: Arc<dyn TransportHost>,
+                   ev: Arc<dyn EventSink>) -> Result<Core, CoreError>;
+impl Core {
+  async fn has_identity(&self) -> bool;
+  async fn create_identity(&self, nickname: String, pin: String, duress_pin: Option<String>) -> Result<IdentityInfo, CoreError>;
+  async fn unlock(&self, pin: String) -> Result<UnlockResult, CoreError>;   // Ok | WrongPin{remaining} | Wiped
+  async fn unlock_biometric(&self) -> Result<UnlockResult, CoreError>;
+  async fn lock(&self);
+  async fn panic_wipe(&self);
+
+  // ===== Contacts and pairing (section 15) =====
+  async fn pairing_qr(&self) -> Result<Vec<u8>, CoreError>;               // 97-byte payload, valid 120 s
+  async fn pair_from_qr(&self, payload: Vec<u8>) -> Result<PairingId, CoreError>;
+  async fn pair_from_post(&self, post: MessageId) -> Result<PairingId, CoreError>;
+  async fn contacts(&self) -> Vec<Contact>;
+  async fn safety_number(&self, c: ContactId) -> Result<String, CoreError>;
+  async fn mark_verified(&self, c: ContactId) -> Result<(), CoreError>;
+  async fn remove_contact(&self, c: ContactId) -> Result<(), CoreError>;
+  async fn reset_sessions(&self) -> Result<(), CoreError>;
+
+  // ===== Conversations and messages =====
+  async fn conversations(&self) -> Vec<ConversationSummary>;
+  async fn messages(&self, conv: ConversationId, before: Option<MessageId>, limit: u32) -> Vec<Message>;
+  async fn send_text(&self, conv: ConversationId, text: String, opts: SendOptions) -> Result<MessageId, CoreError>;
+  async fn send_image(&self, conv: ConversationId, rgba: Vec<u8>, w: u32, h: u32, opts: SendOptions) -> Result<MessageId, CoreError>;
+  async fn send_file(&self, conv: ConversationId, name: String, bytes: Vec<u8>, opts: SendOptions) -> Result<MessageId, CoreError>;
+  async fn release_held(&self, m: MessageId) -> Result<(), CoreError>;
+  async fn image_pixels(&self, m: MessageId) -> Result<RgbaImage, CoreError>; // decoded in Rust
+  async fn file_bytes(&self, m: MessageId) -> Result<Vec<u8>, CoreError>;
+  async fn delete_message(&self, m: MessageId, for_everyone: bool) -> Result<(), CoreError>;
+  async fn mark_read(&self, conv: ConversationId) -> Result<(), CoreError>;
+  async fn set_disappearing(&self, conv: ConversationId, secs: u32) -> Result<(), CoreError>;
+
+  // ===== Groups and channels =====
+  async fn create_group(&self, name: String, members: Vec<ContactId>) -> Result<ConversationId, CoreError>;
+  async fn add_members(&self, g: ConversationId, m: Vec<ContactId>) -> Result<(), CoreError>;
+  async fn remove_member(&self, g: ConversationId, m: ContactId) -> Result<(), CoreError>;
+  async fn leave_group(&self, g: ConversationId) -> Result<(), CoreError>;
+  async fn join_channel(&self, name: String) -> Result<ConversationId, CoreError>;
+  async fn leave_channel(&self, ch: ConversationId) -> Result<(), CoreError>;
+
+  // ===== Modes and countermeasures (section 12) =====
+  async fn set_radio_mode(&self, m: RadioMode) -> Result<(), CoreError>;     // Public | Community | ListenOnly
+  async fn set_high_risk(&self, on: bool) -> Result<(), CoreError>;
+  async fn create_community(&self, name: String) -> Result<CommunityId, CoreError>;
+  async fn community_qr(&self, id: CommunityId) -> Result<Vec<u8>, CoreError>;
+  async fn join_community(&self, payload: Vec<u8>) -> Result<CommunityId, CoreError>;
+  async fn leave_community(&self, id: CommunityId) -> Result<(), CoreError>;
+  async fn handoff_start_send(&self) -> Result<HandoffSender, CoreError>;   // next_frame() -> Vec<u8>
+  async fn handoff_start_receive(&self) -> Result<HandoffReceiver, CoreError>; // push_frame(bytes) -> Progress
+  async fn network_status(&self) -> NetworkStatus;
+  async fn integrity_report(&self, attestation_chain: Option<Vec<Vec<u8>>>) -> IntegrityStatus;
+
+  // ===== Callbacks from native transport into core =====
+  async fn on_peer_found(&self, p: PeerHandle, beacon: Vec<u8>, rssi: i16, transport: TransportKind);
+  async fn on_connected(&self, p: PeerHandle, mtu: u16);
+  async fn on_frame(&self, p: PeerHandle, bytes: Vec<u8>);
+  async fn on_disconnected(&self, p: PeerHandle);
+  async fn on_radio_sample(&self, adverts_seen: u32, failed_connects: u32, stationary: bool);
+}
+
+// ===== Implemented by native code =====
+trait TransportHost: Send + Sync {
+  fn start_advertising(&self, service_uuids: Vec<Uuid>, beacon: Vec<u8>, power: TxPower);
+  fn stop_advertising(&self);
+  fn start_scanning(&self, service_uuids: Vec<Uuid>);
+  fn stop_scanning(&self);
+  fn connect(&self, p: PeerHandle, transport: TransportKind);
+  fn send_frame(&self, p: PeerHandle, bytes: Vec<u8>) -> bool;
+  fn disconnect(&self, p: PeerHandle);
+  fn capabilities(&self) -> Capabilities;          // wifi_p2p, lora_paired, tx_power_control
+  fn lora_send(&self, bytes: Vec<u8>) -> bool;
+}
+trait Keystore: Send + Sync {
+  fn wrap(&self, slot: KeySlot, plaintext: Vec<u8>) -> Result<Vec<u8>, KeystoreError>;
+  fn unwrap(&self, slot: KeySlot, wrapped: Vec<u8>) -> Result<Vec<u8>, KeystoreError>;
+  fn store_biometric(&self, secret: Vec<u8>) -> Result<(), KeystoreError>;
+  fn load_biometric(&self) -> Result<Vec<u8>, KeystoreError>;  // shows OS prompt
+  fn counter_get(&self) -> u32; fn counter_set(&self, v: u32);
+  fn destroy_all(&self);
+}
+trait EventSink: Send + Sync {
+  fn message_added(&self, conv: ConversationId, m: Message);
+  fn message_state(&self, m: MessageId, s: DeliveryState);
+  fn contact_changed(&self, c: Contact);
+  fn pairing_result(&self, id: PairingId, r: PairingOutcome);
+  fn network_changed(&self, s: NetworkStatus);
+  fn interference(&self, suspected: bool);
+  fn warning(&self, w: Warning);                  // KeyChanged, ClockSkew, DeviceIntegrity, StorageFull
+  fn locked(&self);
+}
+```
+
+## 14. Database schema
+
+Two SQLCipher 4 databases (`message.db`, `relay.db`), opened with `PRAGMA cipher_page_size = 4096`, `kdf_iter = 1` (the key is already random, so no password stretching), `journal_mode = WAL`, and `secure_delete = ON`. Migrations are numbered and forward-only (section 19). All times are Unix milliseconds; all IDs are 16-byte BLOBs.
+
+```sql
+-- ===== message.db (opened only after PIN unlock) =====
+CREATE TABLE schema_version (version INTEGER NOT NULL);
+CREATE TABLE identity (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  olm_account BLOB NOT NULL,            -- vodozemac pickle, encrypted by SQLCipher
+  noise_static_sk BLOB NOT NULL,
+  noise_binding_sig BLOB NOT NULL,
+  presence_key BLOB NOT NULL,
+  nickname TEXT NOT NULL,
+  created_at INTEGER NOT NULL
+);
+CREATE TABLE contacts (
+  id BLOB PRIMARY KEY,
+  ed25519_pk BLOB NOT NULL UNIQUE,
+  curve25519_pk BLOB NOT NULL,
+  noise_static_pk BLOB NOT NULL,
+  nickname TEXT NOT NULL,
+  trust INTEGER NOT NULL,               -- 0 unverified, 1 verified, 2 key_changed
+  presence_key BLOB NOT NULL,
+  tag_key BLOB NOT NULL,
+  created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL
+);
+CREATE TABLE remote_otks (
+  contact_id BLOB NOT NULL REFERENCES contacts(id) ON DELETE CASCADE,
+  public_key BLOB NOT NULL, is_fallback INTEGER NOT NULL, used INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (contact_id, public_key)
+);
+CREATE TABLE olm_sessions (
+  id BLOB PRIMARY KEY,
+  contact_id BLOB NOT NULL REFERENCES contacts(id) ON DELETE CASCADE,
+  pickle BLOB NOT NULL, last_decrypt_at INTEGER, created_at INTEGER NOT NULL
+);
+CREATE TABLE conversations (
+  id BLOB PRIMARY KEY,
+  kind INTEGER NOT NULL,                -- 0 direct, 1 group, 2 channel
+  contact_id BLOB REFERENCES contacts(id) ON DELETE CASCADE,
+  title TEXT,
+  disappear_secs INTEGER NOT NULL DEFAULT 604800,
+  muted INTEGER NOT NULL DEFAULT 0,
+  last_activity INTEGER NOT NULL
+);
+CREATE TABLE messages (
+  id BLOB PRIMARY KEY,                  -- message UUID from inner plaintext
+  conversation_id BLOB NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
+  outgoing INTEGER NOT NULL,
+  sender_contact_id BLOB REFERENCES contacts(id) ON DELETE SET NULL,
+  sender_pseudonym BLOB,                -- channels only
+  kind INTEGER NOT NULL,                -- 1 text, 2 image, 3 file, 9 system
+  body BLOB,                            -- text UTF-8, image JPEG, or file bytes once complete
+  file_name TEXT, total_size INTEGER,
+  chunks_have INTEGER NOT NULL DEFAULT 1, chunks_total INTEGER NOT NULL DEFAULT 1,
+  state INTEGER NOT NULL,               -- section 15 delivery states
+  release_at INTEGER,                   -- delayed send; NULL = manual hold when state = held
+  sent_at INTEGER NOT NULL, received_at INTEGER,
+  expires_at INTEGER                    -- disappearing deadline
+);
+CREATE INDEX messages_conv_time ON messages(conversation_id, sent_at);
+CREATE INDEX messages_expiry ON messages(expires_at);
+CREATE TABLE message_chunks (
+  message_id BLOB NOT NULL, idx INTEGER NOT NULL, data BLOB NOT NULL,
+  received_at INTEGER NOT NULL, PRIMARY KEY (message_id, idx)
+);
+CREATE TABLE groups (
+  conversation_id BLOB PRIMARY KEY REFERENCES conversations(id) ON DELETE CASCADE,
+  group_id BLOB NOT NULL UNIQUE,
+  tag_key BLOB NOT NULL,
+  outbound_megolm BLOB NOT NULL,        -- pickle
+  outbound_count INTEGER NOT NULL, outbound_created_at INTEGER NOT NULL,
+  created_by_me INTEGER NOT NULL
+);
+CREATE TABLE group_members (
+  group_id BLOB NOT NULL, contact_id BLOB NOT NULL REFERENCES contacts(id) ON DELETE CASCADE,
+  is_admin INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (group_id, contact_id)
+);
+CREATE TABLE inbound_megolm (
+  session_id BLOB PRIMARY KEY, group_id BLOB NOT NULL, sender_contact_id BLOB NOT NULL,
+  pickle BLOB NOT NULL, created_at INTEGER NOT NULL
+);
+CREATE TABLE megolm_seen (session_id BLOB NOT NULL, msg_index INTEGER NOT NULL,
+  PRIMARY KEY (session_id, msg_index));
+CREATE TABLE channels (
+  conversation_id BLOB PRIMARY KEY REFERENCES conversations(id) ON DELETE CASCADE,
+  name TEXT NOT NULL UNIQUE, channel_hash BLOB NOT NULL, pseudonym_sk BLOB NOT NULL
+);
+CREATE TABLE communities (
+  id BLOB PRIMARY KEY, name TEXT NOT NULL, key BLOB NOT NULL, joined_at INTEGER NOT NULL
+);
+CREATE TABLE settings (key TEXT PRIMARY KEY, value BLOB NOT NULL);
+
+-- ===== relay.db (available after first unlock, works while locked) =====
+CREATE TABLE schema_version (version INTEGER NOT NULL);
+CREATE TABLE envelopes (
+  message_id BLOB PRIMARY KEY,
+  type INTEGER NOT NULL, ttl INTEGER NOT NULL, flags INTEGER NOT NULL,
+  recipient_tag BLOB NOT NULL, expiry INTEGER NOT NULL,
+  raw BLOB NOT NULL,                    -- full envelope bytes
+  priority INTEGER NOT NULL, mine INTEGER NOT NULL,
+  for_me INTEGER NOT NULL DEFAULT 0,    -- tag matched; decrypt after unlock
+  received_at INTEGER NOT NULL
+);
+CREATE INDEX envelopes_tag ON envelopes(recipient_tag);
+CREATE INDEX envelopes_evict ON envelopes(priority, received_at);
+CREATE TABLE acks (message_id BLOB PRIMARY KEY, expiry INTEGER NOT NULL);
+CREATE TABLE seen (message_id BLOB PRIMARY KEY, seen_at INTEGER NOT NULL);
+CREATE TABLE own_tag_keys (key BLOB PRIMARY KEY, kind INTEGER NOT NULL);   -- copies of contact and group tag keys
+CREATE TABLE contact_presence (presence_key BLOB PRIMARY KEY);
+CREATE TABLE radio_samples (at INTEGER PRIMARY KEY, adverts INTEGER, failed INTEGER, stationary INTEGER);
+```
+
+`relay.db` deliberately holds copies of tag and presence keys, but no identities or plaintext, so routing and recognition work while the phone is locked. Rows past expiry are deleted by an hourly job in both databases; `radio_samples` keeps only the last 10 minutes.
+
+## 15. Flows and state machines
+
+These flows define exact behaviour for pairing, delivery, trust, and groups; any state not listed here is a bug.
+
+### 15.1 In-person pairing (result: Verified)
+
+1. Bob taps Show my code. The core creates a 16-byte pairing token valid for 120 seconds and returns the 97-byte QR payload: version 0x01 ‖ Bob's identity signing key (32) ‖ Noise static key (32) ‖ token (16) ‖ current ephemeral ID (16).
+2. For those 120 seconds Bob's phone also advertises a pairing UUID = HMAC-SHA256(token, "pair-v1") truncated to 16 bytes (formatted as in section 5), in every radio mode including Listen-only.
+3. Alice scans the QR. Her phone scans for the pairing UUID, connects, and establishes link encryption (Noise\_NN).
+4. Alice runs Noise\_IK to Bob's static key; her first handshake payload is the token followed by her contact card.
+5. Bob's phone checks the token in constant time, verifies Alice's card, and replies with his card in the second handshake message.
+6. Both phones store the other as Verified, derive the pairwise tag key, and the phone with the lower identity key creates the Olm session and sends Session init.
+7. Failure cases: wrong or expired token, bad signature, or no connection within 120 s → `PairingOutcome::Failed(reason)`; nothing is stored.
+
+### 15.2 Remote pairing (result: Unverified)
+
+1. Every channel post's content starts with a 16-byte reply tag, random per post, inside the signed post.
+2. Alice taps Start private chat on Bob's post. Her phone sends a Handshake envelope addressed to that reply tag, carrying Noise\_XX message 1 with payload = a random 16-byte return tag.
+3. Bob sees "Someone in #channel wants to chat" with Accept / Decline. Decline or 30 minutes of no answer discards the request silently.
+4. On Accept, Bob sends XX message 2 to the return tag with his contact card; Alice sends XX message 3 with hers.
+5. Both store the contact as Unverified; steps 6 of 15.1 follow. Comparing safety numbers in person and tapping Mark verified moves the contact to Verified.
+
+### 15.3 Outgoing message states
+
+| State | Code | Entered when | Next states |
+| --- | --- | --- | --- |
+| Held | 0 | Delayed send chosen | Queued (at release time or manual release), Deleted |
+| Queued | 1 | Sent now or released; no neighbour yet | Sent, Failed |
+| Sent | 2 | At least one neighbour accepted the envelope | Delivered, Failed |
+| Delivered | 3 | Ack received from recipient (group: first member Ack) | Read |
+| Read | 4 | Read receipt received (if the recipient has receipts on) | — |
+| Failed | 5 | Expiry passed with no Ack | Queued (user taps Retry, new message ID) |
+
+### 15.4 Incoming messages
+
+1. Envelope arrives; tag matches an own tag key → stored in `relay.db` with `for_me = 1`, Ack sent immediately (Ack needs no plaintext).
+2. When the app is unlocked, the core decrypts all `for_me` envelopes, writes messages to `message.db`, deletes them from `relay.db`, and emits `message_added`.
+3. Disappearing timer starts at the moment the message is first displayed.
+
+### 15.5 Contact trust
+
+| From | Event | To |
+| --- | --- | --- |
+| (none) | In-person pairing | Verified |
+| (none) | Remote pairing | Unverified |
+| Unverified | User confirms safety number | Verified |
+| Verified or Unverified | Pairing produces a different identity key for an existing conversation the user links it to | Key changed |
+| Key changed | User completes in-person pairing again | Verified |
+| Any | User removes contact | Deleted; presence key rotated (section 5) |
+
+### 15.6 Groups
+
+1. Only the creator is admin in v1.0. The creator sends Group key share and Group membership (add) to each member over Olm.
+2. Each member creates its own outbound Megolm session and shares it with every other member over Olm on first send.
+3. Removing a member: the admin sends Group membership (remove) to all remaining members; every member then rotates its outbound Megolm session and shares the new key only with remaining members. The group tag key is rotated the same way.
+4. Any member may leave; leaving is handled as a removal.
+5. Members who are not yet contacts of each other receive each other's identity keys inside the membership message and create Olm sessions using the fallback keys carried there; they appear as Unverified group members, not as contacts.
+
+## 16. Protocol constants
+
+Every tunable number lives in one Rust module (`core/src/constants.rs`) with exactly these values; changing one is a protocol change and needs a decision-log entry.
+
+| Constant | Value | Section |
+| --- | --- | --- |
+| Protocol version | 0x01 | 7 |
+| Epoch length | 900 s | 5 |
+| Epoch tolerance | ±1 epoch | 5, 7 |
+| Beacon size | 40 bytes | 5 |
+| Max communities per phone | 4 | 12.1 |
+| Community UUID rotation on air | every 2 s | 5 |
+| Max hops / random initial TTL | 7 / 5–7 | 7 |
+| Envelope header | 50 bytes | 7 |
+| Inner plaintext header | 35 bytes | 7 |
+| Padding buckets | 256, 512, 1,024, 4,096 bytes; LoRa 128 | 6, 7 |
+| Max text | 3,500 bytes (LoRa: 93 bytes) | 7 |
+| Image limits | 1,600 px longest side, ≤ 256 KB, baseline JPEG | 12.3 |
+| File limit | 5 MB; multi-hop only if ≤ 256 KB | 8 |
+| BLE ATT MTU requested | 512 | 7 |
+| Fragment reassembly timeout | 60 s | 7 |
+| Chunk reassembly timeout | 24 h | 8 |
+| Link rekey | 10,000 frames or 1 h | 6 |
+| Summary vector size | 500 entries | 8 |
+| Rebroadcast probability | 100% (0–3 neighbours), 65% (4–8), 35% (9+) | 8 |
+| Relay store limit | 2,000 envelopes or 50 MB | 8 |
+| Message expiry default / max | 24 h / 72 h | 8 |
+| Per-tag quota | 200 envelopes | 8 |
+| Seen filter | 10,000 IDs, 30 min | 8 |
+| Rate limit per neighbour | 20 packets/s, 50 KB/s | 8 |
+| Malformed-packet block | 10 min after 5 malformed in 1 min | 8 |
+| Broadcast proof-of-work | SHA-256 hashcash, 20 bits; +2 bits per doubling of broadcast rate above 30/min, max 26 | 8 |
+| Forwarding delay | 50–500 ms; High-Risk 0.5–5 s | 11 |
+| Cover traffic slot | 2 s, 256-byte packet | 11 |
+| Local one-time key pool | 50 | 4 |
+| Min unused OTKs held per contact | 5 (replenish to 10) | 6 |
+| Fallback key rotation | 7 days | 4 |
+| Megolm rotation | 100 messages, 7 days, or member removal | 6 |
+| Max group size | 50 | 1 |
+| In-person pairing window | 120 s | 15.1 |
+| Remote pairing request lifetime | 30 min | 15.2 |
+| Listen-only summary exchange | every 5 min, connection ≤ 30 s | 12.1 |
+| TX power step-up wait | 60 s | 12.1 |
+| TX power step-down rule | every 5 min if ≥ 3 neighbours above −70 dBm | 12.1 |
+| LoRa default TX power | 10 dBm | 12.1 |
+| Interference sample interval | 10 s | 12.2 |
+| Interference trigger | A < 20% of 10-min median for 60 s while stationary; or ≥ 70% of ≥ 10 connects failed in 2 min | 12.2 |
+| Interference clear | A > 50% of median for 60 s | 12.2 |
+| QR handoff | RaptorQ symbol 800 B, QR v20-L, 8 fps, bundle cap 1 MB | 12.2 |
+| App PIN | 6 digits; Argon2id 64 MiB, t = 3, p = 1 | 12.3 |
+| Wrong-PIN wipe | 10 attempts | 12.3 |
+| Auto-lock | 5 min in background; immediate in High-Risk | 12.3 |
+| Clipboard expiry | 60 s | 12.3 |
+| Integrity re-check (Android) | 7 days | 12.3 |
+| Disappearing default | 7 days; High-Risk 24 h | 10, 12.1 |
+| Clock-skew warning | peer epochs differ by ≥ 2 on 3 connections in 10 min | 19 |
+
+## 17. App screens and UX rules
+
+The app has 14 screens with identical structure on iOS (SwiftUI) and Android (Jetpack Compose); visual styling follows each platform's native conventions.
+
+| Screen | Purpose | Key elements |
+| --- | --- | --- |
+| Welcome | First launch | What the app does and does not protect (3 short cards), Continue |
+| Create identity | Onboarding | Nickname field, app PIN (twice), optional duress PIN, optional biometric unlock, Bluetooth and camera permission prompts |
+| Unlock | Every open after auto-lock | PIN pad, biometric button, remaining attempts after 5 failures |
+| Chats | Home | Conversation list, unread counts, mode badge (Public / Community / Listen-only / High-Risk), interference banner, New chat button |
+| Chat | One conversation | Messages with state icons (section 15.3), trust badge in header, composer with send-later menu, image and file attach, disappearing-timer menu |
+| Pair | Add contact | Tabs: Show my code (QR + 120 s countdown) and Scan code; result screen |
+| Contact detail | Manage a contact | Nickname, trust state, safety number (6 groups of 5 digits), Mark verified, Remove |
+| New group | Create group | Name, member picker (contacts only, max 49 others) |
+| Group detail | Manage group | Members with trust badges, Add / Remove (admin), Leave |
+| Channels | Public rooms | Joined channels, Join by name, "Channels are public" notice |
+| Network | Mesh status | Neighbour count, active transports, last delivery time, interference state, LoRa radio status |
+| QR handoff | Jamming fallback | Send / Receive choice, full-screen animated QR or camera view, progress bar |
+| Settings | Configuration | Radio mode, High-Risk toggle, Communities, read receipts, disappearing default, LoRa radio pairing, app lock timeout, duress PIN, Reset my sessions, device integrity status, Panic wipe |
+| About and limits | Honesty page | Plain-language list of known limitations (section 23), version, licences |
+
+**UX rules:**
+
+- Every security state is shown with icon plus text, never colour alone.
+- Key changed blocks the composer and shows a full-width explanation with a Re-pair button.
+- Turning on High-Risk mode shows one screen listing exactly what changes (section 12.1) and what it cannot protect against, with Confirm.
+- Panic wipe requires a 3-second press-and-hold; duress-PIN wipe has no confirmation by design.
+- No notifications show message content or sender names; the text is always "New message".
+- Dynamic Type (iOS) and font scaling (Android) up to 200%; every control has a VoiceOver / TalkBack label.
+- All user-facing strings live in string resources; v1.0 ships in English with right-to-left layout support built in.
+
+## 18. Platform configuration and permissions
+
+The Android app declares no INTERNET permission and the iOS app contains no networking code, so neither can send data off the mesh even if a dependency tried to.
+
+**iOS (deployment target iOS 17):**
+
+| Setting | Value |
+| --- | --- |
+| `NSBluetoothAlwaysUsageDescription` | "Bluetooth connects you to nearby phones to send and relay messages without internet." |
+| `UIBackgroundModes` | `bluetooth-central`, `bluetooth-peripheral` |
+| CoreBluetooth state restoration | Restore identifiers on both central and peripheral managers so iOS relaunches the app for Bluetooth events |
+| `NSCameraUsageDescription` | "The camera scans contact codes and receives messages by QR handoff." |
+| `NSLocalNetworkUsageDescription` + `NSBonjourServices` | Required by Multipeer Connectivity; service type `meshmsg` (`_meshmsg._tcp`, `_meshmsg._udp`) |
+| `NSFaceIDUsageDescription` | "Face ID unlocks the app instead of your PIN." |
+| File protection | `message.db`: `NSFileProtectionComplete`; `relay.db`: `NSFileProtectionCompleteUntilFirstUserAuthentication` |
+| Backups | `isExcludedFromBackup = true` on both databases and all app files |
+| Keychain | `kSecAttrAccessibleWhenUnlockedThisDeviceOnly` for message-store items, `AfterFirstUnlockThisDeviceOnly` for relay-store items |
+
+**Android (minSdk 29, targetSdk = latest required by Google Play at release):**
+
+| Permission / setting | Notes |
+| --- | --- |
+| `BLUETOOTH_SCAN` with `neverForLocation` | API 31+ |
+| `BLUETOOTH_ADVERTISE`, `BLUETOOTH_CONNECT` | API 31+ |
+| `BLUETOOTH`, `BLUETOOTH_ADMIN` | `maxSdkVersion=30` |
+| `ACCESS_FINE_LOCATION` | `maxSdkVersion=32`; the OS requires it for BLE scanning (API 29–30) and Wi-Fi Direct (API 29–32). The app never reads location. |
+| `NEARBY_WIFI_DEVICES` with `neverForLocation` | API 33+, Wi-Fi Direct |
+| `ACCESS_WIFI_STATE`, `CHANGE_WIFI_STATE` | Wi-Fi Direct |
+| `CAMERA` | Pairing and QR handoff |
+| `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_CONNECTED_DEVICE` | Relay service, type `connectedDevice` |
+| `POST_NOTIFICATIONS` | API 33+ |
+| `USE_BIOMETRIC` | Optional biometric unlock |
+| `RECEIVE_BOOT_COMPLETED` | Restart relay service after reboot and first unlock |
+| INTERNET | MUST NOT be declared; CI fails the build if any merged manifest contains it |
+| `android:allowBackup="false"` + `dataExtractionRules` excluding everything | No cloud or device-transfer backup |
+| Storage | `relay.db` in credential-encrypted storage (available after first unlock) |
+
+**Application IDs:** set by the publisher before the first store submission; the code uses a single build constant for it on each platform.
+
+## 19. Errors, logging, versioning, and upgrades
+
+Errors are typed and never leak secrets, logs never leave the phone automatically, and two adjacent protocol versions always interoperate.
+
+**Error type (exposed through UniFFI):**
+
+| `CoreError` variant | Meaning | UI behaviour |
+| --- | --- | --- |
+| `Locked` | Call needs the message store; app is locked | Show Unlock |
+| `NotFound` | ID does not exist | Refresh the view |
+| `InvalidInput(field)` | Text too long, bad QR, oversize file | Inline message naming the limit |
+| `TrustBlocked` | Contact is in Key changed state | Key-changed banner |
+| `StorageFull` | Relay or message store at limit | Banner with Manage storage |
+| `Crypto` | Decryption or signature failure | Never shown per message; counted in Network screen |
+| `Transport(kind)` | Radio unavailable or permission denied | Prompt to enable Bluetooth or grant permission |
+| `Keystore` | Hardware key unavailable | Full-screen error; offer panic wipe and re-setup |
+| `Internal(code)` | Bug | Generic error with code; logged |
+
+**Rules:** the core never panics across the FFI boundary (every exported function wraps `catch_unwind`); error messages never include keys, plaintext, nicknames, or tags.
+
+**Logging:**
+
+- Logs go to an in-memory ring buffer of 500 lines; nothing is written to disk.
+- Log lines never contain IDs, keys, tags, nicknames, or content; peers appear as per-session counters (peer-1, peer-2).
+- Settings → About → Export debug log shows the full text for the user to review before sharing it by any means they choose.
+- No crash reporting, analytics, or telemetry SDKs of any kind; CI fails if a known telemetry package is added.
+
+**Protocol versioning:**
+
+- Version byte in every envelope; capability bits in the beacon advertise supported versions.
+- A release supports its own version and the previous one. Unknown versions are dropped silently.
+- New inner types and new capability bits are allowed without a version bump because unknowns are ignored.
+
+**Database migrations:**
+
+- `schema_version` per database; migrations are numbered Rust functions run in one transaction at open; failure rolls back and shows the `Keystore`-style full-screen error without deleting data.
+- Each migration has a test that opens a fixture database from every earlier release.
+
+**Clock handling:** the device clock is trusted. If 3 peers within 10 minutes report epochs differing by 2 or more, show a warning to check the date and time setting.
+
+## 20. Tech stack and repository
+
+One shared Rust core holds every security-critical part; thin native apps handle radios and UI, so the protocol is written and audited once.
+
+| Layer | Choice (locked) | Notes |
+| --- | --- | --- |
+| Core language | Rust, stable toolchain pinned in `rust-toolchain.toml` | Edition 2021; `#![forbid(unsafe_code)]` in every core crate except FFI glue |
+| Async runtime | `tokio` (current-thread runtime inside the core actor) |  |
+| Native bindings | `uniffi` | Generates Swift and Kotlin |
+| iOS app | Swift 5.10+, SwiftUI, CoreBluetooth, MultipeerConnectivity, AVFoundation (QR), LocalAuthentication | iOS 17+ |
+| Android app | Kotlin, Jetpack Compose, Android BLE APIs, Wi-Fi Direct, CameraX + ML Kit barcode scanning (bundled model, offline), BiometricPrompt | API 29+ |
+| Noise | `snow` |  |
+| Olm and Megolm | `vodozemac` | Apache-2.0, audited |
+| Primitives | `x25519-dalek`, `ed25519-dalek`, `chacha20poly1305`, `blake2`, `sha2`, `hmac`, `hkdf` | RustCrypto / dalek |
+| PIN stretching | `argon2` | Argon2id |
+| Secret hygiene | `zeroize`, `secrecy` |  |
+| Database | `rusqlite` with `bundled-sqlcipher-vendored-openssl` | SQLCipher 4 |
+| Image codecs | `zune-jpeg` (decode), `jpeg-encoder` (encode) | Receiver never uses OS codecs |
+| Fountain code | `raptorq` | QR handoff |
+| QR generation | `qrcode` | Rendered to pixels in Rust |
+| LoRa | Meshtastic protobuf definitions compiled with `prost`; BLE link in native code | Radio is an untrusted pipe |
+| Testing | `proptest`, `cargo-fuzz`, custom simulator, XCTest, JUnit + Espresso |  |
+| Supply chain | `cargo-deny` (licences, advisories, bans), `cargo-vet` | Dependency allow-list |
+
+**Licence:** the project is released under Apache-2.0; every dependency must be compatible (checked by `cargo-deny` and Gradle/SwiftPM licence checks in CI).
+
+```
+mesh-messenger/
+├── core/                     Rust workspace
+│   ├── constants/            every value from section 16
+│   ├── crypto/               Noise wrappers, Olm/Megolm wrappers, padding, tags, safety numbers
+│   ├── identity/             account, contact cards, pairing (15.1, 15.2)
+│   ├── discovery/            beacons, presence tags, epochs, community UUIDs
+│   ├── wire/                 envelope and inner-plaintext encode/decode, fragmentation, chunking
+│   ├── routing/              summary vectors, store-and-forward, acks, rebroadcast
+│   ├── abuse/                rate limits, proof-of-work, quotas, blocklist
+│   ├── countermeasures/      listen-only, TX power, delayed send, interference detector, cover scheduler
+│   ├── handoff/              QR bundle, RaptorQ, frame codec
+│   ├── media/                Rust JPEG encode/decode, filename sanitiser, text sanitiser
+│   ├── storage/              SQLCipher schemas, migrations, expiry jobs, panic wipe
+│   ├── lock/                 PIN, Argon2id, attempt counter, duress
+│   ├── api/                  the Core actor and UniFFI exports (section 13)
+│   └── ffi/                  generated bindings glue
+├── ios/                      Xcode project: app, BLE + Multipeer TransportHost, Keystore (Secure Enclave), UI
+├── android/                  Gradle project: app, BLE + Wi-Fi Direct TransportHost, Keystore (StrongBox/TEE), UI
+├── simulator/                headless multi-node mesh simulator (Rust)
+├── spec/                     this blueprint, Tamarin models, test vectors
+├── fuzz/                     cargo-fuzz targets for every parser
+└── ci/                       pipeline definitions and reproducible-build scripts
+```
+
+## 21. Build, CI, and release
+
+Every merge must pass the full pipeline below; releases are signed with offline keys and the Android build is reproducible.
+
+**On every pull request (must pass to merge):**
+
+1. `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo test` for the whole core.
+2. `cargo deny check` and `cargo vet`.
+3. Each fuzz target runs for 5 minutes on new corpus inputs.
+4. Simulator smoke test: 50 nodes, 1,000 messages, delivery at least 99% within 10 simulated minutes.
+5. iOS: `xcodebuild test` on the latest two iOS simulators.
+6. Android: unit tests plus instrumented tests on API 29 and the latest API emulator.
+7. Manifest check: fail if any merged Android manifest contains INTERNET.
+8. Source check: fail if Swift code references URLSession, Network framework connections, or BSD socket calls (lint rule).
+9. At least one approving review; changes under `crypto/`, `wire/`, `identity/`, `lock/`, or `constants/` need two.
+
+**Nightly:** fuzzing 1 hour per target, simulator at 200 and 1,000 nodes, migration tests against all past fixtures.
+
+**Release:**
+
+- Versioning: SemVer; protocol version changes only on major releases.
+- Android: reproducible build script in `ci/` (pinned NDK, Gradle, Rust toolchain, `SOURCE_DATE_EPOCH`); published SHA-256 of each APK and the signing certificate fingerprint. Distributed through Google Play, F-Droid, and direct APK download.
+- iOS: App Store and TestFlight. Apple's re-signing makes App Store binaries not reproducible; source and exact build instructions are published instead (documented limitation).
+- Signing keys are stored offline on hardware tokens held by two maintainers; release builds need both.
+- Each release ships release notes, the dependency list with versions, and the hashes above.
+
+## 22. Roadmap
+
+Version 1.0 takes about 52 weeks with a team of five: two Rust engineers, one iOS engineer, one Android engineer, and one QA engineer who also runs field tests, plus an external audit firm in phase 5. Each phase must pass its gate before the next starts.
+
+&#91;embedded content: build roadmap · 5 phases, 5 gates\]
+
+Gate criteria are the acceptance thresholds in section 23. Phase 4 includes a red-team exercise: an external tester with an SDR and BLE sniffers attempts to identify app users in Community mode, block delivery by jamming, and exploit the media pipeline with malformed images.
+
+## 23. Verification, acceptance criteria, and known limitations
+
+Version 1.0 ships only when every acceptance criterion below is met, the assurance work is complete, and the limitations are shown in the app.
+
+**Assurance work:**
+
+- [ ] Formal model of the discovery scheme and two-layer handshake in ProVerif or Tamarin, proving goals 1–5 of section 2.
+- [ ] Fuzz targets for every parser: envelope, fragments, beacon, handshake messages, LoRa frames.
+- [ ] Simulator tests at 50, 200, and 1,000 nodes for delivery rate, latency, and broadcast storms.
+- [ ] Field tests in a real crowd of at least 100 phones, mixed iOS and Android.
+- [ ] Battery measurements for Standard and High-Risk modes on at least four reference phones.
+- [ ] Independent cryptographic audit of the Rust core, with the report published.
+- [ ] Open-source release with reproducible builds so anyone can confirm the app matches the code.
+
+**Release acceptance criteria:**
+
+| Area | Criterion | Measured by |
+| --- | --- | --- |
+| Delivery | ≥ 99% of messages delivered within 10 min in a 200-node simulation at walking-speed mobility | Simulator |
+| Delivery | ≥ 95% delivered within 3 hops and 10 min in the 100-phone field test | Field test |
+| Latency | Median one-hop text delivery under 2 s (Standard mode) | Field test |
+| Battery | Standard mode adds under 5% per day; High-Risk adds under 20% per day on reference phones | Battery tests |
+| Broadcast storm | Total airtime stays under 30% in a 1,000-node dense simulation | Simulator |
+| Community mode | Red team cannot distinguish app phones from other BLE devices by advertising alone | Red-team report |
+| Jamming | Messages queued during a 30-min jamming test are delivered within 15 min after it ends; QR handoff moves 1 MB in under 4 min | Field test |
+| Media | 72 hours of fuzzing on the image decoder with zero crashes; malformed images never reach OS codecs | Fuzzing, code review |
+| Crypto | Tamarin model proves goals 1–5; test vectors match an independent implementation | Formal model |
+| Audit | No open critical or high findings | Audit report |
+| Privacy | Android manifest has no INTERNET; no telemetry dependencies | CI |
+| Accessibility | All screens pass VoiceOver and TalkBack walkthroughs at 200% text size | QA |
+
+**Known limitations (shown in-app and in documentation):**
+
+- Radio transmissions can be physically located by direction-finding equipment; countermeasures reduce, not remove, this (12.1).
+- In Public mode, the fixed service UUID reveals that a phone runs the app; Community mode removes this only among community members.
+- A high-power wideband jammer stops all radio transports nearby; only QR handoff and physical movement get messages through (12.2).
+- Kernel-level spyware on an unlocked phone with the app open can read what is on screen (12.3).
+- iOS restricts background Bluetooth, so relaying and Community-mode discovery are weaker when the app is not in the foreground.
+- iOS offers no transmit-power control.
+- Fast file transfer between iPhone and Android is not available in v1.0.
+- A malicious relay can drop messages; it cannot read or alter them.
+- Fake identities can be created freely; trust comes only from in-person verification.
+- Public channels are readable by anyone who knows the channel name.
+- App Store builds cannot be reproduced byte-for-byte.
+
+## 24. Decision log
+
+Every choice with a plausible alternative is recorded here; a change to any of them needs a new row before code changes.
+
+| # | Decision | Chosen | Rejected alternative and reason |
+| --- | --- | --- | --- |
+| D1 | One-to-one session protocol | Olm (`vodozemac`) | Custom Noise IK + Double Ratchet: unaudited new code. `libsignal`: AGPL conflicts with Apache-2.0 licence. |
+| D2 | Group protocol | Megolm | MLS: needs ordered group changes a mesh cannot provide |
+| D3 | Link encryption | Noise\_NN per connection | Noise\_XX: exposes static key to any stranger (tracking) |
+| D4 | Contact card transport | Inside Noise IK/XX only | In QR code: secrets photographed by bystanders |
+| D5 | Shared core | Rust + UniFFI | Separate Swift and Kotlin protocol code: two implementations to audit |
+| D6 | Project licence | Apache-2.0 | GPL family: App Store distribution conflicts |
+| D7 | Network permission | None on Android; no networking code on iOS | Optional internet bridge: deferred, enlarges attack surface |
+| D8 | Image decoding | Rust `zune-jpeg` only, baseline JPEG | OS codecs: main spyware entry point |
+| D9 | Large files | Over 256 KB direct neighbour only | Relaying large files: floods relay stores |
+| D10 | Location | Never used | Location-triggered delayed send: location data is itself sensitive |
+| D11 | Jamming fallback | Animated QR + RaptorQ | NFC: not available iOS ↔ Android; deferred |
+| D12 | Cross-platform fast link | None in v1.0 (BLE only) | Wi-Fi Aware: platform support immature; v1.1 evaluation |
+| D13 | Post-quantum | Deferred to v2 | ML-KEM in v1: key sizes costly over BLE; Olm lacks PQ support |
+| D14 | Database protection | SQLCipher keyed by hardware key + Argon2id(PIN) | Hardware key alone: unlocked phone exposes messages |
+| D15 | Telemetry | None of any kind | Opt-in analytics: any network path undermines D7 |
+| D16 | Minimum OS | iOS 17, Android 10 (API 29) | Older: missing BLE and keystore features used here |
+
+**Deferred to later versions:** voice and video calls, audio and video messages, internet bridge, desktop apps, groups over 50, NFC transfer, Wi-Fi Aware, post-quantum key exchange, MLS, and the external secure terminal (a standalone LoRa device with screen and keyboard that holds keys so a compromised phone becomes only a relay).

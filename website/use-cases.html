@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Use cases · Meshtrike</title>
+<meta name="description" content="Where Meshtrike helps: festivals and stadiums, protests, disasters and outages, off-grid travel, internet shutdowns and censorship.">
+<link rel="canonical" href="https://meshtrike0.github.io/use-cases.html">
+<meta name="theme-color" content="#F6F5F1">
+<meta name="referrer" content="no-referrer">
+<!-- Everything is served from this folder: no analytics, no trackers, no third-party requests. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta property="og:title" content="Use cases · Meshtrike">
+<meta property="og:description" content="Where Meshtrike helps: festivals and stadiums, protests, disasters and outages, off-grid travel, internet shutdowns and censorship.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://meshtrike0.github.io/use-cases.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/config.js"></script>
+<script src="js/main.js" defer></script>
+<noscript><style>.qa__a{grid-template-rows:1fr!important;visibility:visible!important}.panel[hidden]{display:flex!important}.tabs{display:none}</style></noscript>
+</head>
+<body class="pg-uses">
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+  <symbol id="i-mesh" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="18" r="2.5"/><path d="M10.8 7.2 6.3 15.8"/><path d="M13.2 7.2l4.5 8.6"/><path d="M7.5 18h9"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+  <symbol id="i-bt" viewBox="0 0 24 24"><path d="m7 7 10 10-5 5V2l5 5L7 17"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.86a10 10 0 0 1 14 0"/><path d="M8.5 16.43a5 5 0 0 1 7 0"/></symbol>
+  <symbol id="i-radio" viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-shieldOk" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-checks" viewBox="0 0 24 24"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.33 2q2 0 3.67-.8a1 1 0 0 1 1.4.9v9.8a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.53"/></symbol>
+  <symbol id="i-storm" viewBox="0 0 24 24"><path d="M6 16.33A6 6 0 1 1 15.7 9h1.8a4.5 4.5 0 0 1 1.5 8.75"/><path d="m13 12-3 5h4l-3 5"/></symbol>
+  <symbol id="i-mount" viewBox="0 0 24 24"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></symbol>
+  <symbol id="i-eyeOff" viewBox="0 0 24 24"><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><path d="m2 2 20 20"/><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/></symbol>
+  <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M16 12h1"/><path d="M12 21v-1"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+<div class="page">
+<div class="blob" aria-hidden="true"></div>
+
+<header class="hdr">
+  <nav class="nav" aria-label="Main">
+    <a class="logo" href="index.html"><span class="logo__mark"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mesh"/></svg></span>Meshtrike</a>
+    <div class="nav__spacer"></div>
+    <ul class="nav__links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="how-it-works.html">How it works</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="security.html">Security</a></li>
+      <li><a href="roadmap.html">Roadmap</a></li>
+      <li class="more" data-dd>
+        <details>
+          <summary class="more__btn is-current">More<svg class="i more__chev" aria-hidden="true" focusable="false"><use href="#i-down"/></svg></summary>
+          <ul class="more__menu">
+          <li><a href="use-cases.html" aria-current="page"><span class="more__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-users"/></svg></span><span class="more__txt"><span class="more__t">Use cases</span><span class="more__d">Festivals, protests, outages</span></span></a></li>
+          <li><a href="faq.html"><span class="more__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-help"/></svg></span><span class="more__txt"><span class="more__t">FAQ</span><span class="more__d">Fair questions, straight answers</span></span></a></li>
+          <li><a href="community.html"><span class="more__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></span><span class="more__txt"><span class="more__t">Community</span><span class="more__d">Test, translate, run a server</span></span></a></li>
+          <li><a href="swag.html"><span class="more__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bag"/></svg></span><span class="more__txt"><span class="more__t">Swag</span><span class="more__d">Wear the mesh · coming soon</span></span></a></li>
+          <li><a href="about.html"><span class="more__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-info"/></svg></span><span class="more__txt"><span class="more__t">About</span><span class="more__d">Why Meshtrike exists</span></span></a></li>
+          <li><a href="whitepaper.html"><span class="more__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"/></svg></span><span class="more__txt"><span class="more__t">Whitepaper</span><span class="more__d">The design, in depth</span></span></a></li>
+          <li><a href="verify.html"><span class="more__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-shieldOk"/></svg></span><span class="more__txt"><span class="more__t">Verify</span><span class="more__d">Check that your APK is real</span></span></a></li>
+          </ul>
+        </details>
+      </li>
+    </ul>
+    <a class="cart-btn" href="swag.html" aria-label="Swag shop: coming soon" aria-haspopup="dialog" data-open-soon><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bag"/></svg><span class="cart-btn__soon" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg></span></a>
+    <a class="nav__dl" href="download.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-download"/></svg><span>Download</span></a>
+    <details class="menu" data-dd>
+      <summary class="menu__btn" aria-label="Menu"><svg class="i menu__open" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg><svg class="i menu__close" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></summary>
+      <div class="menu__panel">
+        <ul class="menu__main">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="security.html">Security</a></li>
+          <li><a href="roadmap.html">Roadmap</a></li>
+        </ul>
+        <p class="menu__label">MORE</p>
+        <ul class="menu__more">
+          <li><a href="use-cases.html" aria-current="page"><span class="menu__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-users"/></svg></span>Use cases</a></li>
+          <li><a href="faq.html"><span class="menu__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-help"/></svg></span>FAQ</a></li>
+          <li><a href="community.html"><span class="menu__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></span>Community</a></li>
+          <li><a href="swag.html"><span class="menu__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bag"/></svg></span>Swag</a></li>
+          <li><a href="about.html"><span class="menu__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-info"/></svg></span>About</a></li>
+          <li><a href="whitepaper.html"><span class="menu__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"/></svg></span>Whitepaper</a></li>
+          <li><a href="verify.html"><span class="menu__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-shieldOk"/></svg></span>Verify</a></li>
+        </ul>
+        <a class="btn btn--ink menu__dl" href="download.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-download"/></svg>Download Meshtrike</a>
+      </div>
+    </details>
+  </nav>
+</header>
+
+<main id="main">
+<section class="sec phead" aria-labelledby="page-title">
+  <svg class="phead__bg" aria-hidden="true" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+    <g class="lines" fill="none" stroke="#15171C" stroke-opacity=".14" stroke-width="1.2" stroke-dasharray="4 8">
+      <path d="M80 140 L260 260 L470 120 L640 300 L860 160 L1060 280"/>
+      <path d="M260 260 L210 480 L430 560 L640 300 L820 520 L1060 280"/>
+      <path d="M470 120 L640 300 L430 560"/>
+      <path d="M860 160 L820 520 L1120 600"/>
+      <path d="M80 140 L210 480"/>
+    </g>
+    <g fill="#15171C" fill-opacity=".16">
+      <circle cx="80" cy="140" r="6"/><circle cx="260" cy="260" r="8"/><circle cx="470" cy="120" r="6"/><circle cx="640" cy="300" r="9"/><circle cx="860" cy="160" r="6"/><circle cx="1060" cy="280" r="8"/><circle cx="210" cy="480" r="6"/><circle cx="430" cy="560" r="7"/><circle cx="820" cy="520" r="7"/><circle cx="1120" cy="600" r="6"/>
+    </g>
+  </svg>
+  <div class="wrap phead__inner">
+    <p class="eyebrow phead__eye">USE CASES</p>
+    <h1 class="h1p" id="page-title">Built for the moments networks <span class="tilted-hl">fail.</span></h1>
+    <p class="phead__lead">Towers get overloaded, cut on purpose, knocked down by storms, or were never there to begin with. Meshtrike keeps the people around you in reach, whatever the reason.</p>
+  </div>
+</section>
+
+<section class="strip strip--page dark" aria-label="Where Meshtrike helps">
+  <ul class="strip__track">
+      <li class="ucard" style="--bg:#2A302B">
+        <!-- IMAGE: festival crowd at night, phones held up (use-case card "Find your crew"), 380x440 displayed (supply ~760x880 for retina). Replace the <svg class="slot"> with <img class="slot-img" src="..." alt="..."> -->
+        <svg class="slot" viewBox="0 0 380 440" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration: a festival crowd under stage lights, phones linked by a mesh">
+    <polygon points="70,0 20,330 150,330" fill="#CDF25C" fill-opacity=".08"/>
+    <polygon points="310,0 230,330 360,330" fill="#CDF25C" fill-opacity=".08"/>
+    <polygon points="190,0 120,330 260,330" fill="#fff" fill-opacity=".05"/>
+    <rect x="20" y="26" width="340" height="8" rx="2" fill="#3C453D"/>
+    <g fill="#CDF25C"><circle cx="50" cy="40" r="5"/><circle cx="110" cy="40" r="5"/><circle cx="190" cy="40" r="5"/><circle cx="270" cy="40" r="5"/><circle cx="330" cy="40" r="5"/></g>
+    <g fill="#fff" fill-opacity=".35"><circle cx="40" cy="90" r="1.6"/><circle cx="300" cy="70" r="1.6"/><circle cx="120" cy="120" r="1.6"/><circle cx="240" cy="150" r="1.6"/><circle cx="340" cy="130" r="1.6"/><circle cx="80" cy="180" r="1.6"/></g>
+    <g fill="none" stroke="#CDF25C" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 6" class="slot-dash"><path d="M70 190 L160 160"/><path d="M160 160 L250 185"/><path d="M250 185 L330 150"/><path d="M70 190 L250 185"/></g><circle cx="70" cy="190" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="64" y="180" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="66" y="183" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/><circle cx="160" cy="160" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="154" y="150" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="156" y="153" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/><circle cx="250" cy="185" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="244" y="175" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="246" y="178" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/><circle cx="330" cy="150" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="324" y="140" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="326" y="143" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/>
+    <ellipse cx="4" cy="247.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="4" cy="223" r="11" fill="#3A423B"/><ellipse cx="26" cy="248.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="26" cy="224" r="11" fill="#3A423B"/><ellipse cx="59" cy="252.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="59" cy="228" r="11" fill="#3A423B"/><ellipse cx="81" cy="249.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="81" cy="225" r="11" fill="#3A423B"/><ellipse cx="105" cy="253.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="105" cy="229" r="11" fill="#3A423B"/><ellipse cx="131" cy="248.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="131" cy="224" r="11" fill="#3A423B"/><ellipse cx="166" cy="252.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="166" cy="228" r="11" fill="#3A423B"/><ellipse cx="195" cy="256.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="195" cy="232" r="11" fill="#3A423B"/><ellipse cx="214" cy="254.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="214" cy="230" r="11" fill="#3A423B"/><ellipse cx="241" cy="254.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="241" cy="230" r="11" fill="#3A423B"/><ellipse cx="272" cy="255.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="272" cy="231" r="11" fill="#3A423B"/><ellipse cx="299" cy="247.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="299" cy="223" r="11" fill="#3A423B"/><ellipse cx="332" cy="250.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="332" cy="226" r="11" fill="#3A423B"/><ellipse cx="360" cy="255.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="360" cy="231" r="11" fill="#3A423B"/><ellipse cx="379" cy="254.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="379" cy="230" r="11" fill="#3A423B"/><ellipse cx="-7" cy="287.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="-7" cy="257" r="14" fill="#313830"/><ellipse cx="39" cy="283.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="39" cy="253" r="14" fill="#313830"/><ellipse cx="59" cy="288.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="59" cy="258" r="14" fill="#313830"/><ellipse cx="111" cy="289.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="111" cy="259" r="14" fill="#313830"/><ellipse cx="142" cy="291.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="142" cy="261" r="14" fill="#313830"/><ellipse cx="174" cy="289.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="174" cy="259" r="14" fill="#313830"/><ellipse cx="198" cy="287.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="198" cy="257" r="14" fill="#313830"/><ellipse cx="242" cy="291.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="242" cy="261" r="14" fill="#313830"/><ellipse cx="275" cy="288.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="275" cy="258" r="14" fill="#313830"/><ellipse cx="311" cy="289.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="311" cy="259" r="14" fill="#313830"/><ellipse cx="351" cy="292.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="351" cy="262" r="14" fill="#313830"/><ellipse cx="383" cy="287.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="383" cy="257" r="14" fill="#313830"/><ellipse cx="5" cy="341.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="5" cy="302" r="18" fill="#232823"/><ellipse cx="47" cy="344.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="47" cy="305" r="18" fill="#232823"/><ellipse cx="106" cy="341.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="106" cy="302" r="18" fill="#232823"/><ellipse cx="148" cy="344.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="148" cy="305" r="18" fill="#232823"/><ellipse cx="198" cy="335.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="198" cy="296" r="18" fill="#232823"/><ellipse cx="225" cy="339.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="225" cy="300" r="18" fill="#232823"/><ellipse cx="295" cy="337.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="295" cy="298" r="18" fill="#232823"/><ellipse cx="334" cy="337.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="334" cy="298" r="18" fill="#232823"/><ellipse cx="379" cy="340.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="379" cy="301" r="18" fill="#232823"/>
+        </svg>
+        <div class="ucard__txt">
+          <span class="ucard__tag">FESTIVALS</span>
+          <h3 class="ucard__t">Find your crew</h3>
+          <p class="ucard__d">Fifty thousand phones, one overloaded tower. Meshtrike doesn’t care.</p>
+        </div>
+      </li>
+      <li class="ucard" style="--bg:#3A2A22">
+        <!-- IMAGE: street protest with signs (use-case card "Stay together"), 380x440 displayed (supply ~760x880 for retina). Replace the <svg class="slot"> with <img class="slot-img" src="..." alt="..."> -->
+        <svg class="slot" viewBox="0 0 380 440" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration: a street protest with raised signs, phones linked by a mesh">
+    <g fill="#45332A"><rect x="0" y="40" width="60" height="260"/><rect x="70" y="80" width="50" height="220"/><rect x="130" y="20" width="70" height="280"/><rect x="210" y="60" width="56" height="240"/><rect x="275" y="30" width="60" height="270"/><rect x="345" y="90" width="40" height="210"/></g>
+    <g fill="#FFB38A" fill-opacity=".22"><rect x="200" y="73" width="6" height="8"/><rect x="61" y="69" width="6" height="8"/><rect x="85" y="61" width="6" height="8"/><rect x="33" y="159" width="6" height="8"/><rect x="101" y="140" width="6" height="8"/><rect x="166" y="165" width="6" height="8"/><rect x="64" y="116" width="6" height="8"/><rect x="268" y="84" width="6" height="8"/><rect x="185" y="138" width="6" height="8"/><rect x="148" y="134" width="6" height="8"/><rect x="119" y="83" width="6" height="8"/><rect x="202" y="145" width="6" height="8"/><rect x="272" y="84" width="6" height="8"/><rect x="94" y="70" width="6" height="8"/><rect x="306" y="111" width="6" height="8"/><rect x="48" y="106" width="6" height="8"/><rect x="61" y="61" width="6" height="8"/><rect x="354" y="112" width="6" height="8"/><rect x="137" y="94" width="6" height="8"/><rect x="289" y="97" width="6" height="8"/><rect x="281" y="93" width="6" height="8"/><rect x="277" y="79" width="6" height="8"/></g>
+    <g>
+      <g transform="rotate(-6 92 150)"><rect x="90" y="150" width="4" height="90" fill="#1F1712"/><rect x="52" y="112" width="80" height="50" rx="4" fill="#F6F5F1"/><rect x="62" y="124" width="56" height="7" rx="3" fill="#15171C"/><rect x="62" y="138" width="40" height="7" rx="3" fill="#15171C"/></g>
+      <g transform="rotate(5 262 140)"><rect x="260" y="140" width="4" height="100" fill="#1F1712"/><rect x="218" y="98" width="88" height="54" rx="4" fill="#CDF25C"/><use href="#i-mesh" x="244" y="105" width="40" height="40" fill="none" stroke="#15171C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g>
+      <g transform="rotate(-3 180 175)"><rect x="178" y="170" width="4" height="70" fill="#1F1712"/><rect x="150" y="140" width="60" height="38" rx="4" fill="#F6F5F1" fill-opacity=".9"/><rect x="160" y="152" width="40" height="6" rx="3" fill="#A3360A"/><rect x="160" y="163" width="28" height="6" rx="3" fill="#A3360A"/></g>
+    </g>
+    <g transform="translate(316 26)" fill="none" stroke="#CDF25C" stroke-width="3" stroke-linecap="round"><path d="M4 30v-6M14 30v-12M24 30v-18M34 30V4"/><path d="M0 2l40 32" stroke="#FFB38A"/></g>
+    <g fill="none" stroke="#CDF25C" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 6" class="slot-dash"><path d="M40 200 L130 215"/><path d="M130 215 L220 200"/><path d="M220 200 L320 210"/><path d="M40 200 L220 200"/></g><circle cx="40" cy="200" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="34" y="190" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="36" y="193" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/><circle cx="130" cy="215" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="124" y="205" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="126" y="208" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/><circle cx="220" cy="200" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="214" y="190" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="216" y="193" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/><circle cx="320" cy="210" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="314" y="200" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="316" y="203" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/>
+    <ellipse cx="-6" cy="263.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="-6" cy="239" r="11" fill="#4A372D"/><ellipse cx="24" cy="264.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="24" cy="240" r="11" fill="#4A372D"/><ellipse cx="56" cy="261.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="56" cy="237" r="11" fill="#4A372D"/><ellipse cx="87" cy="259.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="87" cy="235" r="11" fill="#4A372D"/><ellipse cx="109" cy="258.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="109" cy="234" r="11" fill="#4A372D"/><ellipse cx="136" cy="258.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="136" cy="234" r="11" fill="#4A372D"/><ellipse cx="164" cy="259.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="164" cy="235" r="11" fill="#4A372D"/><ellipse cx="184" cy="267.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="184" cy="243" r="11" fill="#4A372D"/><ellipse cx="220" cy="258.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="220" cy="234" r="11" fill="#4A372D"/><ellipse cx="238" cy="257.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="238" cy="233" r="11" fill="#4A372D"/><ellipse cx="272" cy="261.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="272" cy="237" r="11" fill="#4A372D"/><ellipse cx="303" cy="265.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="303" cy="241" r="11" fill="#4A372D"/><ellipse cx="318" cy="262.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="318" cy="238" r="11" fill="#4A372D"/><ellipse cx="351" cy="262.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="351" cy="238" r="11" fill="#4A372D"/><ellipse cx="377" cy="262.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="377" cy="238" r="11" fill="#4A372D"/><ellipse cx="-8" cy="300.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="-8" cy="270" r="14" fill="#3F2F26"/><ellipse cx="31" cy="298.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="31" cy="268" r="14" fill="#3F2F26"/><ellipse cx="77" cy="296.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="77" cy="266" r="14" fill="#3F2F26"/><ellipse cx="107" cy="299.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="107" cy="269" r="14" fill="#3F2F26"/><ellipse cx="141" cy="294.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="141" cy="264" r="14" fill="#3F2F26"/><ellipse cx="168" cy="292.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="168" cy="262" r="14" fill="#3F2F26"/><ellipse cx="203" cy="301.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="203" cy="271" r="14" fill="#3F2F26"/><ellipse cx="243" cy="295.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="243" cy="265" r="14" fill="#3F2F26"/><ellipse cx="267" cy="295.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="267" cy="265" r="14" fill="#3F2F26"/><ellipse cx="317" cy="301.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="317" cy="271" r="14" fill="#3F2F26"/><ellipse cx="340" cy="300.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="340" cy="270" r="14" fill="#3F2F26"/><ellipse cx="371" cy="296.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="371" cy="266" r="14" fill="#3F2F26"/><ellipse cx="1" cy="342.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="1" cy="303" r="18" fill="#2C201A"/><ellipse cx="45" cy="341.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="45" cy="302" r="18" fill="#2C201A"/><ellipse cx="84" cy="350.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="84" cy="311" r="18" fill="#2C201A"/><ellipse cx="152" cy="342.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="152" cy="303" r="18" fill="#2C201A"/><ellipse cx="176" cy="350.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="176" cy="311" r="18" fill="#2C201A"/><ellipse cx="241" cy="348.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="241" cy="309" r="18" fill="#2C201A"/><ellipse cx="282" cy="344.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="282" cy="305" r="18" fill="#2C201A"/><ellipse cx="319" cy="344.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="319" cy="305" r="18" fill="#2C201A"/><ellipse cx="374" cy="347.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="374" cy="308" r="18" fill="#2C201A"/>
+        </svg>
+        <div class="ucard__txt">
+          <span class="ucard__tag">PROTESTS</span>
+          <h3 class="ucard__t">Stay together</h3>
+          <p class="ucard__d">When networks are cut, nearby phones still pass messages, sealed.</p>
+        </div>
+      </li>
+      <li class="ucard" style="--bg:#22303A">
+        <!-- IMAGE: storm, downed tower or relief effort (use-case card "Check in"), 380x440 displayed (supply ~760x880 for retina). Replace the <svg class="slot"> with <img class="slot-img" src="..." alt="..."> -->
+        <svg class="slot" viewBox="0 0 380 440" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration: a storm over a town with a downed cell tower, homes linked by radio">
+    <g fill="#2E3F4B"><circle cx="70" cy="60" r="50"/><circle cx="140" cy="40" r="56"/><circle cx="220" cy="62" r="48"/><circle cx="300" cy="44" r="58"/><circle cx="360" cy="70" r="40"/><rect x="0" y="60" width="380" height="50"/></g>
+    <polygon points="210,96 186,150 206,150 192,196 236,134 214,134 228,96" fill="#CDF25C"/>
+    <g stroke="#fff" stroke-opacity=".14" stroke-width="2" stroke-linecap="round"><path d="M17 150 l-8 18"/><path d="M266 124 l-8 18"/><path d="M172 207 l-8 18"/><path d="M101 182 l-8 18"/><path d="M88 135 l-8 18"/><path d="M242 218 l-8 18"/><path d="M25 133 l-8 18"/><path d="M226 151 l-8 18"/><path d="M200 120 l-8 18"/><path d="M104 233 l-8 18"/><path d="M82 164 l-8 18"/><path d="M54 227 l-8 18"/><path d="M275 196 l-8 18"/><path d="M115 253 l-8 18"/><path d="M397 254 l-8 18"/><path d="M52 163 l-8 18"/><path d="M84 212 l-8 18"/><path d="M380 170 l-8 18"/><path d="M170 171 l-8 18"/><path d="M372 234 l-8 18"/><path d="M51 228 l-8 18"/><path d="M396 232 l-8 18"/><path d="M246 214 l-8 18"/><path d="M287 219 l-8 18"/><path d="M177 190 l-8 18"/><path d="M107 256 l-8 18"/></g>
+    <g transform="rotate(14 300 250)" stroke="#5B6C78" stroke-width="3" fill="none" stroke-linecap="round"><path d="M300 250 L280 130 L260 250"/><path d="M286 160 H274 M291 190 H269 M296 220 H264"/><path d="M280 130 l-14 -8 M280 130 l14 -8"/></g>
+    <g transform="translate(262 112)" stroke="#FFB38A" stroke-width="3.2" stroke-linecap="round"><path d="M0 0 l14 14 M14 0 l-14 14"/></g>
+    <g fill="#1A252D">
+      <path d="M10 300 V250 L45 222 L80 250 V300Z"/><path d="M95 300 V262 L125 238 L155 262 V300Z"/><path d="M170 300 V244 L210 212 L250 244 V300Z"/><path d="M325 300 V258 L352 236 L380 258 V300Z"/>
+      <rect x="0" y="296" width="380" height="144"/>
+    </g>
+    <g fill="#CDF25C" fill-opacity=".75"><rect x="38" y="262" width="12" height="12" rx="2"/><rect x="118" y="270" width="12" height="12" rx="2"/><rect x="202" y="256" width="12" height="12" rx="2"/><rect x="346" y="268" width="10" height="10" rx="2"/></g>
+    <g fill="none" stroke="#CDF25C" stroke-opacity=".6" stroke-width="1.5" stroke-dasharray="4 6" class="slot-dash"><path d="M44 236 Q90 200 124 246"/><path d="M124 246 Q166 196 210 226"/><path d="M210 226 Q290 190 351 246"/></g>
+    <g fill="#CDF25C"><circle cx="44" cy="236" r="5"/><circle cx="124" cy="246" r="5"/><circle cx="210" cy="226" r="5"/><circle cx="351" cy="246" r="5"/></g>
+        </svg>
+        <div class="ucard__txt">
+          <span class="ucard__tag">DISASTERS</span>
+          <h3 class="ucard__t">Check in</h3>
+          <p class="ucard__d">Storms take towers down first. Phones and LoRa radios keep going.</p>
+        </div>
+      </li>
+      <li class="ucard" style="--bg:#2B2A3A">
+        <!-- IMAGE: mountain trail or remote camp (use-case card "Go further"), 380x440 displayed (supply ~760x880 for retina). Replace the <svg class="slot"> with <img class="slot-img" src="..." alt="..."> -->
+        <svg class="slot" viewBox="0 0 380 440" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration: mountains at night with a LoRa radio signal reaching a far peak">
+    <g fill="#fff"><circle cx="117" cy="104" r="1.2" fill-opacity="0.63"/><circle cx="167" cy="73" r="1.1" fill-opacity="0.72"/><circle cx="49" cy="164" r="0.9" fill-opacity="0.55"/><circle cx="294" cy="44" r="1.0" fill-opacity="0.33"/><circle cx="225" cy="77" r="1.0" fill-opacity="0.42"/><circle cx="106" cy="156" r="1.2" fill-opacity="0.56"/><circle cx="253" cy="155" r="1.7" fill-opacity="0.43"/><circle cx="44" cy="153" r="1.6" fill-opacity="0.67"/><circle cx="108" cy="126" r="1.4" fill-opacity="0.71"/><circle cx="46" cy="168" r="1.6" fill-opacity="0.35"/><circle cx="364" cy="37" r="0.6" fill-opacity="0.54"/><circle cx="77" cy="61" r="1.2" fill-opacity="0.39"/><circle cx="176" cy="168" r="1.2" fill-opacity="0.58"/><circle cx="99" cy="127" r="1.1" fill-opacity="0.62"/><circle cx="120" cy="92" r="1.8" fill-opacity="0.79"/><circle cx="106" cy="133" r="1.3" fill-opacity="0.77"/><circle cx="75" cy="58" r="1.3" fill-opacity="0.36"/><circle cx="61" cy="82" r="1.2" fill-opacity="0.52"/><circle cx="4" cy="110" r="1.1" fill-opacity="0.58"/><circle cx="149" cy="84" r="0.9" fill-opacity="0.47"/><circle cx="7" cy="166" r="1.1" fill-opacity="0.70"/><circle cx="224" cy="68" r="1.1" fill-opacity="0.35"/><circle cx="83" cy="104" r="1.7" fill-opacity="0.37"/><circle cx="235" cy="145" r="1.2" fill-opacity="0.75"/><circle cx="43" cy="83" r="0.9" fill-opacity="0.74"/><circle cx="3" cy="72" r="1.2" fill-opacity="0.67"/><circle cx="232" cy="104" r="0.8" fill-opacity="0.58"/><circle cx="247" cy="129" r="1.7" fill-opacity="0.63"/><circle cx="377" cy="157" r="1.0" fill-opacity="0.77"/><circle cx="207" cy="160" r="1.0" fill-opacity="0.47"/><circle cx="116" cy="12" r="1.5" fill-opacity="0.39"/><circle cx="365" cy="31" r="1.2" fill-opacity="0.69"/><circle cx="378" cy="28" r="0.9" fill-opacity="0.36"/><circle cx="111" cy="43" r="1.5" fill-opacity="0.73"/><circle cx="152" cy="85" r="0.9" fill-opacity="0.74"/><circle cx="152" cy="86" r="1.6" fill-opacity="0.58"/><circle cx="59" cy="68" r="1.4" fill-opacity="0.47"/><circle cx="247" cy="56" r="1.1" fill-opacity="0.69"/><circle cx="332" cy="151" r="1.2" fill-opacity="0.64"/><circle cx="40" cy="63" r="1.2" fill-opacity="0.49"/></g>
+    <circle cx="302" cy="70" r="26" fill="#F6F5F1" fill-opacity=".9"/><circle cx="314" cy="62" r="24" fill="#2B2A3A"/>
+    <path d="M-10 270 L70 150 L120 200 L190 110 L260 190 L310 140 L400 260 V440 H-10Z" fill="#3A3950"/>
+    <path d="M190 110 L172 136 L184 132 L190 142 L198 130 L208 134Z" fill="#F6F5F1" fill-opacity=".8"/>
+    <path d="M-10 300 L60 230 L130 280 L200 220 L280 270 L340 230 L400 280 V440 H-10Z" fill="#323148"/>
+    <path d="M-10 330 L90 270 L170 310 L250 280 L400 330 V440 H-10Z" fill="#22212E"/>
+    <g fill="none" stroke="#CDF25C" stroke-linecap="round" stroke-width="2.4">
+      <path d="M118 236 a18 18 0 0 1 0 -26" stroke-opacity=".9"/><path d="M134 236 a18 18 0 0 0 0 -26" stroke-opacity=".9"/>
+      <path d="M108 244 a32 32 0 0 1 0 -42" stroke-opacity=".55"/><path d="M144 244 a32 32 0 0 0 0 -42" stroke-opacity=".55"/>
+      <path d="M98 252 a46 46 0 0 1 0 -58" stroke-opacity=".3"/><path d="M154 252 a46 46 0 0 0 0 -58" stroke-opacity=".3"/>
+    </g>
+    <rect x="119" y="226" width="14" height="30" rx="4" fill="#CDF25C"/><rect x="125" y="204" width="2.4" height="24" rx="1" fill="#CDF25C"/>
+    <path d="M126 222 Q170 120 190 112" fill="none" stroke="#CDF25C" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 6" class="slot-dash"/>
+    <circle cx="190" cy="104" r="6" fill="#CDF25C"/>
+    <path d="M60 300 L84 268 L108 300Z" fill="none" stroke="#CDF25C" stroke-width="2.4" stroke-linejoin="round"/><path d="M84 268 V300" stroke="#CDF25C" stroke-width="2"/>
+        </svg>
+        <div class="ucard__txt">
+          <span class="ucard__tag">OFF-GRID</span>
+          <h3 class="ucard__t">Go further</h3>
+          <p class="ucard__d">Trails, boats and camps. A small LoRa radio reaches kilometres.</p>
+        </div>
+      </li>
+      <li class="ucard" style="--bg:#2A302B" aria-hidden="true">
+        <!-- IMAGE: festival crowd at night, phones held up (use-case card "Find your crew"), 380x440 displayed (supply ~760x880 for retina). Replace the <svg class="slot"> with <img class="slot-img" src="..." alt="..."> -->
+        <svg class="slot" viewBox="0 0 380 440" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration: a festival crowd under stage lights, phones linked by a mesh">
+    <polygon points="70,0 20,330 150,330" fill="#CDF25C" fill-opacity=".08"/>
+    <polygon points="310,0 230,330 360,330" fill="#CDF25C" fill-opacity=".08"/>
+    <polygon points="190,0 120,330 260,330" fill="#fff" fill-opacity=".05"/>
+    <rect x="20" y="26" width="340" height="8" rx="2" fill="#3C453D"/>
+    <g fill="#CDF25C"><circle cx="50" cy="40" r="5"/><circle cx="110" cy="40" r="5"/><circle cx="190" cy="40" r="5"/><circle cx="270" cy="40" r="5"/><circle cx="330" cy="40" r="5"/></g>
+    <g fill="#fff" fill-opacity=".35"><circle cx="40" cy="90" r="1.6"/><circle cx="300" cy="70" r="1.6"/><circle cx="120" cy="120" r="1.6"/><circle cx="240" cy="150" r="1.6"/><circle cx="340" cy="130" r="1.6"/><circle cx="80" cy="180" r="1.6"/></g>
+    <g fill="none" stroke="#CDF25C" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 6" class="slot-dash"><path d="M70 190 L160 160"/><path d="M160 160 L250 185"/><path d="M250 185 L330 150"/><path d="M70 190 L250 185"/></g><circle cx="70" cy="190" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="64" y="180" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="66" y="183" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/><circle cx="160" cy="160" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="154" y="150" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="156" y="153" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/><circle cx="250" cy="185" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="244" y="175" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="246" y="178" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/><circle cx="330" cy="150" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="324" y="140" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="326" y="143" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/>
+    <ellipse cx="4" cy="247.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="4" cy="223" r="11" fill="#3A423B"/><ellipse cx="26" cy="248.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="26" cy="224" r="11" fill="#3A423B"/><ellipse cx="59" cy="252.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="59" cy="228" r="11" fill="#3A423B"/><ellipse cx="81" cy="249.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="81" cy="225" r="11" fill="#3A423B"/><ellipse cx="105" cy="253.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="105" cy="229" r="11" fill="#3A423B"/><ellipse cx="131" cy="248.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="131" cy="224" r="11" fill="#3A423B"/><ellipse cx="166" cy="252.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="166" cy="228" r="11" fill="#3A423B"/><ellipse cx="195" cy="256.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="195" cy="232" r="11" fill="#3A423B"/><ellipse cx="214" cy="254.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="214" cy="230" r="11" fill="#3A423B"/><ellipse cx="241" cy="254.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="241" cy="230" r="11" fill="#3A423B"/><ellipse cx="272" cy="255.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="272" cy="231" r="11" fill="#3A423B"/><ellipse cx="299" cy="247.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="299" cy="223" r="11" fill="#3A423B"/><ellipse cx="332" cy="250.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="332" cy="226" r="11" fill="#3A423B"/><ellipse cx="360" cy="255.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="360" cy="231" r="11" fill="#3A423B"/><ellipse cx="379" cy="254.2" rx="18.7" ry="15.4" fill="#3A423B"/><circle cx="379" cy="230" r="11" fill="#3A423B"/><ellipse cx="-7" cy="287.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="-7" cy="257" r="14" fill="#313830"/><ellipse cx="39" cy="283.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="39" cy="253" r="14" fill="#313830"/><ellipse cx="59" cy="288.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="59" cy="258" r="14" fill="#313830"/><ellipse cx="111" cy="289.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="111" cy="259" r="14" fill="#313830"/><ellipse cx="142" cy="291.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="142" cy="261" r="14" fill="#313830"/><ellipse cx="174" cy="289.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="174" cy="259" r="14" fill="#313830"/><ellipse cx="198" cy="287.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="198" cy="257" r="14" fill="#313830"/><ellipse cx="242" cy="291.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="242" cy="261" r="14" fill="#313830"/><ellipse cx="275" cy="288.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="275" cy="258" r="14" fill="#313830"/><ellipse cx="311" cy="289.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="311" cy="259" r="14" fill="#313830"/><ellipse cx="351" cy="292.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="351" cy="262" r="14" fill="#313830"/><ellipse cx="383" cy="287.8" rx="23.8" ry="19.6" fill="#313830"/><circle cx="383" cy="257" r="14" fill="#313830"/><ellipse cx="5" cy="341.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="5" cy="302" r="18" fill="#232823"/><ellipse cx="47" cy="344.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="47" cy="305" r="18" fill="#232823"/><ellipse cx="106" cy="341.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="106" cy="302" r="18" fill="#232823"/><ellipse cx="148" cy="344.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="148" cy="305" r="18" fill="#232823"/><ellipse cx="198" cy="335.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="198" cy="296" r="18" fill="#232823"/><ellipse cx="225" cy="339.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="225" cy="300" r="18" fill="#232823"/><ellipse cx="295" cy="337.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="295" cy="298" r="18" fill="#232823"/><ellipse cx="334" cy="337.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="334" cy="298" r="18" fill="#232823"/><ellipse cx="379" cy="340.6" rx="30.6" ry="25.2" fill="#232823"/><circle cx="379" cy="301" r="18" fill="#232823"/>
+        </svg>
+        <div class="ucard__txt">
+          <span class="ucard__tag">FESTIVALS</span>
+          <h3 class="ucard__t">Find your crew</h3>
+          <p class="ucard__d">Fifty thousand phones, one overloaded tower. Meshtrike doesn’t care.</p>
+        </div>
+      </li>
+      <li class="ucard" style="--bg:#3A2A22" aria-hidden="true">
+        <!-- IMAGE: street protest with signs (use-case card "Stay together"), 380x440 displayed (supply ~760x880 for retina). Replace the <svg class="slot"> with <img class="slot-img" src="..." alt="..."> -->
+        <svg class="slot" viewBox="0 0 380 440" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration: a street protest with raised signs, phones linked by a mesh">
+    <g fill="#45332A"><rect x="0" y="40" width="60" height="260"/><rect x="70" y="80" width="50" height="220"/><rect x="130" y="20" width="70" height="280"/><rect x="210" y="60" width="56" height="240"/><rect x="275" y="30" width="60" height="270"/><rect x="345" y="90" width="40" height="210"/></g>
+    <g fill="#FFB38A" fill-opacity=".22"><rect x="200" y="73" width="6" height="8"/><rect x="61" y="69" width="6" height="8"/><rect x="85" y="61" width="6" height="8"/><rect x="33" y="159" width="6" height="8"/><rect x="101" y="140" width="6" height="8"/><rect x="166" y="165" width="6" height="8"/><rect x="64" y="116" width="6" height="8"/><rect x="268" y="84" width="6" height="8"/><rect x="185" y="138" width="6" height="8"/><rect x="148" y="134" width="6" height="8"/><rect x="119" y="83" width="6" height="8"/><rect x="202" y="145" width="6" height="8"/><rect x="272" y="84" width="6" height="8"/><rect x="94" y="70" width="6" height="8"/><rect x="306" y="111" width="6" height="8"/><rect x="48" y="106" width="6" height="8"/><rect x="61" y="61" width="6" height="8"/><rect x="354" y="112" width="6" height="8"/><rect x="137" y="94" width="6" height="8"/><rect x="289" y="97" width="6" height="8"/><rect x="281" y="93" width="6" height="8"/><rect x="277" y="79" width="6" height="8"/></g>
+    <g>
+      <g transform="rotate(-6 92 150)"><rect x="90" y="150" width="4" height="90" fill="#1F1712"/><rect x="52" y="112" width="80" height="50" rx="4" fill="#F6F5F1"/><rect x="62" y="124" width="56" height="7" rx="3" fill="#15171C"/><rect x="62" y="138" width="40" height="7" rx="3" fill="#15171C"/></g>
+      <g transform="rotate(5 262 140)"><rect x="260" y="140" width="4" height="100" fill="#1F1712"/><rect x="218" y="98" width="88" height="54" rx="4" fill="#CDF25C"/><use href="#i-mesh" x="244" y="105" width="40" height="40" fill="none" stroke="#15171C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g>
+      <g transform="rotate(-3 180 175)"><rect x="178" y="170" width="4" height="70" fill="#1F1712"/><rect x="150" y="140" width="60" height="38" rx="4" fill="#F6F5F1" fill-opacity=".9"/><rect x="160" y="152" width="40" height="6" rx="3" fill="#A3360A"/><rect x="160" y="163" width="28" height="6" rx="3" fill="#A3360A"/></g>
+    </g>
+    <g transform="translate(316 26)" fill="none" stroke="#CDF25C" stroke-width="3" stroke-linecap="round"><path d="M4 30v-6M14 30v-12M24 30v-18M34 30V4"/><path d="M0 2l40 32" stroke="#FFB38A"/></g>
+    <g fill="none" stroke="#CDF25C" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 6" class="slot-dash"><path d="M40 200 L130 215"/><path d="M130 215 L220 200"/><path d="M220 200 L320 210"/><path d="M40 200 L220 200"/></g><circle cx="40" cy="200" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="34" y="190" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="36" y="193" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/><circle cx="130" cy="215" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="124" y="205" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="126" y="208" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/><circle cx="220" cy="200" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="214" y="190" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="216" y="193" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/><circle cx="320" cy="210" r="16" fill="#CDF25C" fill-opacity=".16"/><rect x="314" y="200" width="12" height="20" rx="3" fill="#CDF25C"/><rect x="316" y="203" width="8" height="11" rx="1" fill="#15171C" fill-opacity=".55"/>
+    <ellipse cx="-6" cy="263.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="-6" cy="239" r="11" fill="#4A372D"/><ellipse cx="24" cy="264.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="24" cy="240" r="11" fill="#4A372D"/><ellipse cx="56" cy="261.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="56" cy="237" r="11" fill="#4A372D"/><ellipse cx="87" cy="259.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="87" cy="235" r="11" fill="#4A372D"/><ellipse cx="109" cy="258.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="109" cy="234" r="11" fill="#4A372D"/><ellipse cx="136" cy="258.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="136" cy="234" r="11" fill="#4A372D"/><ellipse cx="164" cy="259.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="164" cy="235" r="11" fill="#4A372D"/><ellipse cx="184" cy="267.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="184" cy="243" r="11" fill="#4A372D"/><ellipse cx="220" cy="258.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="220" cy="234" r="11" fill="#4A372D"/><ellipse cx="238" cy="257.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="238" cy="233" r="11" fill="#4A372D"/><ellipse cx="272" cy="261.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="272" cy="237" r="11" fill="#4A372D"/><ellipse cx="303" cy="265.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="303" cy="241" r="11" fill="#4A372D"/><ellipse cx="318" cy="262.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="318" cy="238" r="11" fill="#4A372D"/><ellipse cx="351" cy="262.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="351" cy="238" r="11" fill="#4A372D"/><ellipse cx="377" cy="262.2" rx="18.7" ry="15.4" fill="#4A372D"/><circle cx="377" cy="238" r="11" fill="#4A372D"/><ellipse cx="-8" cy="300.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="-8" cy="270" r="14" fill="#3F2F26"/><ellipse cx="31" cy="298.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="31" cy="268" r="14" fill="#3F2F26"/><ellipse cx="77" cy="296.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="77" cy="266" r="14" fill="#3F2F26"/><ellipse cx="107" cy="299.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="107" cy="269" r="14" fill="#3F2F26"/><ellipse cx="141" cy="294.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="141" cy="264" r="14" fill="#3F2F26"/><ellipse cx="168" cy="292.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="168" cy="262" r="14" fill="#3F2F26"/><ellipse cx="203" cy="301.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="203" cy="271" r="14" fill="#3F2F26"/><ellipse cx="243" cy="295.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="243" cy="265" r="14" fill="#3F2F26"/><ellipse cx="267" cy="295.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="267" cy="265" r="14" fill="#3F2F26"/><ellipse cx="317" cy="301.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="317" cy="271" r="14" fill="#3F2F26"/><ellipse cx="340" cy="300.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="340" cy="270" r="14" fill="#3F2F26"/><ellipse cx="371" cy="296.8" rx="23.8" ry="19.6" fill="#3F2F26"/><circle cx="371" cy="266" r="14" fill="#3F2F26"/><ellipse cx="1" cy="342.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="1" cy="303" r="18" fill="#2C201A"/><ellipse cx="45" cy="341.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="45" cy="302" r="18" fill="#2C201A"/><ellipse cx="84" cy="350.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="84" cy="311" r="18" fill="#2C201A"/><ellipse cx="152" cy="342.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="152" cy="303" r="18" fill="#2C201A"/><ellipse cx="176" cy="350.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="176" cy="311" r="18" fill="#2C201A"/><ellipse cx="241" cy="348.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="241" cy="309" r="18" fill="#2C201A"/><ellipse cx="282" cy="344.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="282" cy="305" r="18" fill="#2C201A"/><ellipse cx="319" cy="344.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="319" cy="305" r="18" fill="#2C201A"/><ellipse cx="374" cy="347.6" rx="30.6" ry="25.2" fill="#2C201A"/><circle cx="374" cy="308" r="18" fill="#2C201A"/>
+        </svg>
+        <div class="ucard__txt">
+          <span class="ucard__tag">PROTESTS</span>
+          <h3 class="ucard__t">Stay together</h3>
+          <p class="ucard__d">When networks are cut, nearby phones still pass messages, sealed.</p>
+        </div>
+      </li>
+      <li class="ucard" style="--bg:#22303A" aria-hidden="true">
+        <!-- IMAGE: storm, downed tower or relief effort (use-case card "Check in"), 380x440 displayed (supply ~760x880 for retina). Replace the <svg class="slot"> with <img class="slot-img" src="..." alt="..."> -->
+        <svg class="slot" viewBox="0 0 380 440" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration: a storm over a town with a downed cell tower, homes linked by radio">
+    <g fill="#2E3F4B"><circle cx="70" cy="60" r="50"/><circle cx="140" cy="40" r="56"/><circle cx="220" cy="62" r="48"/><circle cx="300" cy="44" r="58"/><circle cx="360" cy="70" r="40"/><rect x="0" y="60" width="380" height="50"/></g>
+    <polygon points="210,96 186,150 206,150 192,196 236,134 214,134 228,96" fill="#CDF25C"/>
+    <g stroke="#fff" stroke-opacity=".14" stroke-width="2" stroke-linecap="round"><path d="M17 150 l-8 18"/><path d="M266 124 l-8 18"/><path d="M172 207 l-8 18"/><path d="M101 182 l-8 18"/><path d="M88 135 l-8 18"/><path d="M242 218 l-8 18"/><path d="M25 133 l-8 18"/><path d="M226 151 l-8 18"/><path d="M200 120 l-8 18"/><path d="M104 233 l-8 18"/><path d="M82 164 l-8 18"/><path d="M54 227 l-8 18"/><path d="M275 196 l-8 18"/><path d="M115 253 l-8 18"/><path d="M397 254 l-8 18"/><path d="M52 163 l-8 18"/><path d="M84 212 l-8 18"/><path d="M380 170 l-8 18"/><path d="M170 171 l-8 18"/><path d="M372 234 l-8 18"/><path d="M51 228 l-8 18"/><path d="M396 232 l-8 18"/><path d="M246 214 l-8 18"/><path d="M287 219 l-8 18"/><path d="M177 190 l-8 18"/><path d="M107 256 l-8 18"/></g>
+    <g transform="rotate(14 300 250)" stroke="#5B6C78" stroke-width="3" fill="none" stroke-linecap="round"><path d="M300 250 L280 130 L260 250"/><path d="M286 160 H274 M291 190 H269 M296 220 H264"/><path d="M280 130 l-14 -8 M280 130 l14 -8"/></g>
+    <g transform="translate(262 112)" stroke="#FFB38A" stroke-width="3.2" stroke-linecap="round"><path d="M0 0 l14 14 M14 0 l-14 14"/></g>
+    <g fill="#1A252D">
+      <path d="M10 300 V250 L45 222 L80 250 V300Z"/><path d="M95 300 V262 L125 238 L155 262 V300Z"/><path d="M170 300 V244 L210 212 L250 244 V300Z"/><path d="M325 300 V258 L352 236 L380 258 V300Z"/>
+      <rect x="0" y="296" width="380" height="144"/>
+    </g>
+    <g fill="#CDF25C" fill-opacity=".75"><rect x="38" y="262" width="12" height="12" rx="2"/><rect x="118" y="270" width="12" height="12" rx="2"/><rect x="202" y="256" width="12" height="12" rx="2"/><rect x="346" y="268" width="10" height="10" rx="2"/></g>
+    <g fill="none" stroke="#CDF25C" stroke-opacity=".6" stroke-width="1.5" stroke-dasharray="4 6" class="slot-dash"><path d="M44 236 Q90 200 124 246"/><path d="M124 246 Q166 196 210 226"/><path d="M210 226 Q290 190 351 246"/></g>
+    <g fill="#CDF25C"><circle cx="44" cy="236" r="5"/><circle cx="124" cy="246" r="5"/><circle cx="210" cy="226" r="5"/><circle cx="351" cy="246" r="5"/></g>
+        </svg>
+        <div class="ucard__txt">
+          <span class="ucard__tag">DISASTERS</span>
+          <h3 class="ucard__t">Check in</h3>
+          <p class="ucard__d">Storms take towers down first. Phones and LoRa radios keep going.</p>
+        </div>
+      </li>
+      <li class="ucard" style="--bg:#2B2A3A" aria-hidden="true">
+        <!-- IMAGE: mountain trail or remote camp (use-case card "Go further"), 380x440 displayed (supply ~760x880 for retina). Replace the <svg class="slot"> with <img class="slot-img" src="..." alt="..."> -->
+        <svg class="slot" viewBox="0 0 380 440" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration: mountains at night with a LoRa radio signal reaching a far peak">
+    <g fill="#fff"><circle cx="117" cy="104" r="1.2" fill-opacity="0.63"/><circle cx="167" cy="73" r="1.1" fill-opacity="0.72"/><circle cx="49" cy="164" r="0.9" fill-opacity="0.55"/><circle cx="294" cy="44" r="1.0" fill-opacity="0.33"/><circle cx="225" cy="77" r="1.0" fill-opacity="0.42"/><circle cx="106" cy="156" r="1.2" fill-opacity="0.56"/><circle cx="253" cy="155" r="1.7" fill-opacity="0.43"/><circle cx="44" cy="153" r="1.6" fill-opacity="0.67"/><circle cx="108" cy="126" r="1.4" fill-opacity="0.71"/><circle cx="46" cy="168" r="1.6" fill-opacity="0.35"/><circle cx="364" cy="37" r="0.6" fill-opacity="0.54"/><circle cx="77" cy="61" r="1.2" fill-opacity="0.39"/><circle cx="176" cy="168" r="1.2" fill-opacity="0.58"/><circle cx="99" cy="127" r="1.1" fill-opacity="0.62"/><circle cx="120" cy="92" r="1.8" fill-opacity="0.79"/><circle cx="106" cy="133" r="1.3" fill-opacity="0.77"/><circle cx="75" cy="58" r="1.3" fill-opacity="0.36"/><circle cx="61" cy="82" r="1.2" fill-opacity="0.52"/><circle cx="4" cy="110" r="1.1" fill-opacity="0.58"/><circle cx="149" cy="84" r="0.9" fill-opacity="0.47"/><circle cx="7" cy="166" r="1.1" fill-opacity="0.70"/><circle cx="224" cy="68" r="1.1" fill-opacity="0.35"/><circle cx="83" cy="104" r="1.7" fill-opacity="0.37"/><circle cx="235" cy="145" r="1.2" fill-opacity="0.75"/><circle cx="43" cy="83" r="0.9" fill-opacity="0.74"/><circle cx="3" cy="72" r="1.2" fill-opacity="0.67"/><circle cx="232" cy="104" r="0.8" fill-opacity="0.58"/><circle cx="247" cy="129" r="1.7" fill-opacity="0.63"/><circle cx="377" cy="157" r="1.0" fill-opacity="0.77"/><circle cx="207" cy="160" r="1.0" fill-opacity="0.47"/><circle cx="116" cy="12" r="1.5" fill-opacity="0.39"/><circle cx="365" cy="31" r="1.2" fill-opacity="0.69"/><circle cx="378" cy="28" r="0.9" fill-opacity="0.36"/><circle cx="111" cy="43" r="1.5" fill-opacity="0.73"/><circle cx="152" cy="85" r="0.9" fill-opacity="0.74"/><circle cx="152" cy="86" r="1.6" fill-opacity="0.58"/><circle cx="59" cy="68" r="1.4" fill-opacity="0.47"/><circle cx="247" cy="56" r="1.1" fill-opacity="0.69"/><circle cx="332" cy="151" r="1.2" fill-opacity="0.64"/><circle cx="40" cy="63" r="1.2" fill-opacity="0.49"/></g>
+    <circle cx="302" cy="70" r="26" fill="#F6F5F1" fill-opacity=".9"/><circle cx="314" cy="62" r="24" fill="#2B2A3A"/>
+    <path d="M-10 270 L70 150 L120 200 L190 110 L260 190 L310 140 L400 260 V440 H-10Z" fill="#3A3950"/>
+    <path d="M190 110 L172 136 L184 132 L190 142 L198 130 L208 134Z" fill="#F6F5F1" fill-opacity=".8"/>
+    <path d="M-10 300 L60 230 L130 280 L200 220 L280 270 L340 230 L400 280 V440 H-10Z" fill="#323148"/>
+    <path d="M-10 330 L90 270 L170 310 L250 280 L400 330 V440 H-10Z" fill="#22212E"/>
+    <g fill="none" stroke="#CDF25C" stroke-linecap="round" stroke-width="2.4">
+      <path d="M118 236 a18 18 0 0 1 0 -26" stroke-opacity=".9"/><path d="M134 236 a18 18 0 0 0 0 -26" stroke-opacity=".9"/>
+      <path d="M108 244 a32 32 0 0 1 0 -42" stroke-opacity=".55"/><path d="M144 244 a32 32 0 0 0 0 -42" stroke-opacity=".55"/>
+      <path d="M98 252 a46 46 0 0 1 0 -58" stroke-opacity=".3"/><path d="M154 252 a46 46 0 0 0 0 -58" stroke-opacity=".3"/>
+    </g>
+    <rect x="119" y="226" width="14" height="30" rx="4" fill="#CDF25C"/><rect x="125" y="204" width="2.4" height="24" rx="1" fill="#CDF25C"/>
+    <path d="M126 222 Q170 120 190 112" fill="none" stroke="#CDF25C" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 6" class="slot-dash"/>
+    <circle cx="190" cy="104" r="6" fill="#CDF25C"/>
+    <path d="M60 300 L84 268 L108 300Z" fill="none" stroke="#CDF25C" stroke-width="2.4" stroke-linejoin="round"/><path d="M84 268 V300" stroke="#CDF25C" stroke-width="2"/>
+        </svg>
+        <div class="ucard__txt">
+          <span class="ucard__tag">OFF-GRID</span>
+          <h3 class="ucard__t">Go further</h3>
+          <p class="ucard__d">Trails, boats and camps. A small LoRa radio reaches kilometres.</p>
+        </div>
+      </li>
+  </ul>
+</section>
+
+<section id="situations" class="sec uses" aria-labelledby="uses-title">
+  <div class="wrap stack uses__inner">
+    <div class="split" data-reveal>
+      <div class="sec-head uses__head">
+        <p class="eyebrow">IN PRACTICE</p>
+        <h2 class="h2" id="uses-title">Pick a situation.</h2>
+      </div>
+      <p class="lead">For each one: what goes wrong, what Meshtrike does step by step, and which routes and features matter most.</p>
+    </div>
+    <div class="uses__body">
+      <div class="tabs" role="tablist" aria-label="Use cases" aria-orientation="vertical">
+        <button class="tab" type="button" role="tab" id="uc-tab-0" aria-controls="uc-panel-0" aria-selected="true" tabindex="0">
+          <span class="tab__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-users"/></svg></span>
+          <span class="tab__txt"><span class="tab__t">Festivals &amp; stadiums</span><span class="tab__tag">CROWDS</span></span>
+          <span class="tab__arrow"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-right"/></svg></span>
+        </button>
+        <button class="tab" type="button" role="tab" id="uc-tab-1" aria-controls="uc-panel-1" aria-selected="false" tabindex="-1">
+          <span class="tab__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-flag"/></svg></span>
+          <span class="tab__txt"><span class="tab__t">Protests</span><span class="tab__tag">HIGH RISK</span></span>
+          <span class="tab__arrow"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-right"/></svg></span>
+        </button>
+        <button class="tab" type="button" role="tab" id="uc-tab-2" aria-controls="uc-panel-2" aria-selected="false" tabindex="-1">
+          <span class="tab__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-storm"/></svg></span>
+          <span class="tab__txt"><span class="tab__t">Disasters &amp; outages</span><span class="tab__tag">OUTAGES</span></span>
+          <span class="tab__arrow"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-right"/></svg></span>
+        </button>
+        <button class="tab" type="button" role="tab" id="uc-tab-3" aria-controls="uc-panel-3" aria-selected="false" tabindex="-1">
+          <span class="tab__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mount"/></svg></span>
+          <span class="tab__txt"><span class="tab__t">Off-grid travel</span><span class="tab__tag">REMOTE</span></span>
+          <span class="tab__arrow"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-right"/></svg></span>
+        </button>
+        <button class="tab" type="button" role="tab" id="uc-tab-4" aria-controls="uc-panel-4" aria-selected="false" tabindex="-1">
+          <span class="tab__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-eyeOff"/></svg></span>
+          <span class="tab__txt"><span class="tab__t">Shutdowns &amp; censorship</span><span class="tab__tag">SHUTDOWNS</span></span>
+          <span class="tab__arrow"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-right"/></svg></span>
+        </button>
+      </div>
+      <div class="panel" role="tabpanel" id="uc-panel-0" aria-labelledby="uc-tab-0" tabindex="0">
+        <div class="panel__head">
+          <span class="panel__tag">CROWDS</span>
+          <h3 class="panel__t">Festivals &amp; stadiums</h3>
+          <p class="panel__s">Tens of thousands of phones overload the nearest tower. Texts stall and calls drop right when you need to find your people.</p>
+        </div>
+        <ol class="panel__steps">
+          <li><span class="panel__n" aria-hidden="true">1</span><span class="panel__st">Phones within 10–30 m link directly over Bluetooth.</span></li>
+          <li><span class="panel__n" aria-hidden="true">2</span><span class="panel__st">Photos and files switch to Wi-Fi Direct for speed.</span></li>
+          <li><span class="panel__n" aria-hidden="true">3</span><span class="panel__st">Messages to friends across the site hop through other festival-goers’ phones, sealed.</span></li>
+        </ol>
+        <div class="panel__meta">
+          <div class="panel__group">
+            <p class="panel__label">ROUTES IT USES</p>
+            <ul class="chips"><li class="chip c-bt"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bt"/></svg>Bluetooth</li><li class="chip c-wifi"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wifi"/></svg>Wi-Fi Direct</li><li class="chip c-mesh"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mesh"/></svg>Mesh</li></ul>
+          </div>
+          <div class="panel__group">
+            <p class="panel__label">FEATURES THAT MATTER</p>
+            <ul class="chips"><li class="chip chip--plain">Voice notes</li><li class="chip chip--plain">Nearby calls</li><li class="chip chip--plain">Groups up to 50</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="panel" role="tabpanel" id="uc-panel-1" aria-labelledby="uc-tab-1" tabindex="0" hidden>
+        <div class="panel__head">
+          <span class="panel__tag">HIGH RISK</span>
+          <h3 class="panel__t">Protests</h3>
+          <p class="panel__s">Networks get throttled or cut, and phones can be taken. You need to stay in touch without leaving a trail.</p>
+        </div>
+        <ol class="panel__steps">
+          <li><span class="panel__n" aria-hidden="true">1</span><span class="panel__st">Pair with your group in person beforehand, so everyone shows as Verified.</span></li>
+          <li><span class="panel__n" aria-hidden="true">2</span><span class="panel__st">Turn on High-Risk mode: text only, cover traffic, instant lock.</span></li>
+          <li><span class="panel__n" aria-hidden="true">3</span><span class="panel__st">If radio is jammed, move messages camera to camera with QR handoff.</span></li>
+        </ol>
+        <div class="panel__meta">
+          <div class="panel__group">
+            <p class="panel__label">ROUTES IT USES</p>
+            <ul class="chips"><li class="chip c-bt"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bt"/></svg>Bluetooth</li><li class="chip c-mesh"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mesh"/></svg>Mesh</li><li class="chip c-qr"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-qr"/></svg>QR handoff</li></ul>
+          </div>
+          <div class="panel__group">
+            <p class="panel__label">FEATURES THAT MATTER</p>
+            <ul class="chips"><li class="chip chip--plain">High-Risk mode</li><li class="chip chip--plain">Duress PIN</li><li class="chip chip--plain">Panic wipe</li><li class="chip chip--plain">No screenshots</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="panel" role="tabpanel" id="uc-panel-2" aria-labelledby="uc-tab-2" tabindex="0" hidden>
+        <div class="panel__head">
+          <span class="panel__tag">OUTAGES</span>
+          <h3 class="panel__t">Disasters &amp; outages</h3>
+          <p class="panel__s">Storms and earthquakes take out power and towers first. Messages still need to get through, even slowly.</p>
+        </div>
+        <ol class="panel__steps">
+          <li><span class="panel__n" aria-hidden="true">1</span><span class="panel__st">Messages wait safely on your phone instead of failing, with a clear reason why.</span></li>
+          <li><span class="panel__n" aria-hidden="true">2</span><span class="panel__st">Neighbours and rescuers carry sealed messages as they move, for up to 72 hours.</span></li>
+          <li><span class="panel__n" aria-hidden="true">3</span><span class="panel__st">A paired LoRa radio reaches kilometres when nobody is close.</span></li>
+        </ol>
+        <div class="panel__meta">
+          <div class="panel__group">
+            <p class="panel__label">ROUTES IT USES</p>
+            <ul class="chips"><li class="chip c-mesh"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mesh"/></svg>Mesh</li><li class="chip c-lora"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-radio"/></svg>LoRa</li><li class="chip c-bt"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bt"/></svg>Bluetooth</li></ul>
+          </div>
+          <div class="panel__group">
+            <p class="panel__label">FEATURES THAT MATTER</p>
+            <ul class="chips"><li class="chip chip--plain">Delivery timeline</li><li class="chip chip--plain">Public channels</li><li class="chip chip--plain">Long range</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="panel" role="tabpanel" id="uc-panel-3" aria-labelledby="uc-tab-3" tabindex="0" hidden>
+        <div class="panel__head">
+          <span class="panel__tag">REMOTE</span>
+          <h3 class="panel__t">Off-grid travel</h3>
+          <p class="panel__s">Trails, boats, ski huts and remote camps, where there was never any signal to begin with.</p>
+        </div>
+        <ol class="panel__steps">
+          <li><span class="panel__n" aria-hidden="true">1</span><span class="panel__st">Pair a small LoRa radio to your phone.</span></li>
+          <li><span class="panel__n" aria-hidden="true">2</span><span class="panel__st">Short texts reach kilometres between radios.</span></li>
+          <li><span class="panel__n" aria-hidden="true">3</span><span class="panel__st">Back within range, photos and voice notes catch up over Bluetooth.</span></li>
+        </ol>
+        <div class="panel__meta">
+          <div class="panel__group">
+            <p class="panel__label">ROUTES IT USES</p>
+            <ul class="chips"><li class="chip c-lora"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-radio"/></svg>LoRa</li><li class="chip c-bt"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bt"/></svg>Bluetooth</li></ul>
+          </div>
+          <div class="panel__group">
+            <p class="panel__label">FEATURES THAT MATTER</p>
+            <ul class="chips"><li class="chip chip--plain">LoRa radio</li><li class="chip chip--plain">Voice notes</li><li class="chip chip--plain">Disappearing messages</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="panel" role="tabpanel" id="uc-panel-4" aria-labelledby="uc-tab-4" tabindex="0" hidden>
+        <div class="panel__head">
+          <span class="panel__tag">SHUTDOWNS</span>
+          <h3 class="panel__t">Shutdowns &amp; censorship</h3>
+          <p class="panel__s">The internet is filtered or watched, and ordinary messengers are blocked or monitored.</p>
+        </div>
+        <ol class="panel__steps">
+          <li><span class="panel__n" aria-hidden="true">1</span><span class="panel__st">Nearby, everything stays phone to phone and never touches the internet.</span></li>
+          <li><span class="panel__n" aria-hidden="true">2</span><span class="panel__st">For far-away contacts, the optional MeshGRID add-on carries already-sealed messages through the Nym mixnet.</span></li>
+          <li><span class="panel__n" aria-hidden="true">3</span><span class="panel__st">Where the mixnet itself is blocked, disguise bridges will make the connection look like ordinary web traffic. They are <a class="inl" href="roadmap.html#later">on the roadmap</a>.</span></li>
+        </ol>
+        <div class="panel__meta">
+          <div class="panel__group">
+            <p class="panel__label">ROUTES IT USES</p>
+            <ul class="chips"><li class="chip c-bt"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bt"/></svg>Bluetooth</li><li class="chip c-mesh"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mesh"/></svg>Mesh</li><li class="chip c-net"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-globe"/></svg>Nym mixnet</li></ul>
+          </div>
+          <div class="panel__group">
+            <p class="panel__label">FEATURES THAT MATTER</p>
+            <ul class="chips"><li class="chip chip--plain">Internet route</li><li class="chip chip--plain">Bridges (later)</li><li class="chip chip--plain">Sealed end to end</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec next" aria-labelledby="next-title">
+  <div class="wrap stack next__inner">
+    <h2 class="eyebrow" id="next-title">KEEP READING</h2>
+    <ul class="lgrid lgrid--next">
+      <li data-reveal><a class="lcard lcard--sm tilt" href="features.html" data-tilt><span class="lcard__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg></span><span class="lcard__txt"><span class="lcard__eye">FEATURES</span><span class="lcard__t">Everything a messenger does.</span><span class="lcard__d">Voice notes, nearby calls, groups, High-Risk mode and more.</span></span><span class="lcard__go"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a></li>
+      <li data-reveal><a class="lcard lcard--sm tilt" href="security.html" data-tilt><span class="lcard__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg></span><span class="lcard__txt"><span class="lcard__eye">SECURITY</span><span class="lcard__t">Private by design.</span><span class="lcard__d">The rules that never bend, four layers and the honest limits.</span></span><span class="lcard__go"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a></li>
+      <li data-reveal><a class="lcard lcard--sm lcard--ink dark tilt" href="download.html" data-tilt><span class="lcard__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-download"/></svg></span><span class="lcard__txt"><span class="lcard__eye">DOWNLOAD</span><span class="lcard__t">Get it before you need it.</span><span class="lcard__d">Meshtrike and the optional MeshGRID add-on, for Android 10 or newer.</span></span><span class="lcard__go"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a></li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer class="sec foot">
+  <div class="wrap stack foot__inner">
+    <div class="foot__top">
+      <div class="foot__brand">
+        <a class="logo" href="index.html"><span class="logo__mark"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mesh"/></svg></span>Meshtrike</a>
+        <p class="foot__tag">Phone to phone. Sealed end to end. No server needed.</p>
+        <a class="btn btn--ink foot__dl" href="download.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-download"/></svg>Download</a>
+      </div>
+      <nav class="foot__nav" aria-label="Footer">
+        <div class="foot__col"><h2 class="foot__h">Meshtrike</h2><ul class="foot__links"><li><a href="index.html">Home</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="features.html">Features</a></li><li><a href="use-cases.html" aria-current="page">Use cases</a></li><li><a href="security.html">Security</a></li><li><a href="roadmap.html">Roadmap</a></li></ul></div>
+        <div class="foot__col"><h2 class="foot__h">Get it</h2><ul class="foot__links"><li><a href="download.html">Download</a></li><li><a href="verify.html">Verify a download</a></li><li><a href="whitepaper.html">Whitepaper</a></li><li><a href="faq.html">FAQ</a></li><li><a href="https://github.com/meshtrike0/meshtrike/releases" rel="noopener"><span class="nowrap">Releases<svg class="i foot__ext" aria-hidden="true" focusable="false"><use href="#i-ext"/></svg></span></a></li></ul></div>
+        <div class="foot__col"><h2 class="foot__h">Project</h2><ul class="foot__links"><li><a href="community.html">Community</a></li><li><a href="about.html">About</a></li><li><a href="swag.html">Swag</a></li><li><a href="privacy.html">Privacy</a></li></ul></div>
+        <div class="foot__col"><h2 class="foot__h">Code</h2><ul class="foot__links"><li><a href="https://github.com/meshtrike0/meshtrike" rel="noopener"><span class="nowrap">GitHub<svg class="i foot__ext" aria-hidden="true" focusable="false"><use href="#i-ext"/></svg></span></a></li><li><a href="https://github.com/meshtrike0/meshtrike/security" rel="noopener">Security <span class="nowrap">reporting<svg class="i foot__ext" aria-hidden="true" focusable="false"><use href="#i-ext"/></svg></span></a></li><li><a href="https://github.com/meshtrike0/meshtrike/blob/HEAD/LICENSE" rel="noopener">License: <span class="nowrap">Apache&#8209;2.0<svg class="i foot__ext" aria-hidden="true" focusable="false"><use href="#i-ext"/></svg></span></a></li><li><a href="https://github.com/meshtrike0/meshtrike/issues" rel="noopener"><span class="nowrap">Issues<svg class="i foot__ext" aria-hidden="true" focusable="false"><use href="#i-ext"/></svg></span></a></li></ul></div>
+      </nav>
+    </div>
+    <p class="wordmark" aria-hidden="true">meshtrike<span class="lime">.</span></p>
+    <div class="foot__row">
+      <p class="foot__tag">Made by the Meshtrike team. Open source under Apache-2.0.</p>
+      <p class="foot__tag">This site sets no cookies and has no analytics or trackers.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="drawer drawer--soon" id="shop-soon">
+  <div class="drawer__scrim" data-close-soon></div>
+  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="soon-title" aria-describedby="soon-desc">
+    <div class="drawer__hd"><h2 class="drawer__t" id="soon-title">Merch is coming soon</h2><button class="icon-btn" type="button" aria-label="Close" data-close-soon><svg class="i" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></button></div>
+    <div class="soon-msg">
+      <span class="empty__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bag"/></svg></span>
+      <p class="soon-msg__d" id="soon-desc">The Meshtrike shop isn’t open yet, so there’s no bag or checkout. You can preview the first drop on the swag page.</p>
+      <a class="btn btn--ink soon-msg__go" href="swag.html#swag" data-soon-go>Preview the swag<svg class="i" aria-hidden="true" focusable="false"><use href="#i-right"/></svg></a>
+    </div>
+  </aside>
+</div>
+
+<div class="toast" role="status" aria-live="polite"></div>
+<div class="sr-only" aria-live="polite" data-sr></div>
+</div>
+</body>
+</html>

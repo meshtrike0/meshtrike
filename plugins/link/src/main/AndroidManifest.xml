@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- MeshGRID (package org.meshtrike.link): the one add-on that holds what Meshtrike itself never
+         gets. Only apps signed with the Meshtrike key may bind its services;
+         the main app defines the same permissions, so install order does not
+         matter. -->
+    <permission
+        android:name="org.meshtrike.permission.WIFI_LINK"
+        android:label="MeshGRID (Wi-Fi Direct)"
+        android:protectionLevel="signature" />
+    <permission
+        android:name="org.meshtrike.permission.NET_LINK"
+        android:label="MeshGRID (internet route)"
+        android:protectionLevel="signature" />
+
+    <!-- Sockets: the Wi-Fi Direct link (p2p interface only) and the internet
+         route (Nym mixnet behind a REALITY bridge). -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Wi-Fi Direct group setup. No peer discovery is ever started. -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission
+        android:name="android.permission.NEARBY_WIFI_DEVICES"
+        android:usesPermissionFlags="neverForLocation" />
+    <!-- Android 10-12 tie Wi-Fi Direct to location; never read. -->
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:maxSdkVersion="32" />
+    <uses-feature android:name="android.hardware.wifi.direct" android:required="false" />
+
+    <!-- Lets the screen check Meshtrike is installed and open it. Not a
+         permission: package visibility for this one app only. -->
+    <queries>
+        <package android:name="org.meshtrike.app" />
+    </queries>
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="MeshGRID"
+        android:networkSecurityConfig="@xml/network_security"
+        android:usesCleartextTraffic="false"
+        android:extractNativeLibs="false">
+
+        <service
+            android:name="org.meshtrike.wifilink.LinkService"
+            android:label="MeshGRID (Wi-Fi Direct)"
+            android:exported="true"
+            android:permission="org.meshtrike.permission.WIFI_LINK" />
+
+        <service
+            android:name="org.meshtrike.internet.NetService"
+            android:label="MeshGRID (internet route)"
+            android:exported="true"
+            android:permission="org.meshtrike.permission.NET_LINK" />
+
+        <activity
+            android:name="org.meshtrike.wifilink.InfoActivity"
+            android:label="MeshGRID"
+            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

@@ -1,0 +1,12 @@
+import { chromium } from '@playwright/test';
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1600, height: 1300 } });
+const logs = [];
+page.on('console', (m) => { if (['error', 'warning'].includes(m.type())) logs.push(`${m.type()}: ${m.text()}`); });
+page.on('pageerror', (e) => logs.push(`pageerror: ${e.message}`));
+await page.goto('http://localhost:8088/');
+await page.waitForSelector('[data-testid="phone-Bob"]', { timeout: 60000 });
+await page.waitForTimeout(3000);
+await page.screenshot({ path: process.argv[2] ?? 'shot.png' });
+console.log(logs.slice(0, 20).join('\n') || 'no console errors');
+await browser.close();

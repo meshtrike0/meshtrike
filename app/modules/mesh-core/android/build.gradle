@@ -1,0 +1,27 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'expo.modules.meshcore'
+version = '0.1.0'
+
+android {
+  namespace "expo.modules.meshcore"
+  defaultConfig {
+    versionCode 1
+    versionName "0.1.0"
+  }
+  lintOptions {
+    abortOnError false
+  }
+}
+
+dependencies {
+  // UniFFI bindings load libmesh_ffi.so through JNA (Apache-2.0 / LGPL dual licence).
+  implementation "net.java.dev.jna:jna:5.19.1@aar"
+  implementation "androidx.camera:camera-camera2:1.6.2"
+  implementation "androidx.camera:camera-lifecycle:1.6.2"
+  implementation "androidx.camera:camera-view:1.6.2"
+  implementation "androidx.biometric:biometric:1.1.0"
+}

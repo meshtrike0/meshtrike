@@ -1,0 +1,17 @@
+[package]
+name = "mesh-handoff"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+mesh-constants = { workspace = true }
+mesh-crypto = { workspace = true }
+raptorq = { workspace = true }
+qrcode = { workspace = true }
+rqrr = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+proptest = { workspace = true }

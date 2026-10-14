@@ -1,0 +1,6 @@
+{
+  "platforms": ["android"],
+  "android": {
+    "modules": ["expo.modules.meshcore.MeshCoreModule", "expo.modules.meshcore.MeshQrScannerModule"]
+  }
+}

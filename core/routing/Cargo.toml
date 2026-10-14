@@ -1,0 +1,12 @@
+[package]
+name = "mesh-routing"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+
+mesh-constants = { workspace = true }
+mesh-crypto = { workspace = true }
+mesh-wire = { workspace = true }

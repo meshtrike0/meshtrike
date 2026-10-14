@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "Meshtrike",
+    "slug": "meshtrike",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#CDF25C",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "org.meshtrike.app",
+      "allowBackup": false,
+      "versionCode": 23
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "name": "Meshtrike harness"
+    },
+    "plugins": [
+      "./plugins/withMeshtrike.js",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Choose a photo to send.",
+          "cameraPermission": "The camera scans contact codes and receives messages by QR handoff.",
+          "microphonePermission": "Record voice notes and talk in nearby calls."
+        }
+      ],
+      "expo-build-properties",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 29
+          }
+        }
+      ]
+    ]
+  }
+}

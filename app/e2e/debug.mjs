@@ -1,0 +1,10 @@
+import { chromium } from '@playwright/test';
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1600, height: 1300 } });
+page.on('console', (m) => console.log(`[${m.type()}] ${m.text().slice(0, 300)}`));
+page.on('pageerror', (e) => console.log(`pageerror: ${e.message}`));
+await page.goto('http://localhost:8088/');
+await page.waitForTimeout(15000);
+await page.screenshot({ path: process.argv[2] });
+console.log((await page.content()).slice(0, 1500));
+await browser.close();

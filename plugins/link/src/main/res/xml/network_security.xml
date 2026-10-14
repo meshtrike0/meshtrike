@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- No cleartext HTTP and no trusted certificate authorities: every HTTP or
+     HTTPS request made through the platform stack fails. The relay only uses
+     a raw TCP socket on the Wi-Fi Direct interface. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors />
+    </base-config>
+</network-security-config>

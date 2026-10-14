@@ -1,0 +1,42 @@
+# Meshtrike Internet add-on, native part. Its own workspace: none of this
+# networking code is part of the Meshtrike app or its core.
+[workspace]
+exclude = [".nym"]
+
+[package]
+name = "meshtrike-internet"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# Nym at a pinned commit plus nym-socks5.patch (see build-native.sh).
+nym-sdk = { path = ".nym/sdk/rust/nym-sdk", default-features = false, features = ["fs-storage"] }
+nym-http-api-client = { path = ".nym/common/http-api-client" }
+nym-gateway-client = { path = ".nym/common/client-libs/gateway-client" }
+nym-client-core = { path = ".nym/common/client-core", default-features = false }
+reqwest = { version = "0.13", default-features = false, features = ["socks", "rustls"] }
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
+webpki-roots = "0.26"
+tokio = { version = "1.47", features = ["rt-multi-thread", "macros", "sync", "time"] }
+futures = "0.3"
+serde_json = "1"
+
+[target.'cfg(target_os = "android")'.dependencies]
+jni = "0.21"
+
+# Desktop-only test tools (src/bin): the Mac test node's helper.
+[target.'cfg(not(target_os = "android"))'.dependencies]
+tokio-tungstenite = "0.20"
+base64 = "0.22"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"

@@ -1,0 +1,17 @@
+[package]
+name = "mesh-wasm"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+mesh-api = { workspace = true }
+serde_json = { workspace = true }
+wasm-bindgen = { workspace = true }
+js-sys = "0.3"
+getrandom = { workspace = true, features = ["wasm_js"] }
+getrandom03 = { package = "getrandom", version = "0.3", features = ["wasm_js"] }

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" role="img" aria-label="Your message is sealed on your phone, carried by strangers who can't read it, and opened by your friend, whose phone sends a two-tick delivery receipt back">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 10 5 0 10z" fill="#CDF25C"/></marker>
+    <marker id="b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 10 5 0 10z" fill="#8A8F9A"/></marker>
+    <g id="phone-dark"><rect x="-46" y="0" width="92" height="140" rx="22" fill="#23262E" stroke="#3A3F4A" stroke-width="2"/><rect x="-14" y="10" width="28" height="6" rx="3" fill="#3A3F4A"/></g>
+    <g id="phone-lime"><rect x="-46" y="0" width="92" height="140" rx="22" fill="#CDF25C"/><rect x="-14" y="10" width="28" height="6" rx="3" fill="#15171C" opacity=".25"/></g>
+    <g id="sealed" fill="none" stroke="#8A8F9A" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><rect x="-24" y="56" width="48" height="34" rx="6"/><path d="M-24 60 0 76 24 60"/><circle cx="18" cy="88" r="9" fill="#23262E"/><path d="M14 88 v-3 a4 4 0 0 1 8 0 v3" stroke-width="2"/><rect x="12" y="88" width="12" height="7" rx="1.5" fill="#8A8F9A" stroke="none"/></g>
+  </defs>
+  <rect width="960" height="420" rx="26" fill="#15171C"/>
+
+  <!-- hops -->
+  <g stroke="#CDF25C" stroke-width="3" fill="none" marker-end="url(#a)">
+    <path d="M178 110 H294"/><path d="M418 110 H534"/><path d="M658 110 H774"/>
+  </g>
+  <g font-family="Geist" font-size="19" font-weight="600" fill="#CDF25C" text-anchor="middle">
+    <text x="236" y="92">Bluetooth</text><text x="476" y="92">carried</text><text x="716" y="92">Wi-Fi Direct</text>
+  </g>
+
+  <!-- phones -->
+  <g transform="translate(120 40)"><use href="#phone-lime"/>
+    <g fill="none" stroke="#15171C" stroke-width="4.5" stroke-linecap="round"><path d="M-13 64 v-9 a13 13 0 0 1 26 0 v9"/></g><rect x="-21" y="63" width="42" height="32" rx="7" fill="#15171C"/></g>
+  <g transform="translate(360 40)"><use href="#phone-dark"/><use href="#sealed"/></g>
+  <g transform="translate(600 40)"><use href="#phone-dark"/><use href="#sealed"/></g>
+  <g transform="translate(840 40)"><use href="#phone-lime"/>
+    <g fill="none" stroke="#15171C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M-22 72 l9 9 16-19"/><path d="M-4 81 l3 0 16-19" /></g></g>
+
+  <!-- labels -->
+  <g text-anchor="middle">
+    <g font-family="Bricolage Grotesque" font-size="25" font-weight="700" fill="#F6F5F1">
+      <text x="120" y="218">You</text><text x="360" y="218">Stranger</text><text x="600" y="218">Stranger</text><text x="840" y="218">Your friend</text>
+    </g>
+    <g font-family="Geist" font-size="17" fill="#A3A7B0">
+      <text x="120" y="244">sealed on</text><text x="120" y="266">your phone</text>
+      <text x="360" y="244">carries it,</text><text x="360" y="266">can’t read it</text>
+      <text x="600" y="244">carries it,</text><text x="600" y="266">can’t read it</text>
+      <text x="840" y="244">opens it,</text><text x="840" y="266">sends two ticks</text>
+    </g>
+  </g>
+
+  <!-- receipt -->
+  <path d="M840 292 C840 352 120 352 120 296" stroke="#8A8F9A" stroke-width="2.5" fill="none" stroke-dasharray="6 8" marker-end="url(#b)"/>
+  <text x="480" y="390" font-family="Geist" font-size="18" font-weight="600" fill="#A3A7B0" text-anchor="middle">delivery receipt travels back to you</text>
+</svg>

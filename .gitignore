@@ -1,0 +1,51 @@
+# Build output
+/target
+/fuzz/target
+/fuzz/corpus
+/fuzz/artifacts
+**/build/
+**/.gradle/
+**/node_modules
+/app/.expo
+/app/dist
+/app/android
+/app/ios
+/app/web-core
+/app/public/mesh-core
+/app/test-results
+/plugins/link/native/target
+/plugins/link/native-build.log
+
+# Generated bindings and native libraries (rebuilt by ci/build-android.sh)
+/app/modules/mesh-core/android/src/main/jniLibs/
+/app/modules/mesh-core/android/src/main/java/uniffi/
+/plugins/link/src/main/jniLibs/
+
+# Release artefacts are published on GitHub Releases, not committed
+*.apk
+*.aab
+*.idsig
+
+# Secrets: signing keys and their passwords never go in git
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+*.minisign.key
+keystore.properties
+local.properties
+.env
+.env.*
+
+# Local tooling
+.DS_Store
+__pycache__/
+*.pyc
+*.log
+
+# Packaged releases (published on GitHub Releases)
+/dist
+
+# Local duplicate of spec/blueprint-v1.0.md
+/Offline Mesh Messenger  Technical Blueprint.md

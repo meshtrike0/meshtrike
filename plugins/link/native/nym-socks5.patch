@@ -1,0 +1,132 @@
+diff --git a/common/client-libs/gateway-client/Cargo.toml b/common/client-libs/gateway-client/Cargo.toml
+index 8a9a315..6102967 100644
+--- a/common/client-libs/gateway-client/Cargo.toml
++++ b/common/client-libs/gateway-client/Cargo.toml
+@@ -61,6 +61,11 @@ features = ["net", "sync", "time"]
+ workspace = true
+ features = ["rustls-tls-webpki-roots"]
+ 
++# Meshtrike patch: optional SOCKS5 route for the gateway connection.
++[target."cfg(not(target_arch = \"wasm32\"))".dependencies.tokio-socks]
++version = "0.5"
++
++
+ # wasm-only dependencies
+ [target."cfg(target_arch = \"wasm32\")".dependencies.wasm-bindgen]
+ workspace = true
+diff --git a/common/client-libs/gateway-client/src/client/mod.rs b/common/client-libs/gateway-client/src/client/mod.rs
+index d3b5082..b970d17 100644
+--- a/common/client-libs/gateway-client/src/client/mod.rs
++++ b/common/client-libs/gateway-client/src/client/mod.rs
+@@ -52,6 +52,8 @@ pub mod config;
+ #[cfg(not(target_arch = "wasm32"))]
+ pub(crate) mod websockets;
+ #[cfg(not(target_arch = "wasm32"))]
++pub mod socks;
++#[cfg(not(target_arch = "wasm32"))]
+ use crate::client::websockets::connect_async_with_fallback;
+ 
+ pub struct GatewayConfig {
+diff --git a/common/client-libs/gateway-client/src/client/socks.rs b/common/client-libs/gateway-client/src/client/socks.rs
+new file mode 100644
+index 0000000..bca2010
+--- /dev/null
++++ b/common/client-libs/gateway-client/src/client/socks.rs
+@@ -0,0 +1,38 @@
++//! Meshtrike patch: an optional SOCKS5 route for the gateway WebSocket.
++//!
++//! When set, every gateway connection is opened through this proxy (with
++//! username/password authentication) and the gateway's hostname is resolved
++//! by the proxy, so the client itself makes no DNS lookup and no direct TCP
++//! connection. Unset (the default), behaviour is unchanged.
++
++use std::net::SocketAddr;
++use std::sync::RwLock;
++
++#[derive(Clone)]
++pub struct Socks5 {
++    pub addr: SocketAddr,
++    pub user: String,
++    pub pass: String,
++}
++
++static PROXY: RwLock<Option<Socks5>> = RwLock::new(None);
++
++pub fn set_socks5_proxy(proxy: Option<Socks5>) {
++    *PROXY.write().unwrap_or_else(|p| p.into_inner()) = proxy;
++}
++
++pub(crate) fn socks5_proxy() -> Option<Socks5> {
++    PROXY.read().unwrap_or_else(|p| p.into_inner()).clone()
++}
++
++static LAST_TARGET: RwLock<Option<String>> = RwLock::new(None);
++
++/// The gateway ("host:port") the last proxied connection asked the proxy to
++/// reach: the real gateway behind a bridge, for opt-in tracing.
++pub fn last_socks5_target() -> Option<String> {
++    LAST_TARGET.read().unwrap_or_else(|p| p.into_inner()).clone()
++}
++
++pub(crate) fn set_last_socks5_target(t: String) {
++    *LAST_TARGET.write().unwrap_or_else(|p| p.into_inner()) = Some(t);
++}
+diff --git a/common/client-libs/gateway-client/src/client/websockets.rs b/common/client-libs/gateway-client/src/client/websockets.rs
+index 1a25b4c..9c420ed 100644
+--- a/common/client-libs/gateway-client/src/client/websockets.rs
++++ b/common/client-libs/gateway-client/src/client/websockets.rs
+@@ -93,6 +93,10 @@ async fn connect_async_inner(
+     use_hickory_dns_resolver: bool,
+     #[cfg(unix)] connection_fd_callback: Option<Arc<dyn Fn(RawFd) + Send + Sync>>,
+ ) -> Result<(WebSocketStream<MaybeTlsStream<TcpStream>>, Response), GatewayClientError> {
++    // Meshtrike patch: route through the SOCKS5 proxy when one is set.
++    if let Some(proxy) = crate::client::socks::socks5_proxy() {
++        return connect_via_socks5(endpoint, &proxy).await;
++    }
+     if use_hickory_dns_resolver {
+         connect_async_with_hickory(
+             endpoint,
+@@ -114,6 +118,43 @@ async fn connect_async_inner(
+     }
+ }
+ 
++/// Meshtrike patch: TCP through the SOCKS5 proxy (remote DNS), then TLS and
++/// the WebSocket handshake to the gateway as usual.
++async fn connect_via_socks5(
++    endpoint: &str,
++    proxy: &crate::client::socks::Socks5,
++) -> Result<(WebSocketStream<MaybeTlsStream<TcpStream>>, Response), GatewayClientError> {
++    let failed = |e: std::io::Error| GatewayClientError::NetworkConnectionFailed {
++        address: endpoint.to_owned(),
++        source: Box::new(tungstenite::Error::from(e)),
++    };
++    let uri =
++        Url::parse(endpoint).map_err(|_| GatewayClientError::InvalidUrl(endpoint.to_owned()))?;
++    let port: u16 = uri.port_or_known_default().unwrap_or(443);
++    let host = uri
++        .host_str()
++        .ok_or(GatewayClientError::InvalidUrl(endpoint.to_owned()))?
++        .trim_start_matches('[')
++        .trim_end_matches(']')
++        .to_owned();
++    crate::client::socks::set_last_socks5_target(format!("{host}:{port}"));
++    let stream = tokio_socks::tcp::Socks5Stream::connect_with_password(
++        proxy.addr,
++        (host.as_str(), port),
++        &proxy.user,
++        &proxy.pass,
++    )
++    .await
++    .map_err(|e| failed(std::io::Error::other(e)))?
++    .into_inner();
++    tokio_tungstenite::client_async_tls(endpoint, stream)
++        .await
++        .map_err(|error| GatewayClientError::NetworkConnectionFailed {
++            address: endpoint.to_owned(),
++            source: Box::new(error),
++        })
++}
++
+ #[cfg(not(target_arch = "wasm32"))]
+ pub(crate) async fn connect_async_with_fallback(
+     endpoints: &GatewayListeners,
