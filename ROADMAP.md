@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/roadmap.svg" alt="Meshtrike roadmap: now field testing, next a signed release, then community servers run by volunteers and offline maps, later an iPhone app" width="100%">
+  <img src="docs/assets/roadmap.svg" alt="Meshtrike roadmap: now field testing, signed v1.0.0 shipped, next reproducible builds, then community servers run by volunteers and offline maps, later an iPhone app" width="100%">
 </p>
 
 # Roadmap
@@ -8,9 +8,9 @@ Meshtrike is built in the open. This page says what already works, what we are d
 
 | | Stage | What it means |
 |---|---|---|
-| 🟢 | **Shipped** | Mesh messaging with delivery states and the route pill, groups (up to 50) and public channels, photos, files and video previews, swipe to reply, QR handoff, LoRa via Meshtastic, disappearing messages, High-Risk mode, duress PIN and panic wipe, the MeshGRID add-on (Wi-Fi Direct and the private internet route over the Nym mixnet) |
+| 🟢 | **Shipped** | Mesh messaging with delivery states and the route pill, groups (up to 50) and public channels, photos, files and video previews, swipe to reply, QR handoff, LoRa via Meshtastic, disappearing messages, High-Risk mode, duress PIN and panic wipe, signed v1.0.0 releases you can verify in the browser or with one command, the MeshGRID add-on (Wi-Fi Direct and the private internet route over the Nym mixnet) |
 | 🧪 | **Now: field testing** | Voice notes, nearby voice calls over Bluetooth and Wi-Fi Direct, reply quotes on voice notes, MeshGRID download flow |
-| 🛠️ | **Next: first signed release** | Release keys, signed APKs on GitHub, verification in the browser and with one command, then reproducible builds and F-Droid |
+| 🛠️ | **Next: reproducible builds** | Rebuild the same APK from source byte for byte, then F-Droid and IzzyOnDroid |
 | 🤝 | **Then: community servers** | Meshtrike servers run by volunteers, like Tor relays: mailboxes for offline phones and bridges between distant meshes |
 | 🗺️ | **Then: offline maps and an audit** | Maps that work through a shutdown, positions straight from satellites, and an independent security review |
 | 🔭 | **Later** | iPhone app, group calls, disguise bridges |
@@ -25,13 +25,12 @@ Everything in this stage is built and passes the automated mesh scenarios (27 en
 - **Calls:** call quality and reconnects at the edge of Bluetooth range, and the hand-over to Wi-Fi Direct.
 - **Battery:** measured cost of relaying for others, with the screen off, over 24 hours.
 
-## 🛠️ Next: the first signed release
+## 🛠️ Next: reproducible builds and F-Droid
 
-1. **Release keys.** One Android signing key for Meshtrike and MeshGRID, plus OpenPGP and minisign keys for the checksums. Kept offline, never in this repository.
-2. **Signed APKs on GitHub Releases.** Free to download, no account needed, with `SHA256SUMS` signed twice.
-3. **Verification anyone can do.** In the browser on the [verify page](https://meshtrike0.github.io/verify.html) (the file never leaves the device), with one command (`sh verify.sh`), or by hand like Tor Browser.
-4. **Reproducible builds.** Anyone can rebuild the exact same APK from this source and compare it byte for byte.
-5. **F-Droid and IzzyOnDroid.** Listing in the open-source app stores, which build from source themselves.
+Signed releases are out: v1.0.0 is on [GitHub Releases](https://github.com/meshtrike0/meshtrike/releases/latest), signed with one release key, with `SHA256SUMS` signed by OpenPGP and minisign, and checkable in the browser on the [verify page](https://meshtrike0.github.io/verify.html) or with one command (`sh verify.sh`). Next:
+
+1. **Reproducible builds.** Anyone can rebuild the exact same APK from this source and compare it byte for byte.
+2. **F-Droid and IzzyOnDroid.** Listing in the open-source app stores, which build from source themselves.
 
 ## 🤝 Then: community servers run by volunteers
 

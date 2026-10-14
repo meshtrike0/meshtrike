@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Roadmap · Meshtrike</title>
-<meta name="description" content="What Meshtrike has shipped, what is in field testing now, and what comes next: the first signed release, community servers run by volunteers, offline maps, a security audit and an iPhone app.">
+<meta name="description" content="What Meshtrike has shipped, what is in field testing now, and what comes next: reproducible builds and F-Droid, community servers run by volunteers, offline maps, a security audit and an iPhone app.">
 <link rel="canonical" href="https://meshtrike0.github.io/roadmap.html">
 <meta name="theme-color" content="#F6F5F1">
 <meta name="referrer" content="no-referrer">
 <!-- Everything is served from this folder: no analytics, no trackers, no third-party requests. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta property="og:title" content="Roadmap · Meshtrike">
-<meta property="og:description" content="What Meshtrike has shipped, what is in field testing now, and what comes next: the first signed release, community servers run by volunteers, offline maps, a security audit and an iPhone app.">
+<meta property="og:description" content="What Meshtrike has shipped, what is in field testing now, and what comes next: reproducible builds and F-Droid, community servers run by volunteers, offline maps, a security audit and an iPhone app.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://meshtrike0.github.io/roadmap.html">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -170,6 +170,7 @@
         <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Disappearing messages</li>
         <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>High-Risk mode</li>
         <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Duress PIN and panic wipe</li>
+        <li class="shipped__wide"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Signed v1.0.0 on GitHub Releases, verifiable in the browser on the <a class="inl" href="verify.html">verify page</a> or with one command</li>
         <li class="shipped__wide"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>The MeshGRID add-on: Wi-Fi Direct and the private internet route over the Nym mixnet</li>
       </ul>
     </div>
@@ -209,12 +210,9 @@
         <span class="tl__node" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-key"/></svg></span>
         <article class="tl__card" aria-labelledby="tl-next">
           <div class="tl__hd"><span class="tl__when">NEXT</span><span class="st st--plan">Planned</span></div>
-          <h3 class="tl__t" id="tl-next">The first signed release</h3>
-          <p class="tl__d">The step that lets anyone, anywhere, check that the copy they were handed is the real one.</p>
+          <h3 class="tl__t" id="tl-next">Reproducible builds and F-Droid</h3>
+          <p class="tl__d">Signed releases are out. Next: anyone can rebuild the same APK from source and get the same bytes, and the app reaches the open-source app stores.</p>
           <ul class="tl__list">
-            <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-key"/></svg><span><b>Release keys</b>, kept offline: one Android signing key, plus OpenPGP and minisign keys for the checksums</span></li>
-            <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pkg"/></svg><span><b>Signed APKs on GitHub Releases</b>, free, no account, with checksums signed twice</span></li>
-            <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-shieldOk"/></svg><span><b>Verify anywhere</b>: in the browser on the <a class="inl" href="verify.html">verify page</a>, or with one command, <code>sh verify.sh</code></span></li>
             <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-code"/></svg><span><b>Reproducible builds</b>: rebuild the same APK from source and compare it byte for byte</span></li>
             <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-box"/></svg><span><b>F-Droid and IzzyOnDroid</b>, the open-source app stores</span></li>
           </ul>

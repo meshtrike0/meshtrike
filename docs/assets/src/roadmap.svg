@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 560" width="1400" height="560" role="img" aria-label="Meshtrike roadmap. Now: field testing. Next: first signed release. Then: community servers run by volunteers, then offline maps and a security audit. Later: iPhone app, group calls, disguise bridges.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 560" width="1400" height="560" role="img" aria-label="Meshtrike roadmap. Now: field testing. Shipped: signed v1.0.0. Next: reproducible builds and F-Droid. Then: community servers run by volunteers, then offline maps and a security audit. Later: iPhone app, group calls, disguise bridges.">
   <defs>
     <radialGradient id="glow" cx="15%" cy="0%" r="70%">
       <stop offset="0" stop-color="#CDF25C" stop-opacity=".18"/>
@@ -34,9 +34,9 @@
     <g transform="translate(370 0)">
       <circle cx="0" cy="238" r="16" fill="#15171C" stroke="#CDF25C" stroke-width="4"/>
       <text x="-40" y="306" font-size="16" font-weight="600" letter-spacing="2" fill="#CDF25C">NEXT</text>
-      <text x="-40" y="340" font-family="Bricolage Grotesque" font-size="25" font-weight="800" fill="#F6F5F1">Signed release</text>
-      <text x="-40" y="372" font-size="16.5" fill="#A3A7B0">Release keys, browser check,</text>
-      <text x="-40" y="396" font-size="16.5" fill="#A3A7B0">reproducible builds, F-Droid</text>
+      <text x="-40" y="340" font-family="Bricolage Grotesque" font-size="25" font-weight="800" fill="#F6F5F1">Reproducible builds</text>
+      <text x="-40" y="372" font-size="16.5" fill="#A3A7B0">Rebuild byte for byte, then</text>
+      <text x="-40" y="396" font-size="16.5" fill="#A3A7B0">F-Droid and IzzyOnDroid</text>
     </g>
     <g transform="translate(640 0)">
       <circle cx="0" cy="238" r="16" fill="#15171C" stroke="#CDF25C" stroke-width="4"/>

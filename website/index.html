@@ -61,6 +61,14 @@
   <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
   <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></symbol>
   <symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></symbol>
+  <symbol id="i-eyeOff" viewBox="0 0 24 24"><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><path d="m2 2 20 20"/><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M4 9h16"/><path d="M4 15h16"/><path d="M10 3 8 21"/><path d="m16 3-2 18"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
 </svg>
 <a class="skip" href="#main">Skip to content</a>
 <div class="page">
@@ -205,6 +213,29 @@
   </div>
 </div>
 
+<section id="numbers" class="sec nums" aria-labelledby="nums-title">
+  <div class="wrap stack home-inner">
+    <div class="split" data-reveal>
+      <div class="sec-head">
+        <p class="eyebrow">AT A GLANCE</p>
+        <h2 class="h2" id="nums-title">By the <span class="hl">numbers.</span></h2>
+      </div>
+      <div class="split__aside">
+        <p class="lead">Zero where it protects you. Generous where it keeps you in reach.</p>
+      </div>
+    </div>
+    <ul class="nums__grid" data-seq>
+      <li class="num num--ink" style="--i:0"><span class="num__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-server"/></svg></span><span class="num__v">0</span><span class="num__t">servers needed</span><span class="num__d">Phones talk to phones. There is no Meshtrike server.</span></li>
+      <li class="num" style="--i:1"><span class="num__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-eyeOff"/></svg></span><span class="num__v">0</span><span class="num__t">trackers</span><span class="num__d">No analytics, no crash reporting, nothing sent home.</span></li>
+      <li class="num num--lime" style="--i:2"><span class="num__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-globe"/></svg></span><span class="num__v" aria-hidden="true"><span class="num__no">www</span></span><span class="num__t">No internet permission</span><span class="num__d">The messenger itself can’t reach the internet at all.</span></li>
+      <li class="num num--sand" style="--i:3"><span class="num__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></span><span class="num__v">0</span><span class="num__t">phone numbers</span><span class="num__d">No number, no email, no account to sign up for.</span></li>
+      <li class="num" style="--i:4"><span class="num__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-route"/></svg></span><span class="num__v">7</span><span class="num__t">hops</span><span class="num__d">A message can be relayed by up to seven phones on its way.</span></li>
+      <li class="num num--vio" style="--i:5"><span class="num__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg></span><span class="num__v">72<small>h</small></span><span class="num__t">carried, sealed</span><span class="num__d">Out of range? Nearby phones carry it for up to 72 hours.</span></li>
+      <li class="num" style="--i:6"><span class="num__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-users"/></svg></span><span class="num__v">50</span><span class="num__t">people per group</span><span class="num__d">Private groups, plus public channels for everyone nearby.</span></li>
+      <li class="num num--ink" style="--i:7"><span class="num__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mic"/></svg></span><span class="num__v">~120<small>KB</small></span><span class="num__t">per voice minute</span><span class="num__d">Small enough to travel well over Bluetooth and the mesh.</span></li>
+    </ul>
+  </div>
+</section>
 <section id="how" class="sec how how--teaser" aria-labelledby="how-title">
   <div class="wrap stack how__inner">
     <div class="split" data-reveal>
@@ -245,46 +276,279 @@
     </ol>
   </div>
 </section>
+<section id="routes" class="sec hroutes" aria-labelledby="routes-title">
+  <div class="wrap">
+    <div class="pillbox dark" data-reveal>
+      <div class="pillbox__copy">
+        <p class="eyebrow eyebrow--lime">02 · ROUTES</p>
+        <h2 class="h3" id="routes-title">Six ways a message travels. One pill tells you which.</h2>
+        <p class="on-dark">Under every contact’s name, the route pill shows how your message is moving right now. When several routes work, the fastest wins. When none do, it waits safely and says so.</p>
+        <ul class="routes">
+          <li><span class="chip c-bt"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bt"/></svg>Bluetooth</span><span class="routes__range">10–30 m per hop</span></li>
+          <li><span class="chip c-wifi"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wifi"/></svg>Wi-Fi Direct</span><span class="routes__range">50–100 m, with MeshGRID</span></li>
+          <li><span class="chip c-lora"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-radio"/></svg>LoRa</span><span class="routes__range">Kilometres, with a radio</span></li>
+          <li><span class="chip c-qr"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-qr"/></svg>QR handoff</span><span class="routes__range">About 1 MB, camera to camera</span></li>
+          <li><span class="chip c-net"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-globe"/></svg>Nym mixnet</span><span class="routes__range">Worldwide, with MeshGRID</span></li>
+          <li><span class="chip c-mesh"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mesh"/></svg>Carried by the mesh</span><span class="routes__range">Up to 72 hours</span></li>
+        </ul>
+        <a class="go go--lime" href="how-it-works.html#routes">Every route explained<svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="hroutes__demo" aria-hidden="true">
+        <div class="pilldemo">
+          <div class="pilldemo__hd">
+            <span class="avatar">M</span>
+            <span class="pilldemo__who"><span class="chat-hd__name">Maya</span><span class="verified"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-shieldOk"/></svg>Verified</span></span>
+          </div>
+          <div class="pilltick">
+            <ul class="pilltick__list">
+              <li><span class="route-pill c-bt"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bt"/></svg><span>Nearby · Bluetooth</span></span></li>
+              <li><span class="route-pill c-wifi"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wifi"/></svg><span>Nearby · Wi-Fi (fast)</span></span></li>
+              <li><span class="route-pill c-lora"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-radio"/></svg><span>Long range · LoRa</span></span></li>
+              <li><span class="route-pill c-qr"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-qr"/></svg><span>QR handoff</span></span></li>
+              <li><span class="route-pill c-net"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-globe"/></svg><span>Internet · private route</span></span></li>
+              <li><span class="route-pill c-mesh"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mesh"/></svg><span>Carried by the mesh</span></span></li>
+              <li><span class="route-pill c-bt"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bt"/></svg><span>Nearby · Bluetooth</span></span></li>
+            </ul>
+          </div>
+          <div class="lane">
+            <span class="lane__n lane__n--me"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></span><span class="lane__w"></span><span class="lane__n"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></span><span class="lane__w"></span><span class="lane__n"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></span><span class="lane__w"></span><span class="lane__n"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></span><span class="lane__w"></span><span class="lane__n lane__n--to">M</span>
+            <span class="lane__env"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg></span>
+          </div>
+          <p class="lane__cap" style="margin:0"><span>YOU</span><span>SEALED · HOP BY HOP</span><span>MAYA</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="features" class="sec features hfeat" aria-labelledby="hfeat-title">
+  <div class="wrap stack hfeat__inner">
+    <div class="split" data-reveal>
+      <div class="sec-head">
+        <p class="eyebrow">03 · FEATURES</p>
+        <h2 class="h2" id="hfeat-title">Everything a messenger does. <span class="hl">Minus the tower.</span></h2>
+      </div>
+      <div class="split__aside">
+        <p class="lead">Messages, voice notes, calls and groups that work phone to phone, plus the tools you need when the place you’re in turns hostile.</p>
+        <a class="go" href="features.html">See every feature<svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+    <div class="feat-grid">
 
+      <article class="feat tilt" data-reveal data-tilt>
+        <div class="demo-states" aria-hidden="true">
+          <div class="bub bub--out demo-states__bub"><span>On my way to the north gate</span><span class="demo-states__st"><span class="bub__st st-wait"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Waiting</span></span><span class="bub__st st-sent"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Sent</span></span><span class="bub__st st-done"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-checks"/></svg><span>Delivered</span></span></span></div>
+          <span class="bub--sys demo-states__sys"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mesh"/></svg>Carried by the mesh</span>
+        </div>
+        <div class="feat__txt"><h3 class="feat__t">Messages that find their way</h3><p class="feat__d">Text, photos, files and replies. If they’re out of range, nearby phones carry it sealed for up to 72 hours.</p></div>
+      </article>
+
+      <article class="feat feat--lime tilt" data-reveal data-tilt>
+        <div class="bigwave" aria-hidden="true"><span style="height:66px;animation-delay:0.00s"></span><span style="height:147px;animation-delay:0.05s"></span><span style="height:60px;animation-delay:0.10s"></span><span style="height:135px;animation-delay:0.15s"></span><span style="height:53px;animation-delay:0.20s"></span><span style="height:47px;animation-delay:0.25s"></span><span style="height:49px;animation-delay:0.30s"></span><span style="height:65px;animation-delay:0.35s"></span><span style="height:96px;animation-delay:0.40s"></span><span style="height:121px;animation-delay:0.45s"></span><span style="height:39px;animation-delay:0.50s"></span><span style="height:140px;animation-delay:0.55s"></span><span style="height:96px;animation-delay:0.60s"></span><span style="height:105px;animation-delay:0.65s"></span><span style="height:112px;animation-delay:0.70s"></span><span style="height:146px;animation-delay:0.75s"></span><span style="height:105px;animation-delay:0.80s"></span><span style="height:141px;animation-delay:0.85s"></span><span style="height:129px;animation-delay:0.90s"></span><span style="height:35px;animation-delay:0.95s"></span><span style="height:51px;animation-delay:1.00s"></span><span style="height:73px;animation-delay:1.05s"></span><span style="height:81px;animation-delay:1.10s"></span><span style="height:32px;animation-delay:1.15s"></span><span style="height:41px;animation-delay:1.20s"></span><span style="height:122px;animation-delay:1.25s"></span><span style="height:74px;animation-delay:1.30s"></span><span style="height:81px;animation-delay:1.35s"></span><span style="height:86px;animation-delay:1.40s"></span><span style="height:144px;animation-delay:1.45s"></span><span style="height:114px;animation-delay:1.50s"></span><span style="height:113px;animation-delay:1.55s"></span><span style="height:70px;animation-delay:1.60s"></span><span style="height:73px;animation-delay:1.65s"></span></div>
+        <div class="feat__txt"><h3 class="feat__t">Voice notes</h3><p class="feat__d">About 120 KB a minute, so they travel well over Bluetooth and the mesh. Up to 5 minutes.</p></div>
+      </article>
+
+      <article class="feat feat--black dark tilt" data-reveal data-tilt>
+        <div class="callstage" aria-hidden="true">
+          <span class="callstage__ping"></span>
+          <span class="callstage__ping callstage__ping--2"></span>
+          <div class="callstage__mid"><span class="callstage__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-call"/></svg></span><span class="callstage__time">03:42</span><span class="callstage__q">Wi-Fi · Good</span></div>
+        </div>
+        <div class="feat__txt"><h3 class="feat__t">Nearby voice calls</h3><p class="feat__d">One to one over Bluetooth or Wi-Fi Direct, with fresh keys every call. No tower involved.</p></div>
+      </article>
+
+      <article class="feat feat--ink dark tilt" data-reveal data-tilt>
+        <div class="tick-wrap">
+          <div class="tick">
+            <ul class="tick__list" aria-label="What High-Risk mode turns on">
+              <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zap"/></svg>Constant cover traffic</li>
+              <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg>Text only</li>
+              <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-radio"/></svg>LoRa and Wi-Fi off</li>
+              <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-timer"/></svg>24-hour disappearing</li>
+              <li><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Instant lock</li>
+              <li aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zap"/></svg>Constant cover traffic</li>
+            </ul>
+          </div>
+        </div>
+        <div class="feat__txt"><h3 class="feat__t">High-Risk mode</h3><p class="feat__d">One switch for hostile places. It also tells you what it can’t protect against.</p></div>
+      </article>
+
+      <article class="feat tilt" data-reveal data-tilt>
+        <div class="demo-group" aria-hidden="true">
+          <div class="demo-group__stack"><span style="--c:#CDF25C">M</span><span style="--c:#E4EBFF">S</span><span style="--c:#FDE7D9">A</span><span style="--c:#D9F3EF">J</span><span style="--c:#ECE5FF">K</span><span class="demo-group__more">+45</span></div>
+          <div class="demo-group__chans"><span class="chip chip--plain"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-users"/></svg>Crew · 50 max</span><span class="chip c-mesh"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-hash"/></svg>north-gate · public</span></div>
+        </div>
+        <div class="feat__txt"><h3 class="feat__t">Groups and public channels</h3><p class="feat__d">Private groups of up to 50, plus public channels anyone nearby can read. In channels you get a different random name.</p></div>
+      </article>
+
+      <article class="feat tilt" data-reveal data-tilt>
+        <div class="demo-pin" aria-hidden="true">
+          <div class="demo-pin__dots"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="demo-pin__row"><span class="demo-pin__hold"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="#EEEBE4" stroke-width="4"/><circle class="demo-pin__arc" cx="22" cy="22" r="19" fill="none" stroke="#A3360A" stroke-width="4" stroke-linecap="round" stroke-dasharray="120"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-trash"/></svg></span><span class="demo-pin__lbl">Hold 3 s to wipe</span></div>
+        </div>
+        <div class="feat__txt"><h3 class="feat__t">Duress PIN and panic wipe</h3><p class="feat__d">A second PIN silently wipes everything and shows a freshly installed app. Too many wrong PINs wipe it too.</p></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+<section id="uses" class="sec ucs dark" aria-labelledby="ucs-title">
+  <div class="wrap stack ucs__inner">
+    <div class="split" data-reveal>
+      <div class="sec-head">
+        <p class="eyebrow eyebrow--lime">04 · USE CASES</p>
+        <h2 class="h2" id="ucs-title">Built for the moments <span class="lime">networks fail.</span></h2>
+      </div>
+      <div class="split__aside">
+        <p class="ucs__lead">Towers get overloaded, cut on purpose, knocked down by storms, or were never there to begin with. Meshtrike keeps the people around you in reach.</p>
+        <a class="go go--lime" href="use-cases.html">Every situation, step by step<svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+    <ul class="ucs__row" data-reveal>
+      <li><a class="uc" href="use-cases.html#situations"><span class="uc__fig"><img class="uc__img" src="img/ch-festival.svg" alt="" width="800" height="600" loading="lazy" decoding="async"></span><span class="uc__tag">FESTIVALS</span><span class="uc__t">Find your crew</span><span class="uc__d">Fifty thousand phones, one overloaded tower. Meshtrike doesn’t care.</span></a></li>
+      <li><a class="uc" href="use-cases.html#situations"><span class="uc__fig"><img class="uc__img" src="img/ch-protest.svg" alt="" width="800" height="600" loading="lazy" decoding="async"></span><span class="uc__tag">PROTESTS</span><span class="uc__t">Stay together</span><span class="uc__d">When networks are cut, nearby phones still pass messages, sealed.</span></a></li>
+      <li><a class="uc" href="use-cases.html#situations"><span class="uc__fig"><img class="uc__img" src="img/ch-storm.svg" alt="" width="800" height="600" loading="lazy" decoding="async"></span><span class="uc__tag">DISASTERS</span><span class="uc__t">Check in</span><span class="uc__d">Storms take towers down first. Phones and LoRa radios keep going.</span></a></li>
+      <li><a class="uc" href="use-cases.html#situations"><span class="uc__fig"><img class="uc__img" src="img/ch-offgrid.svg" alt="" width="800" height="600" loading="lazy" decoding="async"></span><span class="uc__tag">OFF-GRID</span><span class="uc__t">Go further</span><span class="uc__d">Trails, boats and camps. A small LoRa radio reaches kilometres.</span></a></li>
+      <li><a class="uc" href="use-cases.html#situations"><span class="uc__fig"><img class="uc__img" src="img/ch-shutdown.svg" alt="" width="800" height="600" loading="lazy" decoding="async"></span><span class="uc__tag">SHUTDOWNS</span><span class="uc__t">Keep talking</span><span class="uc__d">Someone switches the network off. The people nearby are still there.</span></a></li>
+    </ul>
+  </div>
+</section>
+<section id="privacy" class="sec hrules" aria-labelledby="hrules-title">
+  <div class="hrules__box" data-reveal>
+    <div class="hrules__head">
+      <p class="eyebrow" style="color:var(--lime-deep)">05 · PRIVACY</p>
+      <h2 class="h2" id="hrules-title">Rules that never bend.</h2>
+      <p class="hrules__lead">Built into every screen of the app. There is no setting that turns them off, so nobody can talk you into turning them off either.</p>
+      <span class="stk hrules__stk"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>No off switch</span>
+      <a class="go" href="security.html#rules">Why each rule exists<svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+    </div>
+    <ol class="hrules__list" data-seq>
+      <li class="hrule" style="--i:0"><span class="hrule__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-eyeOff"/></svg></span><span><span class="hrule__n">01</span>Notifications carry no names and no content.</span></li>
+      <li class="hrule" style="--i:1"><span class="hrule__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></span><span><span class="hrule__n">02</span>No screenshots, no screen recording.</span></li>
+      <li class="hrule" style="--i:2"><span class="hrule__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg></span><span><span class="hrule__n">03</span>Never says “sent” while it’s still on your phone.</span></li>
+      <li class="hrule hrule--ink" style="--i:3"><span class="hrule__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-globe"/></svg></span><span><span class="hrule__n">04</span>The app never touches the internet.</span></li>
+      <li class="hrule" style="--i:4"><span class="hrule__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-eye"/></svg></span><span><span class="hrule__n">05</span>Received media is never shown from the original file.</span></li>
+      <li class="hrule" style="--i:5"><span class="hrule__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-route"/></svg></span><span><span class="hrule__n">06</span>Nothing reveals who talks to whom.</span></li>
+      <li class="hrule hrule--wide" style="--i:6"><span class="hrule__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-shieldOk"/></svg></span><span><span class="hrule__n">07</span>No telemetry, no analytics, no crash reporting.</span></li>
+    </ol>
+  </div>
+</section>
+<section id="compare" class="sec hcmp dark" aria-labelledby="hcmp-title">
+  <div class="wrap stack hcmp__inner">
+    <div class="split" data-reveal>
+      <div class="sec-head">
+        <p class="eyebrow eyebrow--lime">06 · COMPARE</p>
+        <h2 class="h2" id="hcmp-title">Not just another <span class="lime">messenger.</span></h2>
+      </div>
+      <div class="split__aside">
+        <p class="hcmp__lead">Ordinary messengers are built around the internet and a company’s servers. Meshtrike is built around the people next to you.</p>
+      </div>
+    </div>
+    <div data-reveal>
+      <table class="ctbl">
+        <caption class="sr-only">Meshtrike compared with a typical internet messenger</caption>
+        <colgroup><col class="ctbl__q"><col><col></colgroup>
+        <thead><tr><th scope="col">COMPARED</th><th scope="col" class="me"><span class="ctbl__name">Meshtrike</span><span class="ctbl__sub">App <span data-ver="app">v1.0.0</span></span></th><th scope="col"><span class="ctbl__name">Ordinary messengers</span><span class="ctbl__sub">Typical internet apps</span></th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Works with no signal</th><td class="me"><div class="cell"><span class="cell__ic cell__ic--y" role="img" aria-label="Yes"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span><span class="cell__t">Bluetooth, Wi-Fi Direct, LoRa</span></div></td><td><div class="cell"><span class="cell__ic cell__ic--n" role="img" aria-label="No"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></span><span class="cell__t">Needs internet</span></div></td></tr>
+          <tr><th scope="row">Sign-up</th><td class="me"><div class="cell"><span class="cell__ic cell__ic--y" role="img" aria-label="Yes"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span><span class="cell__t">No number, no account</span></div></td><td><div class="cell"><span class="cell__ic cell__ic--n" role="img" aria-label="No"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></span><span class="cell__t">Usually a phone number</span></div></td></tr>
+          <tr><th scope="row">Where messages go</th><td class="me"><div class="cell"><span class="cell__ic cell__ic--y" role="img" aria-label="Yes"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span><span class="cell__t">Phone to phone, sealed</span></div></td><td><div class="cell"><span class="cell__ic cell__ic--n" role="img" aria-label="No"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></span><span class="cell__t">Through the company’s servers</span></div></td></tr>
+          <tr><th scope="row">Internet permission</th><td class="me"><div class="cell"><span class="cell__ic cell__ic--y" role="img" aria-label="Yes"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span><span class="cell__t">None in the messenger</span></div></td><td><div class="cell"><span class="cell__ic cell__ic--n" role="img" aria-label="No"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></span><span class="cell__t">Needed to work at all</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="hcmp__foot">
+      <p class="hcmp__note">Generalised on purpose. The full table compares Meshtrike feature by feature with Briar, bitchat, Meshtastic and Signal, from each project’s own documentation.</p>
+      <a class="go go--lime" href="security.html#compare">See the full comparison<svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+<section id="trust" class="sec trust" aria-labelledby="trust-title">
+  <div class="wrap stack trust__inner">
+    <div class="split" data-reveal>
+      <div class="sec-head">
+        <p class="eyebrow">07 · TRUST AND REACH</p>
+        <h2 class="h2" id="trust-title">Check your copy. <span class="hl">Then go further.</span></h2>
+      </div>
+      <div class="split__aside">
+        <p class="lead">Meshtrike spreads phone to phone, so every copy can be checked. And when you want more speed or reach, there’s an optional add-on.</p>
+      </div>
+    </div>
+    <div class="trust__grid">
+      <article class="callout" data-reveal>
+        <img class="callout__art" src="img/verify-seal.svg" alt="Illustration: an app file with a fingerprint pattern, a magnifying glass and a large seal with a check mark." width="800" height="600" loading="lazy" decoding="async">
+        <span class="stk callout__stk"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-shieldOk"/></svg>Is my APK real?</span>
+        <div class="callout__txt">
+          <p class="callout__eye">VERIFY A DOWNLOAD</p>
+          <h3 class="callout__t">Check any copy in your browser.</h3>
+          <p class="callout__d">Every real Meshtrike APK is signed with one release key. Pick the file on the verify page: it checks the signature and the official fingerprint offline, and the file never leaves your device.</p>
+          <div class="callout__btns">
+            <a class="btn btn--ink" href="verify.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-shieldOk"/></svg>Verify a download</a>
+            <a class="go" href="download.html#fingerprint">The official fingerprint<svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+          </div>
+        </div>
+      </article>
+      <article class="callout callout--mg dark" data-reveal>
+        <div class="mgx" aria-hidden="true">
+          <div class="mgx__row">
+            <div class="mgd__app mgd__app--mt"><span class="mgd__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mesh"/></svg></span><span class="mgd__name">Meshtrike</span><span class="mgd__tag"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-eyeOff"/></svg>No internet</span></div>
+            <span class="mgx__wire"><span class="mgx__lbl">sealed only</span><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg></span></span>
+            <div class="mgd__app mgd__app--mg"><span class="mgd__ic"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-globe"/></svg></span><span class="mgd__name">MeshGRID</span><span class="mgd__tag">Optional add-on</span></div>
+          </div>
+          <div class="mgd__out"><span class="chip c-wifi"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wifi"/></svg>Wi-Fi Direct · nearby</span><span class="chip c-net"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-globe"/></svg>Nym mixnet · worldwide</span></div>
+        </div>
+        <span class="stk stk--vio callout__stk"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg>Optional add-on</span>
+        <div class="callout__txt">
+          <p class="callout__eye">THE MESHGRID ADD-ON</p>
+          <h3 class="callout__t">Faster nearby. Private worldwide.</h3>
+          <p class="callout__d">MeshGRID adds Wi-Fi Direct for photos, files and calls, and a private internet route over the Nym mixnet, off by default. It only ever carries messages that are already sealed, so the messenger itself never needs the internet.</p>
+          <div class="callout__btns">
+            <a class="btn btn--lime" href="download.html#meshgrid"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-download"/></svg>Get MeshGRID</a>
+            <a class="go go--lime" href="how-it-works.html#meshgrid">How it works<svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+<section id="faq" class="sec hfaq" aria-labelledby="hfaq-title">
+  <div class="wrap hfaq__grid">
+    <div class="sec-head hfaq__head" data-reveal>
+      <p class="eyebrow">08 · FAQ</p>
+      <h2 class="h2" id="hfaq-title">Fair questions.</h2>
+      <p class="lead">Straight answers to the ones we hear most.</p>
+      <a class="go" href="faq.html">All questions<svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="faq__list">
+        <div class="qa open" id="hq-internet" data-reveal>
+          <h3><button class="qa__btn" type="button" id="hqa-btn-0" aria-expanded="true" aria-controls="hqa-0"><span class="qa__q">Does it need internet or a SIM card?</span><span class="qa__pm"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+          <div class="qa__a" id="hqa-0" role="region" aria-labelledby="hqa-btn-0"><div><p>No. Meshtrike talks to other phones directly over Bluetooth, Wi-Fi Direct and LoRa radios. The app itself has no internet permission at all. The optional internet route lives in a separate add-on, MeshGRID, and is off by default.</p></div></div>
+        </div>
+        <div class="qa" id="hq-read" data-reveal>
+          <h3><button class="qa__btn" type="button" id="hqa-btn-1" aria-expanded="false" aria-controls="hqa-1"><span class="qa__q">Can the phones that carry my message read it?</span><span class="qa__pm"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+          <div class="qa__a" id="hqa-1" role="region" aria-labelledby="hqa-btn-1"><div><p>No. Messages are sealed end to end on your phone. Relays only hold an encrypted envelope and can’t tell who sent it or who it’s for. There is no Meshtrike server.</p></div></div>
+        </div>
+        <div class="qa" id="hq-range" data-reveal>
+          <h3><button class="qa__btn" type="button" id="hqa-btn-2" aria-expanded="false" aria-controls="hqa-2"><span class="qa__q">How far can a message go?</span><span class="qa__pm"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+          <div class="qa__a" id="hqa-2" role="region" aria-labelledby="hqa-btn-2"><div><p>Bluetooth reaches about 10–30 m per hop, Wi-Fi Direct 50–100 m, and a LoRa radio several kilometres. Beyond that, other phones carry your sealed message as people move, for up to 72 hours. <a class="inl" href="how-it-works.html#routes">Every route explained</a>.</p></div></div>
+        </div>
+        <div class="qa" id="hq-iphone" data-reveal>
+          <h3><button class="qa__btn" type="button" id="hqa-btn-3" aria-expanded="false" aria-controls="hqa-3"><span class="qa__q">Does it work on iPhone?</span><span class="qa__pm"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+          <div class="qa__a" id="hqa-3" role="region" aria-labelledby="hqa-btn-3"><div><p>Not yet. Meshtrike is Android only for now, on Android 10 or newer. An iPhone app that shares the same core and talks to Android phones with the same sealed messages is on the <a class="inl" href="roadmap.html#later">roadmap</a>.</p></div></div>
+        </div>
+    </div>
+  </div>
+</section>
 <section id="explore" class="sec explore" aria-labelledby="explore-title">
   <div class="wrap stack explore__inner">
     <div class="sec-head explore__head" data-reveal>
-      <p class="eyebrow">02 · EXPLORE</p>
-      <h2 class="h2" id="explore-title">Everything a messenger does. Minus the cell tower.</h2>
+      <p class="eyebrow">09 · GO DEEPER</p>
+      <h2 class="h2" id="explore-title">Read the story. Then help carry it.</h2>
     </div>
     <ul class="lgrid">
       <li data-reveal>
-        <a class="lcard lcard--lime tilt" href="features.html" data-tilt>
-          <span class="lcard__art lcard__art--chips" aria-hidden="true"><span class="chip chip--ink"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mic"/></svg>Voice notes</span><span class="chip chip--ink"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-call"/></svg>Nearby calls</span><span class="chip chip--ink"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-users"/></svg>Groups of 50</span><span class="chip chip--ink"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-timer"/></svg>Disappearing</span><span class="chip chip--ink"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-qr"/></svg>QR handoff</span></span>
-          <span class="lcard__txt"><span class="lcard__eye">FEATURES</span><span class="lcard__t">Messages, voice notes, calls.</span><span class="lcard__d">Everything you expect from a messenger, built to work with no network at all.</span></span>
-          <span class="lcard__go"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-        </a>
-      </li>
-      <li data-reveal>
-        <a class="lcard tilt" href="how-it-works.html#routes" data-tilt>
-          <span class="lcard__art lcard__art--routes" aria-hidden="true"><span class="chip c-bt"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bt"/></svg>Bluetooth</span><span class="chip c-wifi"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wifi"/></svg>Wi-Fi Direct</span><span class="chip c-lora"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-radio"/></svg>LoRa</span><span class="chip c-qr"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-qr"/></svg>QR</span><span class="chip c-net"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-globe"/></svg>Nym</span><span class="chip c-mesh"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mesh"/></svg>Mesh</span></span>
-          <span class="lcard__txt"><span class="lcard__eye">ROUTES</span><span class="lcard__t">Six ways a message travels.</span><span class="lcard__d">The route pill always shows which one your message is taking right now.</span></span>
-          <span class="lcard__go"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-        </a>
-      </li>
-      <li data-reveal>
-        <a class="lcard lcard--ink dark tilt" href="security.html" data-tilt>
-          <span class="lcard__art lcard__art--lock" aria-hidden="true"><span class="lcard__lock"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg></span><span class="lcard__seal">SEALED END TO END</span></span>
-          <span class="lcard__txt"><span class="lcard__eye">SECURITY</span><span class="lcard__t">Private by design, not by setting.</span><span class="lcard__d">No server to subpoena, no account to hack, and honest about what it can’t do.</span></span>
-          <span class="lcard__go"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-        </a>
-      </li>
-      <li data-reveal>
-        <a class="lcard tilt" href="use-cases.html" data-tilt>
-          <span class="lcard__art lcard__art--tags" aria-hidden="true"><span>FESTIVALS</span><span>PROTESTS</span><span>DISASTERS</span><span>OFF-GRID</span><span>SHUTDOWNS</span></span>
-          <span class="lcard__txt"><span class="lcard__eye">USE CASES</span><span class="lcard__t">Built for the moments networks fail.</span><span class="lcard__d">Overloaded towers, cut networks, storms and places that never had signal.</span></span>
-          <span class="lcard__go"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-        </a>
-      </li>
-      <li data-reveal>
-        <a class="lcard tilt" href="download.html#meshgrid" data-tilt>
-          <span class="lcard__art lcard__art--pair" aria-hidden="true"><span class="lcard__app lcard__app--ink"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mesh"/></svg></span><span class="lcard__wire"></span><span class="lcard__app lcard__app--net"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-globe"/></svg></span></span>
-          <span class="lcard__txt"><span class="lcard__eye">MESHGRID ADD-ON</span><span class="lcard__t">Faster nearby, private worldwide.</span><span class="lcard__d">Optional. Adds Wi-Fi Direct and a private internet route over the Nym mixnet.</span></span>
+        <a class="lcard lcard--ink dark tilt" href="about.html" data-tilt>
+          <span class="lcard__art lcard__art--img" aria-hidden="true"><img src="img/ch-spark.svg" alt="" width="800" height="600" loading="lazy" decoding="async"></span>
+          <span class="lcard__txt"><span class="lcard__eye">ABOUT</span><span class="lcard__t">Why we built it.</span><span class="lcard__d">What we stand for, and the things we will never do.</span></span>
           <span class="lcard__go"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
         </a>
       </li>
@@ -295,15 +559,21 @@
           <span class="lcard__go"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
         </a>
       </li>
+      <li data-reveal>
+        <a class="lcard lcard--lime tilt" href="whitepaper.html" data-tilt>
+          <span class="lcard__art lcard__art--chips" aria-hidden="true"><span class="chip chip--ink"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-key"/></svg>Keys on your phone</span><span class="chip chip--ink"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Sealed envelopes</span><span class="chip chip--ink"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-route"/></svg>7 hops, 72 hours</span><span class="chip chip--ink"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-alert"/></svg>Threat model</span></span>
+          <span class="lcard__txt"><span class="lcard__eye">WHITEPAPER</span><span class="lcard__t">The design, in depth.</span><span class="lcard__d">The protocol, the threat model and the limits, written for reviewers.</span></span>
+          <span class="lcard__go"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
+        </a>
+      </li>
     </ul>
   </div>
 </section>
-
 <section id="roadmap" class="sec rmt dark" aria-labelledby="rmt-title">
   <div class="wrap stack rmt__inner">
     <div class="split" data-reveal>
       <div class="sec-head">
-        <p class="eyebrow eyebrow--lime">03 · ROADMAP</p>
+        <p class="eyebrow eyebrow--lime">10 · ROADMAP</p>
         <h2 class="h2" id="rmt-title">Where the mesh <span class="lime">goes next.</span></h2>
       </div>
       <div class="split__aside">
@@ -311,24 +581,24 @@
         <a class="go go--lime" href="roadmap.html">See the full roadmap<svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       </div>
     </div>
-    <ol class="rmt__track" data-seq>
-      <li class="rmt__stage rmt__stage--now" style="--i:0">
+    <ol class="rmt__track rmt__track--2" data-seq>
+      <li class="rmt__stage rmt__stage--done" style="--i:0">
+        <span class="rmt__node" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-key"/></svg></span>
+        <span class="rmt__when">SHIPPED</span>
+        <h3 class="rmt__t">Signed <span data-ver="app">v1.0.0</span></h3>
+        <p class="rmt__d">Signed APKs on GitHub that anyone can verify in the browser.</p>
+        <span class="st st--done"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Shipped</span>
+      </li>
+      <li class="rmt__stage rmt__stage--now" style="--i:1">
         <span class="rmt__node" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-flask"/></svg></span>
         <span class="rmt__when">NOW</span>
         <h3 class="rmt__t">Field testing</h3>
-        <p class="rmt__d">Voice notes, nearby calls, reply quotes and the MeshGRID add-on, on many phones at once.</p>
+        <p class="rmt__d">Voice notes, nearby calls and MeshGRID, on many phones at once in real crowds.</p>
         <span class="st st--now"><span class="st__dot" aria-hidden="true"></span>In testing</span>
       </li>
-      <li class="rmt__stage" style="--i:1">
-        <span class="rmt__node" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-key"/></svg></span>
-        <span class="rmt__when">NEXT</span>
-        <h3 class="rmt__t">First signed release</h3>
-        <p class="rmt__d">Signed APKs anyone can verify, reproducible builds, F-Droid.</p>
-        <span class="st st--plan">Planned</span>
-      </li>
-      <li class="rmt__stage rmt__stage--new" style="--i:2">
+      <li class="rmt__stage" style="--i:2">
         <span class="rmt__node" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-server"/></svg></span>
-        <span class="rmt__when">THEN <span class="rmt__new">NEW</span></span>
+        <span class="rmt__when">THEN</span>
         <h3 class="rmt__t">Community servers</h3>
         <p class="rmt__d">Run by volunteers, like Tor relays. They only ever see sealed envelopes.</p>
         <span class="st st--plan">Planned</span>
@@ -343,14 +613,13 @@
       <li class="rmt__stage" style="--i:4">
         <span class="rmt__node" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-compass"/></svg></span>
         <span class="rmt__when">LATER</span>
-        <h3 class="rmt__t">iPhone, group calls, bridges</h3>
-        <p class="rmt__d">An iPhone app on the same core, calls with several people, disguise bridges.</p>
+        <h3 class="rmt__t">iPhone app</h3>
+        <p class="rmt__d">On the same core, talking to Android phones with the same sealed messages.</p>
         <span class="st st--explore">Exploring</span>
       </li>
     </ol>
   </div>
 </section>
-
 <section id="download" class="sec download" aria-labelledby="dl-title">
   <div class="dl" data-reveal>
     <span class="dl__ring dl__ring--a" aria-hidden="true"></span>
